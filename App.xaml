@@ -1,0 +1,35 @@
+﻿<Application x:Class="Calculadora.App"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="clr-namespace:Calculadora.ViewModels"
+             xmlns:views="clr-namespace:Calculadora.Views"
+             StartupUri="MainWindow.xaml">
+    <Application.Resources>
+        <ResourceDictionary>
+
+            <!-- Cargamos el tema visual -->
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="Themes/DarkTheme.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+
+            <!--
+                DataTemplates SIN x:Key.
+                WPF detecta automáticamente el tipo del objeto en ContentControl.Content
+                y aplica el template correcto. No necesitamos código para esto.
+
+                Flujo:
+                  MainViewModel.VistaActual = NormalCalcViewModel
+                  → ContentControl muestra NormalCalcView
+                  → DataContext de NormalCalcView = ese NormalCalcViewModel
+            -->
+            <DataTemplate DataType="{x:Type vm:NormalCalcViewModel}">
+                <views:NormalCalcView/>
+            </DataTemplate>
+
+            <DataTemplate DataType="{x:Type vm:GraphCalcViewModel}">
+                <views:GraphCalcView/>
+            </DataTemplate>
+
+        </ResourceDictionary>
+    </Application.Resources>
+</Application>

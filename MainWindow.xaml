@@ -1,0 +1,67 @@
+<Window x:Class="Calculadora.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:vm="clr-namespace:Calculadora.ViewModels"
+        Title="Calculadora"
+        Width="980" Height="680"
+        MinWidth="460" MinHeight="560"
+        ResizeMode="CanResize"
+        WindowStartupLocation="CenterScreen"
+        Background="{StaticResource PincelFondo}">
+
+    <!-- DataContext instanciado en XAML. Sin una sola línea en code-behind. -->
+    <Window.DataContext>
+        <vm:MainViewModel/>
+    </Window.DataContext>
+
+    <!--
+        LAYOUT PRINCIPAL:
+        Fila 0 (*) → La vista activa (calculadora normal o gráfica)
+        Fila 1 (Auto) → Barra de navegación inferior, muy estrecha
+    -->
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <!--
+            ContentControl: el corazón de la navegación.
+            Su propiedad Content está enlazada a CurrentView del MainViewModel.
+            Cuando CurrentView cambia, WPF busca el DataTemplate correspondiente
+            en App.xaml y renderiza la View adecuada aquí dentro.
+        -->
+        <ContentControl Grid.Row="0"
+                        Content="{Binding CurrentView}"/>
+
+        <!-- Separador visual entre la vista y la barra de navegación -->
+        <Border Grid.Row="0"
+                VerticalAlignment="Bottom"
+                Height="1"
+                Background="{StaticResource PincelBorde}"/>
+
+        <!-- Barra de navegación inferior -->
+        <Border Grid.Row="1"
+                Background="{StaticResource PincelNavBar}"
+                Padding="8,4">
+            <StackPanel Orientation="Horizontal"
+                        HorizontalAlignment="Center">
+
+                <Button Content="Calculadora Normal"
+                        Style="{StaticResource EstiloBotonNav}"
+                        Command="{Binding ShowNormalCalculatorCommand}"/>
+
+                <!-- Separador visual entre botones -->
+                <Border Width="1"
+                        Background="{StaticResource PincelBorde}"
+                        Margin="4,8"/>
+
+                <Button Content="Calculadora Gráfica"
+                        Style="{StaticResource EstiloBotonNav}"
+                        Command="{Binding ShowGraphCalculatorCommand}"/>
+
+            </StackPanel>
+        </Border>
+    </Grid>
+
+</Window>

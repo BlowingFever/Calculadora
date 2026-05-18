@@ -1,0 +1,192 @@
+﻿<UserControl x:Class="Calculadora.Views.NormalCalcView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <!--
+        El DataContext aquí es NormalCalcViewModel,
+        asignado automáticamente por el DataTemplate en App.xaml.
+        Todos los Binding apuntan directamente a sus propiedades y comandos.
+    -->
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <!-- Display -->
+            <RowDefinition Height="*"/>
+            <!-- Botonera -->
+        </Grid.RowDefinitions>
+
+        <!-- ══════════════════════════════════
+             DISPLAY
+             ══════════════════════════════════ -->
+        <Border Grid.Row="0"
+                Background="{StaticResource PincelDisplay}"
+                Padding="20,14,20,16">
+            <StackPanel>
+
+                <!-- Línea superior: expresión en curso (ej: "12 ×") -->
+                <TextBlock Text="{Binding Expression}"
+                           Foreground="{StaticResource PincelTextoSec}"
+                           FontSize="14"
+                           HorizontalAlignment="Right"
+                           MinHeight="18"
+                           Margin="0,0,0,4"/>
+
+                <!-- Línea principal: número actual o resultado -->
+                <TextBlock Text="{Binding Display}"
+                           Foreground="{StaticResource PincelTexto}"
+                           FontSize="46"
+                           FontWeight="Thin"
+                           HorizontalAlignment="Right"
+                           TextTrimming="CharacterEllipsis"/>
+            </StackPanel>
+        </Border>
+
+        <!-- ══════════════════════════════════
+             BOTONERA — Grid 5×4
+             ══════════════════════════════════ -->
+        <Grid Grid.Row="1"
+              Background="{StaticResource PincelSuperficie}"
+              Margin="6,6,6,6">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"/>
+                <!-- Fila 0: C  +/−  %   ÷  -->
+                <RowDefinition Height="*"/>
+                <!-- Fila 1: 7   8   9   ×  -->
+                <RowDefinition Height="*"/>
+                <!-- Fila 2: 4   5   6   −  -->
+                <RowDefinition Height="*"/>
+                <!-- Fila 3: 1   2   3   +  -->
+                <RowDefinition Height="*"/>
+                <!-- Fila 4: 0(x2)  .   =  -->
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <!-- Fila 0: Funciones y primer operador -->
+            <Button Grid.Row="0" Grid.Column="0"
+                    Content="C"
+                    Style="{StaticResource EstiloBotonFuncion}"
+                    Command="{Binding ClearCommand}"/>
+
+            <Button Grid.Row="0" Grid.Column="1"
+                    Content="+/−"
+                    Style="{StaticResource EstiloBotonFuncion}"
+                    Command="{Binding ToggleSignCommand}"/>
+
+            <Button Grid.Row="0" Grid.Column="2"
+                    Content="%"
+                    Style="{StaticResource EstiloBotonFuncion}"
+                    Command="{Binding PercentCommand}"/>
+
+            <Button Grid.Row="0" Grid.Column="3"
+                    Content="÷"
+                    Style="{StaticResource EstiloBotonOperador}"
+                    Command="{Binding OperatorCommand}"
+                    CommandParameter="/"/>
+
+            <!-- Fila 1: 7 8 9 × -->
+            <Button Grid.Row="1" Grid.Column="0"
+                    Content="7"
+                    Style="{StaticResource EstiloBotonDigito}"
+                    Command="{Binding DigitCommand}"
+                    CommandParameter="7"/>
+
+            <Button Grid.Row="1" Grid.Column="1"
+                    Content="8"
+                    Style="{StaticResource EstiloBotonDigito}"
+                    Command="{Binding DigitCommand}"
+                    CommandParameter="8"/>
+
+            <Button Grid.Row="1" Grid.Column="2"
+                    Content="9"
+                    Style="{StaticResource EstiloBotonDigito}"
+                    Command="{Binding DigitCommand}"
+                    CommandParameter="9"/>
+
+            <Button Grid.Row="1" Grid.Column="3"
+                    Content="×"
+                    Style="{StaticResource EstiloBotonOperador}"
+                    Command="{Binding OperatorCommand}"
+                    CommandParameter="*"/>
+
+            <!-- Fila 2: 4 5 6 − -->
+            <Button Grid.Row="2" Grid.Column="0"
+                    Content="4"
+                    Style="{StaticResource EstiloBotonDigito}"
+                    Command="{Binding DigitCommand}"
+                    CommandParameter="4"/>
+
+            <Button Grid.Row="2" Grid.Column="1"
+                    Content="5"
+                    Style="{StaticResource EstiloBotonDigito}"
+                    Command="{Binding DigitCommand}"
+                    CommandParameter="5"/>
+
+            <Button Grid.Row="2" Grid.Column="2"
+                    Content="6"
+                    Style="{StaticResource EstiloBotonDigito}"
+                    Command="{Binding DigitCommand}"
+                    CommandParameter="6"/>
+
+            <Button Grid.Row="2" Grid.Column="3"
+                    Content="−"
+                    Style="{StaticResource EstiloBotonOperador}"
+                    Command="{Binding OperatorCommand}"
+                    CommandParameter="-"/>
+
+            <!-- Fila 3: 1 2 3 + -->
+            <Button Grid.Row="3" Grid.Column="0"
+                    Content="1"
+                    Style="{StaticResource EstiloBotonDigito}"
+                    Command="{Binding DigitCommand}"
+                    CommandParameter="1"/>
+
+            <Button Grid.Row="3" Grid.Column="1"
+                    Content="2"
+                    Style="{StaticResource EstiloBotonDigito}"
+                    Command="{Binding DigitCommand}"
+                    CommandParameter="2"/>
+
+            <Button Grid.Row="3" Grid.Column="2"
+                    Content="3"
+                    Style="{StaticResource EstiloBotonDigito}"
+                    Command="{Binding DigitCommand}"
+                    CommandParameter="3"/>
+
+            <Button Grid.Row="3" Grid.Column="3"
+                    Content="+"
+                    Style="{StaticResource EstiloBotonOperador}"
+                    Command="{Binding OperatorCommand}"
+                    CommandParameter="+"/>
+
+            <!-- Fila 4: 0 (span 2)  .  = -->
+            <!--
+                El "0" ocupa 2 columnas (Grid.ColumnSpan="2").
+                HorizontalContentAlignment="Left" + Padding lo desplaza a la izquierda,
+                igual que las calculadoras modernas (iOS, macOS).
+            -->
+            <Button Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="2"
+                    Content="0"
+                    Style="{StaticResource EstiloBotonDigito}"
+                    HorizontalContentAlignment="Left"
+                    Padding="28,0,0,0"
+                    Command="{Binding DigitCommand}"
+                    CommandParameter="0"/>
+
+            <Button Grid.Row="4" Grid.Column="2"
+                    Content="."
+                    Style="{StaticResource EstiloBotonDigito}"
+                    Command="{Binding DecimalCommand}"/>
+
+            <Button Grid.Row="4" Grid.Column="3"
+                    Content="="
+                    Style="{StaticResource EstiloBotonIgual}"
+                    Command="{Binding EqualsCommand}"/>
+
+        </Grid>
+    </Grid>
+</UserControl>
