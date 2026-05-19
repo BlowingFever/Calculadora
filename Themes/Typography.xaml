@@ -1,0 +1,69 @@
+﻿<ResourceDictionary
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:sys="clr-namespace:System;assembly=mscorlib">
+
+    <!-- ============================================================ -->
+    <!--  TIPOGRAFÍA  (inmutable entre temas claro/oscuro)             -->
+    <!--  Cargar ANTES que Effects.xaml en App.xaml porque Effects     -->
+    <!--  tiene estilos con BasedOn que referencian claves de aquí.   -->
+    <!-- ============================================================ -->
+
+    <!-- ── Familias ─────────────────────────────────────────────── -->
+    <FontFamily x:Key="PrimaryFontFamily">Segoe UI Variable Display, Segoe UI, sans-serif</FontFamily>
+    <FontFamily x:Key="MonoFontFamily">Cascadia Code, Consolas, monospace</FontFamily>
+
+    <!-- ── Tamaños ───────────────────────────────────────────────── -->
+    <sys:Double x:Key="DisplayResultFontSize">42</sys:Double>
+    <sys:Double x:Key="DisplayExpressionFontSize">16</sys:Double>
+    <sys:Double x:Key="NumButtonFontSize">22</sys:Double>
+    <sys:Double x:Key="OpButtonFontSize">22</sys:Double>
+    <sys:Double x:Key="FuncButtonFontSize">16</sys:Double>
+    <sys:Double x:Key="GraphInputFontSize">15</sys:Double>
+    <sys:Double x:Key="GraphAxisLabelFontSize">11</sys:Double>
+    <sys:Double x:Key="TabHeaderFontSize">13</sys:Double>
+
+    <!-- ── Estilos de TextBlock ──────────────────────────────────── -->
+    <!--  FontWeight se pone inline (valor literal) porque el tipo    -->
+    <!--  FontWeight no se serializa bien como StaticResource en      -->
+    <!--  todos los targets de .NET.                                  -->
+
+    <Style x:Key="DisplayResultTextStyle" TargetType="TextBlock">
+        <Setter Property="FontFamily"    Value="{StaticResource PrimaryFontFamily}"/>
+        <Setter Property="FontSize"      Value="{StaticResource DisplayResultFontSize}"/>
+        <Setter Property="FontWeight"    Value="Light"/>
+        <Setter Property="TextAlignment" Value="Right"/>
+        <Setter Property="TextTrimming"  Value="CharacterEllipsis"/>
+    </Style>
+
+    <Style x:Key="DisplayExpressionTextStyle" TargetType="TextBlock">
+        <Setter Property="FontFamily"    Value="{StaticResource PrimaryFontFamily}"/>
+        <Setter Property="FontSize"      Value="{StaticResource DisplayExpressionFontSize}"/>
+        <Setter Property="FontWeight"    Value="Normal"/>
+        <Setter Property="TextAlignment" Value="Right"/>
+        <Setter Property="TextTrimming"  Value="CharacterEllipsis"/>
+    </Style>
+
+    <!--  GraphInputTextStyle es la BASE para GraphFunctionInputStyle  -->
+    <!--  en Effects.xaml. Debe estar cargado antes.                  -->
+    <Style x:Key="GraphInputTextStyle" TargetType="TextBox">
+        <Setter Property="FontFamily" Value="{StaticResource MonoFontFamily}"/>
+        <Setter Property="FontSize"   Value="{StaticResource GraphInputFontSize}"/>
+        <Setter Property="FontWeight" Value="Normal"/>
+    </Style>
+
+    <Style x:Key="GraphAxisLabelStyle" TargetType="TextBlock">
+        <Setter Property="FontFamily"    Value="{StaticResource PrimaryFontFamily}"/>
+        <Setter Property="FontSize"      Value="{StaticResource GraphAxisLabelFontSize}"/>
+        <Setter Property="FontWeight"    Value="Normal"/>
+        <Setter Property="TextAlignment" Value="Center"/>
+    </Style>
+
+    <Style x:Key="TabHeaderStyle" TargetType="TextBlock">
+        <Setter Property="FontFamily"    Value="{StaticResource PrimaryFontFamily}"/>
+        <Setter Property="FontSize"      Value="{StaticResource TabHeaderFontSize}"/>
+        <Setter Property="FontWeight"    Value="SemiBold"/>
+        <Setter Property="TextAlignment" Value="Center"/>
+    </Style>
+
+</ResourceDictionary>

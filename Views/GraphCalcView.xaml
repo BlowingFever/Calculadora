@@ -3,146 +3,145 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:scottplot="clr-namespace:ScottPlot.WPF;assembly=ScottPlot.WPF">
 
-    <!--
-        El DataContext aquí es GraphCalcViewModel,
-        asignado automáticamente por el DataTemplate de App.xaml.
-
-        LAYOUT: Dos columnas.
-          Columna 0 → Panel de expresiones (ancho fijo, redimensionable con el splitter)
-          Columna 1 → Zona del gráfico (ocupa todo el espacio restante)
-    -->
-    <Grid Background="{StaticResource PincelFondo}">
+    <Grid Background="{DynamicResource WindowBackgroundBrush}">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="280" MinWidth="180" MaxWidth="480"/>
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
 
-        <!-- ════════════════════════════════════════════
-             PANEL IZQUIERDO — Lista de expresiones
-             ════════════════════════════════════════════ -->
-        <DockPanel Grid.Column="0" Background="{StaticResource PincelNavBar}">
+        <!-- PANEL IZQUIERDO -->
+        <DockPanel Grid.Column="0"
+                   Background="{DynamicResource CalcSurfaceBrush}">
 
-            <!-- Cabecera: título + botón "+" -->
             <Border DockPanel.Dock="Top"
-                    Background="{StaticResource PincelNavBar}"
-                    BorderBrush="{StaticResource PincelBorde}"
+                    Background="{DynamicResource CalcSurfaceBrush}"
+                    BorderBrush="{DynamicResource BorderBrush}"
                     BorderThickness="0,0,0,1"
                     Padding="12,8">
                 <DockPanel>
                     <TextBlock Text="Expresiones"
-                               Foreground="{StaticResource PincelTextoOp}"
+                               Foreground="{DynamicResource DisplayResultForegroundBrush}"
                                FontSize="14"
                                FontWeight="SemiBold"
                                VerticalAlignment="Center"/>
-
-                    <!--
-                        Botón "+": al pulsarlo ejecuta AddExpressionCommand del ViewModel.
-                        Sin código en el code-behind. Solo un Binding.
-                    -->
+                    <!-- Botón "+" pequeño, sin heredar el tamaño 68×68 de FuncButtonStyle -->
                     <Button DockPanel.Dock="Right"
                             Content="+"
-                            FontSize="22"
+                            Width="32" Height="32"
+                            FontSize="20"
                             FontWeight="Bold"
-                            Style="{StaticResource FlatButtonStyle}"
+                            Background="{DynamicResource FuncButtonBackgroundBrush}"
+                            Foreground="{DynamicResource FuncButtonForegroundBrush}"
+                            BorderThickness="0"
+                            Cursor="Hand"
                             Command="{Binding AddExpressionCommand}"
-                            ToolTip="Agregar expresión"/>
+                            ToolTip="Agregar expresión">
+                        <Button.Template>
+                            <ControlTemplate TargetType="Button">
+                                <Border x:Name="Root"
+                                        Background="{TemplateBinding Background}"
+                                        CornerRadius="8"
+                                        SnapsToDevicePixels="True">
+                                    <ContentPresenter HorizontalAlignment="Center"
+                                                      VerticalAlignment="Center"/>
+                                </Border>
+                                <ControlTemplate.Triggers>
+                                    <Trigger Property="IsMouseOver" Value="True">
+                                        <Setter TargetName="Root" Property="Background"
+                                                Value="{DynamicResource FuncButtonHoverBrush}"/>
+                                    </Trigger>
+                                    <Trigger Property="IsPressed" Value="True">
+                                        <Setter TargetName="Root" Property="Background"
+                                                Value="{DynamicResource FuncButtonPressedBrush}"/>
+                                    </Trigger>
+                                </ControlTemplate.Triggers>
+                            </ControlTemplate>
+                        </Button.Template>
+                    </Button>
                 </DockPanel>
             </Border>
 
-            <!-- Lista dinámica de expresiones -->
-            <!--
-                ItemsControl recorre la colección Expressions del ViewModel
-                y pinta un bloque visual por cada elemento.
-                Cuando se agrega o elimina un elemento, la UI se actualiza
-                sola gracias a ObservableCollection. Sin código extra.
-            -->
             <ScrollViewer VerticalScrollBarVisibility="Auto">
                 <ItemsControl ItemsSource="{Binding Expressions}">
                     <ItemsControl.ItemTemplate>
                         <DataTemplate>
-                            <!--
-                                Todo lo que hay aquí dentro representa
-                                UNA expresión de la lista.
-                                El DataContext aquí es automáticamente
-                                cada ExpressionItem individual.
-                            -->
-                            <Border BorderBrush="{StaticResource PincelBorde}"
+                            <Border BorderBrush="{DynamicResource BorderBrush}"
                                     BorderThickness="0,0,0,1"
                                     MinHeight="52">
                                 <Grid>
                                     <Grid.ColumnDefinitions>
-                                        <!-- Franja de color de la curva -->
                                         <ColumnDefinition Width="6"/>
-                                        <!-- Checkbox de visibilidad -->
                                         <ColumnDefinition Width="Auto"/>
-                                        <!-- Campo de texto de la ecuación -->
                                         <ColumnDefinition Width="*"/>
-                                        <!-- Botón eliminar -->
                                         <ColumnDefinition Width="Auto"/>
                                     </Grid.ColumnDefinitions>
 
-                                    <!-- Franja de color: bindada a ExpressionItem.Color -->
-                                    <Rectangle Grid.Column="0"
-                                               Fill="{Binding Color}"/>
+                                    <Rectangle Grid.Column="0" Fill="{Binding Color}"/>
 
-                                    <!-- Checkbox para mostrar/ocultar la curva -->
                                     <CheckBox Grid.Column="1"
                                               IsChecked="{Binding Visible}"
                                               Margin="8,0"
                                               VerticalAlignment="Center"/>
 
-                                    <!--
-                                        Campo de texto de la ecuación.
-                                        UpdateSourceTrigger=PropertyChanged hace que
-                                        el ViewModel reciba el texto en cada tecla,
-                                        no solo cuando el campo pierde el foco.
-                                    -->
                                     <TextBox Grid.Column="2"
-                                             Style="{StaticResource ExpressionItemStyle}"
+                                             Style="{DynamicResource GraphFunctionInputStyle}"
                                              Text="{Binding Text, UpdateSourceTrigger=PropertyChanged}"
                                              VerticalAlignment="Center"/>
 
-                                    <!--
-                                        Botón "×" para eliminar esta expresión.
-
-                                        TRUCO IMPORTANTE:
-                                        Dentro del DataTemplate, el DataContext es
-                                        el ExpressionItem, no el GraphCalcViewModel.
-                                        Para llegar a RemoveExpressionCommand usamos
-                                        RelativeSource para subir hasta el UserControl
-                                        y acceder a su DataContext.
-                                        CommandParameter envía el propio ExpressionItem
-                                        para que el VM sepa cuál eliminar.
-                                    -->
+                                    <!-- Botón "×" pequeño igual que el "+" -->
                                     <Button Grid.Column="3"
                                             Content="×"
-                                            Style="{StaticResource FlatButtonStyle}"
-                                            Foreground="{StaticResource PincelTextoSec}"
+                                            Width="32" Height="32"
+                                            FontSize="16"
+                                            Background="Transparent"
+                                            Foreground="{DynamicResource DisplayExpressionForegroundBrush}"
+                                            BorderThickness="0"
+                                            Cursor="Hand"
+                                            Margin="4,0"
                                             VerticalAlignment="Center"
                                             ToolTip="Eliminar expresión"
                                             Command="{Binding DataContext.RemoveExpressionCommand,
                                                       RelativeSource={RelativeSource AncestorType=UserControl}}"
-                                            CommandParameter="{Binding}"/>
+                                            CommandParameter="{Binding}">
+                                        <Button.Template>
+                                            <ControlTemplate TargetType="Button">
+                                                <Border x:Name="Root"
+                                                        Background="{TemplateBinding Background}"
+                                                        CornerRadius="6"
+                                                        SnapsToDevicePixels="True">
+                                                    <ContentPresenter HorizontalAlignment="Center"
+                                                                      VerticalAlignment="Center"/>
+                                                </Border>
+                                                <ControlTemplate.Triggers>
+                                                    <Trigger Property="IsMouseOver" Value="True">
+                                                        <Setter TargetName="Root" Property="Background"
+                                                                Value="{DynamicResource FuncButtonHoverBrush}"/>
+                                                    </Trigger>
+                                                    <Trigger Property="IsPressed" Value="True">
+                                                        <Setter TargetName="Root" Property="Background"
+                                                                Value="{DynamicResource FuncButtonPressedBrush}"/>
+                                                    </Trigger>
+                                                </ControlTemplate.Triggers>
+                                            </ControlTemplate>
+                                        </Button.Template>
+                                    </Button>
                                 </Grid>
                             </Border>
                         </DataTemplate>
                     </ItemsControl.ItemTemplate>
                 </ItemsControl>
             </ScrollViewer>
-
         </DockPanel>
 
-        <!-- Barra separadora que el usuario puede arrastrar para redimensionar -->
         <GridSplitter Grid.Column="0"
                       Width="4"
                       HorizontalAlignment="Right"
-                      Background="{StaticResource PincelBorde}"
+                      Background="{DynamicResource BorderBrush}"
                       Cursor="SizeWE"/>
 
-        <!-- ════════════════════════════════════════════
-             PANEL DERECHO — Zona del gráfico
-             ════════════════════════════════════════════ -->
-        <Grid Grid.Column="1" Background="{StaticResource PincelDisplay}">
+        <!-- PANEL DERECHO — gráfico -->
+        <Grid Grid.Column="1"
+              Background="{DynamicResource GraphCanvasBackgroundBrush}">
             <scottplot:WpfPlot x:Name="WpfPlot"/>
         </Grid>
 

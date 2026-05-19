@@ -1,0 +1,47 @@
+﻿using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Controls.Primitives;
+using Calculadora.Models;
+
+namespace Calculadora.Models
+{
+    public partial class ThemeToggleButton : UserControl
+    {
+        private bool _syncing;
+
+        public ThemeToggleButton()
+        {
+            InitializeComponent();
+            _syncing = true;
+            // IsDark=true → IsChecked=false (muestra luna, tema oscuro activo)
+            Btn.IsChecked = !ThemeManager.IsDark;
+            _syncing = false;
+            ThemeManager.ThemeChanged += OnThemeChanged;
+            Unloaded += (_, _) => ThemeManager.ThemeChanged -= OnThemeChanged;
+        }
+
+        private void Btn_Checked(object sender, RoutedEventArgs e)
+        {
+            // IsChecked=true → usuario quiere tema CLARO → mostrar SOL
+            if (!_syncing)
+                ThemeManager.Apply(dark: false);
+        }
+
+        private void Btn_Unchecked(object sender, RoutedEventArgs e)
+        {
+            // IsChecked=false → usuario quiere tema OSCURO → mostrar LUNA
+            if (!_syncing)
+                ThemeManager.Apply(dark: true);
+        }
+
+        private void OnThemeChanged(object? sender, System.EventArgs e)
+        {
+            Dispatcher.Invoke(() =>
+            {
+                _syncing = true;
+                Btn.IsChecked = !ThemeManager.IsDark;
+                _syncing = false;
+            });
+        }
+    }
+}

@@ -2,66 +2,74 @@
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:vm="clr-namespace:Calculadora.ViewModels"
+        xmlns:models="clr-namespace:Calculadora.Models"
         Title="Calculadora"
-        Width="980" Height="680"
-        MinWidth="460" MinHeight="560"
+        Width="460" Height="620"
+        MinWidth="380" MinHeight="520"
         ResizeMode="CanResize"
         WindowStartupLocation="CenterScreen"
-        Background="{StaticResource PincelFondo}">
+        Background="{DynamicResource WindowBackgroundBrush}">
 
-    <!-- DataContext instanciado en XAML. Sin una sola línea en code-behind. -->
     <Window.DataContext>
         <vm:MainViewModel/>
     </Window.DataContext>
 
-    <!--
-        LAYOUT PRINCIPAL:
-        Fila 0 (*) → La vista activa (calculadora normal o gráfica)
-        Fila 1 (Auto) → Barra de navegación inferior, muy estrecha
-    -->
-    <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="*"/>
-            <RowDefinition Height="Auto"/>
-        </Grid.RowDefinitions>
+    <Border Background="{DynamicResource CalcSurfaceBrush}"
+            CornerRadius="{StaticResource CalcSurfaceCornerRadius}"
+            Margin="16"
+            Effect="{StaticResource CalcSurfaceShadow}">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
 
-        <!--
-            ContentControl: el corazón de la navegación.
-            Su propiedad Content está enlazada a CurrentView del MainViewModel.
-            Cuando CurrentView cambia, WPF busca el DataTemplate correspondiente
-            en App.xaml y renderiza la View adecuada aquí dentro.
-        -->
-        <ContentControl Grid.Row="0"
-                        Content="{Binding CurrentView}"/>
+            <ContentControl Grid.Row="0"
+                            Content="{Binding CurrentView}"/>
 
-        <!-- Separador visual entre la vista y la barra de navegación -->
-        <Border Grid.Row="0"
-                VerticalAlignment="Bottom"
-                Height="1"
-                Background="{StaticResource PincelBorde}"/>
+            <Border Grid.Row="0"
+                    VerticalAlignment="Bottom"
+                    Height="1"
+                    Background="{DynamicResource BorderBrush}"/>
 
-        <!-- Barra de navegación inferior -->
-        <Border Grid.Row="1"
-                Background="{StaticResource PincelNavBar}"
-                Padding="8,4">
-            <StackPanel Orientation="Horizontal"
-                        HorizontalAlignment="Center">
+            <!-- Barra inferior -->
+            <Grid Grid.Row="1"
+                  Background="{DynamicResource CalcSurfaceBrush}"
+                  Margin="10,6,10,6">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
 
-                <Button Content="Calculadora Normal"
-                        Style="{StaticResource EstiloBotonNav}"
-                        Command="{Binding ShowNormalCalculatorCommand}"/>
+                <StackPanel Grid.Column="0"
+                            Orientation="Horizontal"
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Center">
+                    <Button Content="Calculadora"
+                            Style="{DynamicResource FuncButtonStyle}"
+                            Width="Auto" Height="36"
+                            Padding="16,0"
+                            Command="{Binding ShowNormalCalculatorCommand}"/>
+                    <Border Width="1"
+                            Background="{DynamicResource BorderBrush}"
+                            Margin="4,8"/>
+                    <Button Content="Gráfica"
+                            Style="{DynamicResource FuncButtonStyle}"
+                            Width="Auto" Height="36"
+                            Padding="16,0"
+                            Command="{Binding ShowGraphCalculatorCommand}"/>
+                </StackPanel>
 
-                <!-- Separador visual entre botones -->
-                <Border Width="1"
-                        Background="{StaticResource PincelBorde}"
-                        Margin="4,8"/>
-
-                <Button Content="Calculadora Gráfica"
-                        Style="{StaticResource EstiloBotonNav}"
-                        Command="{Binding ShowGraphCalculatorCommand}"/>
-
-            </StackPanel>
-        </Border>
-    </Grid>
-
+                <!--
+                    ThemeToggleButton: fondo transparent para que
+                    herede el CalcSurfaceBrush del Grid padre.
+                    El estilo ThemeToggleButtonStyle ya tiene Background=Transparent.
+                -->
+                <models:ThemeToggleButton
+                    Grid.Column="1"
+                    VerticalAlignment="Center"
+                    Margin="4,0,8,0"/>
+            </Grid>
+        </Grid>
+    </Border>
 </Window>
