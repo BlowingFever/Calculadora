@@ -43,8 +43,8 @@
     <!--  Cada estilo hijo gestiona el color con Setter en Triggers.  -->
     <!-- ============================================================ -->
     <Style x:Key="CalcButtonBaseStyle" TargetType="Button">
-        <Setter Property="MinWidth"              Value="48"/>
-        <Setter Property="MinHeight"             Value="48"/>
+        <Setter Property="MinWidth"              Value="32"/>
+        <Setter Property="MinHeight"             Value="32"/>
         <Setter Property="FontFamily"            Value="{StaticResource PrimaryFontFamily}"/>
         <Setter Property="FontWeight"            Value="Medium"/>
         <Setter Property="BorderThickness"       Value="0"/>
