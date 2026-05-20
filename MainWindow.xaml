@@ -11,6 +11,7 @@
         Background="{DynamicResource WindowBackgroundBrush}">
 
     <Window.DataContext>
+
         <vm:MainViewModel/>
     </Window.DataContext>
 
@@ -47,15 +48,15 @@
                             VerticalAlignment="Center">
                     <Button Content="Calculadora"
                             Style="{DynamicResource FuncButtonStyle}"
-                            Width="120" Height="36"
+                            Width="120" Height="10"
                             Padding="16,0"
                             Command="{Binding ShowNormalCalculatorCommand}"/>
                     <Border Width="1"
                             Background="{DynamicResource BorderBrush}"
-                            Margin="4,8"/>
+                            Margin="10,5"/>
                     <Button Content="Gráfica"
                             Style="{DynamicResource FuncButtonStyle}"
-                            Width="80" Height="36"
+                            Width="80" Height="10"
                             Padding="16,0"
                             Command="{Binding ShowGraphCalculatorCommand}"/>
                 </StackPanel>
