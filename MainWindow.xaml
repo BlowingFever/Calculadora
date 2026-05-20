@@ -26,7 +26,8 @@
             </Grid.RowDefinitions>
 
             <ContentControl Grid.Row="0"
-                            Content="{Binding CurrentView}"/>
+                            Content="{Binding CurrentView}"
+                            PreviewKeyDown="OnPreviewKeyDown"/>
 
             <Border Grid.Row="0"
                     VerticalAlignment="Bottom"
