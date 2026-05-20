@@ -1,5 +1,8 @@
+using System;
+using System.Windows;
 using System.Windows.Controls;
 using Calculadora.ViewModels;
+using Calculadora.Models;
 
 namespace Calculadora.Views
 {
@@ -9,6 +12,15 @@ namespace Calculadora.Views
         {
             InitializeComponent();
 
+            // Suscribirse al evento global de cambio de tema
+            ThemeManager.ThemeChanged += OnThemeChanged;
+
+            // Desuscribirse al descargar el control para evitar fugas de memoria
+            this.Unloaded += (s, e) =>
+            {
+                ThemeManager.ThemeChanged -= OnThemeChanged;
+            };
+
             // ── ScottPlot: inicialización ──────────────────────────────
             //
             // Se ejecuta en Loaded para garantizar que el DataContext ya está asignado.
@@ -17,10 +29,8 @@ namespace Calculadora.Views
             {
                 if (DataContext is not GraphCalcViewModel vm) return;
 
-                // Aplicar tema oscuro al fondo del gráfico.
-                WpfPlot.Plot.FigureBackground.Color = new ScottPlot.Color(0x09, 0x0B, 0x12);
-                WpfPlot.Plot.DataBackground.Color   = new ScottPlot.Color(0x16, 0x1B, 0x27);
-                WpfPlot.Plot.Axes.Color(new ScottPlot.Color(0x8B, 0x98, 0xA9));
+                // Aplicar el tema inicial del gráfico
+                UpdatePlotTheme();
 
                 // Suscribirse al evento de cambio de límites (zoom/pan) para recalcular dinámicamente
                 WpfPlot.Plot.RenderManager.AxisLimitsChanged += (sender, args) => RefreshPlot(vm);
@@ -31,6 +41,66 @@ namespace Calculadora.Views
                 // Dibujo inicial.
                 RefreshPlot(vm);
             };
+        }
+
+        private void OnThemeChanged(object? sender, EventArgs e)
+        {
+            UpdatePlotTheme();
+        }
+
+        // ── Método de tematización del gráfico ──────────────────────────
+        //
+        // Sincroniza dinámicamente el aspecto de ScottPlot con el tema actual (claro/oscuro).
+        //
+        private void UpdatePlotTheme()
+        {
+            if (WpfPlot?.Plot is null) return;
+
+            // Obtener colores dinámicos desde los recursos de la aplicación (definidos en Themes/Colors.xaml)
+            var canvasBg = GetScottPlotColor("GraphCanvasBackgroundColor", new ScottPlot.Color(0x09, 0x0B, 0x12));
+            var axisColor = GetScottPlotColor("GraphAxisColor", new ScottPlot.Color(0x8B, 0x98, 0xA9));
+            var gridLineColor = GetScottPlotColor("GraphGridLineColor", new ScottPlot.Color(0x2A, 0x2F, 0x3A));
+
+            // Para el fondo de datos, usamos un tono con ligero contraste y estética acorde al tema actual
+            ScottPlot.Color dataBg = ThemeManager.IsDark 
+                ? new ScottPlot.Color(0x16, 0x1B, 0x27)   // Fondo ligeramente más claro en tema oscuro
+                : new ScottPlot.Color(0xF9, 0xFA, 0xFB);  // Fondo blanco/gris muy suave en tema claro
+
+            // Asignar colores a ScottPlot
+            WpfPlot.Plot.FigureBackground.Color = canvasBg;
+            WpfPlot.Plot.DataBackground.Color = dataBg;
+            WpfPlot.Plot.Axes.Color(axisColor);
+
+            // Ajustar el color de las líneas principales de la cuadrícula
+            WpfPlot.Plot.Grid.MajorLineColor = gridLineColor;
+
+            WpfPlot.Refresh();
+        }
+
+        // ── Helper para obtener colores de recursos WPF con fallback ────
+        //
+        private ScottPlot.Color GetScottPlotColor(string resourceKey, ScottPlot.Color defaultColor)
+        {
+            try
+            {
+                if (Application.Current.Resources.Contains(resourceKey))
+                {
+                    var res = Application.Current.Resources[resourceKey];
+                    if (res is System.Windows.Media.Color color)
+                    {
+                        return new ScottPlot.Color(color.R, color.G, color.B);
+                    }
+                    if (res is System.Windows.Media.SolidColorBrush brush)
+                    {
+                        return new ScottPlot.Color(brush.Color.R, brush.Color.G, brush.Color.B);
+                    }
+                }
+            }
+            catch
+            {
+                // Fallback seguro en caso de error
+            }
+            return defaultColor;
         }
 
         // ── Método de renderizado ──────────────────────────────────────
@@ -68,4 +138,4 @@ namespace Calculadora.Views
             WpfPlot.Refresh();
         }
     }
-}
+}
