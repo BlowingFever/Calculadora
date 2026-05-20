@@ -19,4 +19,8 @@
     <Resource Include="Assets\eye_closed.png" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Screenshots\" />
+  </ItemGroup>
+
 </Project>
