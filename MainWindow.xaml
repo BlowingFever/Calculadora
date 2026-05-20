@@ -47,7 +47,7 @@
                             VerticalAlignment="Center">
                     <Button Content="Calculadora"
                             Style="{DynamicResource FuncButtonStyle}"
-                            Width="Auto" Height="36"
+                            Width="120" Height="36"
                             Padding="16,0"
                             Command="{Binding ShowNormalCalculatorCommand}"/>
                     <Border Width="1"
@@ -55,7 +55,7 @@
                             Margin="4,8"/>
                     <Button Content="Gráfica"
                             Style="{DynamicResource FuncButtonStyle}"
-                            Width="Auto" Height="36"
+                            Width="80" Height="36"
                             Padding="16,0"
                             Command="{Binding ShowGraphCalculatorCommand}"/>
                 </StackPanel>
