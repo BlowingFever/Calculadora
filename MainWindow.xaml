@@ -3,7 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:vm="clr-namespace:Calculadora.ViewModels"
         xmlns:models="clr-namespace:Calculadora.Models"
-        Title="Calculadora"
+        Title="Calculator"
         Width="460" Height="620"
         MinWidth="380" MinHeight="520"
         ResizeMode="CanResize"
@@ -11,7 +11,6 @@
         Background="{DynamicResource WindowBackgroundBrush}">
 
     <Window.DataContext>
-
         <vm:MainViewModel/>
     </Window.DataContext>
 
@@ -25,16 +24,18 @@
                 <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
 
+            <!-- Active view host — DataTemplate resolved automatically by WPF -->
             <ContentControl Grid.Row="0"
                             Content="{Binding CurrentView}"
                             PreviewKeyDown="OnPreviewKeyDown"/>
 
+            <!-- Horizontal separator above the bottom navigation bar -->
             <Border Grid.Row="0"
                     VerticalAlignment="Bottom"
                     Height="1"
                     Background="{DynamicResource BorderBrush}"/>
 
-            <!-- Bottom bar -->
+            <!-- Bottom navigation bar -->
             <Grid Grid.Row="1"
                   Background="{DynamicResource CalcSurfaceBrush}"
                   Margin="10,6,10,6">
@@ -43,11 +44,12 @@
                     <ColumnDefinition Width="Auto"/>
                 </Grid.ColumnDefinitions>
 
+                <!-- View-switch buttons -->
                 <StackPanel Grid.Column="0"
                             Orientation="Horizontal"
                             HorizontalAlignment="Center"
                             VerticalAlignment="Center">
-                    <Button Content="Calculadora"
+                    <Button Content="Calculator"
                             Style="{DynamicResource FuncButtonStyle}"
                             Width="120" Height="10"
                             Padding="16,0"
@@ -55,7 +57,7 @@
                     <Border Width="1"
                             Background="{DynamicResource BorderBrush}"
                             Margin="10,5"/>
-                    <Button Content="Gráfica"
+                    <Button Content="Graph"
                             Style="{DynamicResource FuncButtonStyle}"
                             Width="80" Height="10"
                             Padding="16,0"
@@ -63,9 +65,8 @@
                 </StackPanel>
 
                 <!--
-                    ThemeToggleButton: transparent background so that
-                    it inherits the CalcSurfaceBrush from the parent Grid.
-                    The ThemeToggleButtonStyle already has Background=Transparent.
+                    Theme toggle button: transparent background inherits CalcSurfaceBrush
+                    from the parent Grid. ThemeToggleButtonStyle already sets Background=Transparent.
                 -->
                 <models:ThemeToggleButton
                     Grid.Column="1"

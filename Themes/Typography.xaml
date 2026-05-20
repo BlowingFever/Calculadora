@@ -3,17 +3,21 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:sys="clr-namespace:System;assembly=mscorlib">
 
-    <!-- ============================================================ -->
-    <!--  TYPOGRAPHY  (immutable between light/dark themes)             -->
-    <!--  Load BEFORE Effects.xaml in App.xaml because Effects          -->
-    <!--  has styles with BasedOn that reference keys from here.       -->
-    <!-- ============================================================ -->
+    <!--
+        TYPOGRAPHY — theme-independent font definitions.
 
-    <!-- ── Families ─────────────────────────────────────────────── -->
+        Load order: must be loaded BEFORE Effects.xaml in App.xaml because
+        Effects.xaml contains styles that use BasedOn referencing keys defined here.
+
+        Note: FontWeight is set inline with a literal value because the FontWeight
+        type does not serialise reliably as a StaticResource across all .NET targets.
+    -->
+
+    <!-- ── Font families ─────────────────────────────────────────────────── -->
     <FontFamily x:Key="PrimaryFontFamily">Segoe UI Variable Display, Segoe UI, sans-serif</FontFamily>
     <FontFamily x:Key="MonoFontFamily">Cascadia Code, Consolas, monospace</FontFamily>
 
-    <!-- ── Sizes ───────────────────────────────────────────────── -->
+    <!-- ── Font sizes ────────────────────────────────────────────────────── -->
     <sys:Double x:Key="DisplayResultFontSize">42</sys:Double>
     <sys:Double x:Key="DisplayExpressionFontSize">16</sys:Double>
     <sys:Double x:Key="NumButtonFontSize">22</sys:Double>
@@ -23,10 +27,7 @@
     <sys:Double x:Key="GraphAxisLabelFontSize">11</sys:Double>
     <sys:Double x:Key="TabHeaderFontSize">13</sys:Double>
 
-    <!-- ── TextBlock Styles ────────────────────────────────────── -->
-    <!--  FontWeight is set inline (literal value) because the          -->
-    <!--  FontWeight type doesn't serialize well as StaticResource     -->
-    <!--  in all .NET targets.                                         -->
+    <!-- ── TextBlock styles ───────────────────────────────────────────────── -->
 
     <Style x:Key="DisplayResultTextStyle" TargetType="TextBlock">
         <Setter Property="FontFamily"    Value="{StaticResource PrimaryFontFamily}"/>
@@ -44,8 +45,10 @@
         <Setter Property="TextTrimming"  Value="CharacterEllipsis"/>
     </Style>
 
-    <!--  GraphInputTextStyle is the BASE for GraphFunctionInputStyle  -->
-    <!--  in Effects.xaml. It must be loaded first.                    -->
+    <!--
+        GraphInputTextStyle is the base for GraphFunctionInputStyle in Effects.xaml.
+        Must be defined in this file (loaded first).
+    -->
     <Style x:Key="GraphInputTextStyle" TargetType="TextBox">
         <Setter Property="FontFamily" Value="{StaticResource MonoFontFamily}"/>
         <Setter Property="FontSize"   Value="{StaticResource GraphInputFontSize}"/>

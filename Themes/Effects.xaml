@@ -3,44 +3,43 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:sys="clr-namespace:System;assembly=mscorlib">
 
-    <!-- ============================================================ -->
-    <!--  EFFECTS, ANIMATIONS AND TRIGGERS                              -->
-    <!--                                                               -->
-    <!--  LOADING ORDER IN App.xaml (mandatory):                      -->
-    <!--    1. Typography.xaml   (defines GraphInputTextStyle)          -->
-    <!--    2. Colors.xaml       (defines theme Brushes)                -->
-    <!--    3. Effects.xaml      (uses BasedOn and DynamicResource)     -->
-    <!-- ============================================================ -->
+    <!--
+        EFFECTS, ANIMATIONS AND TRIGGERS
 
-    <!-- ── Geometry ─────────────────────────────────────────────── -->
+        Required load order in App.xaml:
+          1. Typography.xaml  — defines GraphInputTextStyle
+          2. Colors.xaml      — defines theme brushes
+          3. Effects.xaml     — consumes BasedOn and DynamicResource references
+    -->
+
+    <!-- ── Geometry ──────────────────────────────────────────────────────── -->
     <CornerRadius x:Key="ButtonCornerRadius">14</CornerRadius>
     <CornerRadius x:Key="DisplayCornerRadius">0</CornerRadius>
     <CornerRadius x:Key="CalcSurfaceCornerRadius">28</CornerRadius>
     <CornerRadius x:Key="GraphPanelCornerRadius">16</CornerRadius>
     <CornerRadius x:Key="InputFieldCornerRadius">10</CornerRadius>
 
-    <!-- ── Button Sizes ────────────────────────────────────────────── -->
+    <!-- ── Button sizes ───────────────────────────────────────────────────── -->
     <sys:Double x:Key="ButtonSize">68</sys:Double>
     <sys:Double x:Key="ButtonSpacing">10</sys:Double>
 
-    <!-- ── Durations ──────────────────────────────────────────────── -->
+    <!-- ── Animation durations ───────────────────────────────────────────── -->
     <Duration x:Key="HoverDuration">0:0:0.12</Duration>
     <Duration x:Key="PressDuration">0:0:0.07</Duration>
     <Duration x:Key="ReleaseDuration">0:0:0.15</Duration>
 
-    <!-- ── Opacities ────────────────────────────────────────────────── -->
+    <!-- ── Opacities ─────────────────────────────────────────────────────── -->
     <sys:Double x:Key="DisabledOpacity">0.38</sys:Double>
     <sys:Double x:Key="ButtonPressedScale">0.94</sys:Double>
 
-    <!-- ── Easing functions ──────────────────────────────────────── -->
+    <!-- ── Easing functions ───────────────────────────────────────────────── -->
     <CubicEase x:Key="EaseOut" EasingMode="EaseOut"/>
     <CubicEase x:Key="EaseIn"  EasingMode="EaseIn"/>
 
     <!-- ============================================================ -->
-    <!--  BASE STYLE (without theme ColorAnimation)                     -->
-    <!--                                                               -->
-    <!--  Animates only the scale when pressed (theme-independent).   -->
-    <!--  Each child style manages color with Setter in Triggers.     -->
+    <!-- BASE BUTTON STYLE                                             -->
+    <!-- Animates only scale on press (theme-independent).            -->
+    <!-- Child styles handle colour via property Setters in Triggers. -->
     <!-- ============================================================ -->
     <Style x:Key="CalcButtonBaseStyle" TargetType="Button">
         <Setter Property="MinWidth"              Value="32"/>
@@ -67,8 +66,7 @@
                                           VerticalAlignment="Center"/>
                     </Border>
                     <ControlTemplate.Triggers>
-
-                        <!-- Scale on press: theme-independent -->
+                        <!-- Scale on press -->
                         <Trigger Property="IsPressed" Value="True">
                             <Trigger.EnterActions>
                                 <BeginStoryboard>
@@ -103,12 +101,10 @@
                                 </BeginStoryboard>
                             </Trigger.ExitActions>
                         </Trigger>
-
-                        <!-- Disabled -->
+                        <!-- Disabled state -->
                         <Trigger Property="IsEnabled" Value="False">
                             <Setter Property="Opacity" Value="{StaticResource DisabledOpacity}"/>
                         </Trigger>
-
                     </ControlTemplate.Triggers>
                 </ControlTemplate>
             </Setter.Value>
@@ -116,7 +112,7 @@
     </Style>
 
     <!-- ============================================================ -->
-    <!--  NUMERIC BUTTON                                                -->
+    <!-- NUMERIC BUTTON STYLE (0–9)                                   -->
     <!-- ============================================================ -->
     <Style x:Key="NumButtonStyle" TargetType="Button"
            BasedOn="{StaticResource CalcButtonBaseStyle}">
@@ -134,7 +130,7 @@
     </Style>
 
     <!-- ============================================================ -->
-    <!--  OPERATOR BUTTON  (÷ × − + =)                              -->
+    <!-- OPERATOR BUTTON STYLE (÷ × − + =)                           -->
     <!-- ============================================================ -->
     <Style x:Key="OpButtonStyle" TargetType="Button"
            BasedOn="{StaticResource CalcButtonBaseStyle}">
@@ -152,7 +148,7 @@
     </Style>
 
     <!-- ============================================================ -->
-    <!--  BOTÓN DE FUNCIÓN  (C, +/-, %)                               -->
+    <!-- FUNCTION BUTTON STYLE (C, +/−, %)                           -->
     <!-- ============================================================ -->
     <Style x:Key="FuncButtonStyle" TargetType="Button"
            BasedOn="{StaticResource CalcButtonBaseStyle}">
@@ -170,7 +166,7 @@
     </Style>
 
     <!-- ============================================================ -->
-    <!--  BOTÓN "0"  (doble ancho, texto alineado a la izquierda)     -->
+    <!-- ZERO BUTTON STYLE (double-width, left-aligned label)         -->
     <!-- ============================================================ -->
     <Style x:Key="ZeroButtonStyle" TargetType="Button"
            BasedOn="{StaticResource NumButtonStyle}">
@@ -180,7 +176,7 @@
     </Style>
 
     <!-- ============================================================ -->
-    <!--  DISPLAY DE LA CALCULADORA                                    -->
+    <!-- CALCULATOR DISPLAY STYLE                                      -->
     <!-- ============================================================ -->
     <Style x:Key="CalcDisplayStyle" TargetType="Border">
         <Setter Property="Background"   Value="{DynamicResource DisplayBackgroundBrush}"/>
@@ -189,8 +185,8 @@
     </Style>
 
     <!-- ============================================================ -->
-    <!--  CAMPO DE ENTRADA DE FUNCIÓN GRÁFICA                         -->
-    <!--  BasedOn referencia GraphInputTextStyle de Typography.xaml.  -->
+    <!-- GRAPH FUNCTION INPUT STYLE                                    -->
+    <!-- BasedOn references GraphInputTextStyle from Typography.xaml. -->
     <!-- ============================================================ -->
     <Style x:Key="GraphFunctionInputStyle" TargetType="TextBox"
            BasedOn="{StaticResource GraphInputTextStyle}">
@@ -215,12 +211,12 @@
                                       VerticalAlignment="Center"/>
                     </Border>
                     <ControlTemplate.Triggers>
-                        <!-- Borde naranja al enfocar -->
+                        <!-- Accent border on focus -->
                         <Trigger Property="IsFocused" Value="True">
                             <Setter TargetName="Root" Property="BorderBrush"
                                     Value="{StaticResource AccentBrush}"/>
                         </Trigger>
-                        <!-- Hover sutil -->
+                        <!-- Subtle hover highlight -->
                         <Trigger Property="IsMouseOver" Value="True">
                             <Setter TargetName="Root" Property="BorderBrush"
                                     Value="{StaticResource AccentHoverBrush}"/>
@@ -232,7 +228,9 @@
     </Style>
 
     <!-- ============================================================ -->
-    <!--  TOGGLE TEMA CLARO / OSCURO                                   -->
+    <!-- THEME TOGGLE BUTTON STYLE (light / dark switch)              -->
+    <!--                                                              -->
+    <!-- Custom template removes the default blue IsChecked tint.    -->
     <!-- ============================================================ -->
     <Style x:Key="ThemeToggleButtonStyle" TargetType="ToggleButton">
         <Setter Property="Width"                 Value="32"/>
@@ -248,30 +246,28 @@
                 <ScaleTransform ScaleX="1" ScaleY="1"/>
             </Setter.Value>
         </Setter>
-        <!-- Template propio para eliminar el fondo azul de IsChecked -->
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="ToggleButton">
                     <Border x:Name="Root"
-                        Background="Transparent"
-                        CornerRadius="8"
-                        SnapsToDevicePixels="True">
+                            Background="Transparent"
+                            CornerRadius="8"
+                            SnapsToDevicePixels="True">
                         <ContentPresenter HorizontalAlignment="Center"
-                                      VerticalAlignment="Center"/>
+                                          VerticalAlignment="Center"/>
                     </Border>
                     <ControlTemplate.Triggers>
                         <Trigger Property="IsMouseOver" Value="True">
                             <Setter TargetName="Root" Property="Background"
-                                Value="{DynamicResource FuncButtonHoverBrush}"/>
+                                    Value="{DynamicResource FuncButtonHoverBrush}"/>
                         </Trigger>
                         <Trigger Property="IsPressed" Value="True">
                             <Setter TargetName="Root" Property="Background"
-                                Value="{DynamicResource FuncButtonPressedBrush}"/>
+                                    Value="{DynamicResource FuncButtonPressedBrush}"/>
                         </Trigger>
-                        <!-- IsChecked=true: fondo transparent, sin azul -->
+                        <!-- Keep background transparent when checked (no blue tint) -->
                         <Trigger Property="IsChecked" Value="True">
-                            <Setter TargetName="Root" Property="Background"
-                                Value="Transparent"/>
+                            <Setter TargetName="Root" Property="Background" Value="Transparent"/>
                         </Trigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>
@@ -286,13 +282,13 @@
                     <BeginStoryboard>
                         <Storyboard>
                             <DoubleAnimation
-                            Storyboard.TargetProperty="(UIElement.RenderTransform).(ScaleTransform.ScaleX)"
-                            To="0.88" Duration="{StaticResource PressDuration}"
-                            EasingFunction="{StaticResource EaseIn}"/>
+                                Storyboard.TargetProperty="(UIElement.RenderTransform).(ScaleTransform.ScaleX)"
+                                To="0.88" Duration="{StaticResource PressDuration}"
+                                EasingFunction="{StaticResource EaseIn}"/>
                             <DoubleAnimation
-                            Storyboard.TargetProperty="(UIElement.RenderTransform).(ScaleTransform.ScaleY)"
-                            To="0.88" Duration="{StaticResource PressDuration}"
-                            EasingFunction="{StaticResource EaseIn}"/>
+                                Storyboard.TargetProperty="(UIElement.RenderTransform).(ScaleTransform.ScaleY)"
+                                To="0.88" Duration="{StaticResource PressDuration}"
+                                EasingFunction="{StaticResource EaseIn}"/>
                         </Storyboard>
                     </BeginStoryboard>
                 </Trigger.EnterActions>
@@ -300,13 +296,13 @@
                     <BeginStoryboard>
                         <Storyboard>
                             <DoubleAnimation
-                            Storyboard.TargetProperty="(UIElement.RenderTransform).(ScaleTransform.ScaleX)"
-                            To="1" Duration="{StaticResource ReleaseDuration}"
-                            EasingFunction="{StaticResource EaseOut}"/>
+                                Storyboard.TargetProperty="(UIElement.RenderTransform).(ScaleTransform.ScaleX)"
+                                To="1" Duration="{StaticResource ReleaseDuration}"
+                                EasingFunction="{StaticResource EaseOut}"/>
                             <DoubleAnimation
-                            Storyboard.TargetProperty="(UIElement.RenderTransform).(ScaleTransform.ScaleY)"
-                            To="1" Duration="{StaticResource ReleaseDuration}"
-                            EasingFunction="{StaticResource EaseOut}"/>
+                                Storyboard.TargetProperty="(UIElement.RenderTransform).(ScaleTransform.ScaleY)"
+                                To="1" Duration="{StaticResource ReleaseDuration}"
+                                EasingFunction="{StaticResource EaseOut}"/>
                         </Storyboard>
                     </BeginStoryboard>
                 </Trigger.ExitActions>
@@ -315,9 +311,10 @@
     </Style>
 
     <!-- ============================================================ -->
-    <!--  SOMBRAS                                                       -->
-    <!--  DropShadowEffect.Color acepta solo un Color literal;         -->
-    <!--  no puede ser DynamicResource, así que se usa valor fijo.    -->
+    <!-- DROP SHADOWS                                                  -->
+    <!--                                                              -->
+    <!-- DropShadowEffect.Color only accepts a literal Color value;   -->
+    <!-- DynamicResource is not supported here, so colours are fixed. -->
     <!-- ============================================================ -->
     <DropShadowEffect x:Key="CalcSurfaceShadow"
                       BlurRadius="32"

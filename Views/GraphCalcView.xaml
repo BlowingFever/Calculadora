@@ -4,14 +4,14 @@
              xmlns:scottplot="clr-namespace:ScottPlot.WPF;assembly=ScottPlot.WPF">
 
     <UserControl.Resources>
-        <!-- Custom style for the CheckBox with animated eye icon -->
+        <!-- Animated eye-icon CheckBox used to toggle curve visibility -->
         <Style x:Key="EyeToggleStyle" TargetType="CheckBox">
-            <Setter Property="Background" Value="Transparent"/>
-            <Setter Property="BorderThickness" Value="0"/>
-            <Setter Property="Cursor" Value="Hand"/>
-            <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
-            <Setter Property="Width" Value="24"/>
-            <Setter Property="Height" Value="24"/>
+            <Setter Property="Background"            Value="Transparent"/>
+            <Setter Property="BorderThickness"       Value="0"/>
+            <Setter Property="Cursor"                Value="Hand"/>
+            <Setter Property="FocusVisualStyle"      Value="{x:Null}"/>
+            <Setter Property="Width"                 Value="24"/>
+            <Setter Property="Height"                Value="24"/>
             <Setter Property="RenderTransformOrigin" Value="0.5,0.5"/>
             <Setter Property="RenderTransform">
                 <Setter.Value>
@@ -22,7 +22,7 @@
                 <Setter.Value>
                     <ControlTemplate TargetType="CheckBox">
                         <Grid x:Name="Container" Background="Transparent">
-                            <!-- Open Eye Image (Visible) -->
+                            <!-- Open eye — shown when curve is visible (IsChecked = True) -->
                             <Image x:Name="EyeOpen"
                                    Source="pack://application:,,,/Calculadora;component/Assets/eye_open.png"
                                    Width="20" Height="20"
@@ -32,8 +32,7 @@
                                     <ScaleTransform ScaleX="1" ScaleY="1"/>
                                 </Image.RenderTransform>
                             </Image>
-
-                            <!-- Closed Eye Image (Hidden) -->
+                            <!-- Closed eye — shown when curve is hidden (IsChecked = False) -->
                             <Image x:Name="EyeClosed"
                                    Source="pack://application:,,,/Calculadora;component/Assets/eye_closed.png"
                                    Width="20" Height="20"
@@ -45,12 +44,12 @@
                             </Image>
                         </Grid>
                         <ControlTemplate.Triggers>
-                            <!-- State: Hide (IsChecked = False) -->
+                            <!-- Transition to hidden state (IsChecked = False) -->
                             <Trigger Property="IsChecked" Value="False">
                                 <Trigger.EnterActions>
                                     <BeginStoryboard>
                                         <Storyboard>
-                                            <!-- Fade open eye and reduce scale -->
+                                            <!-- Fade out open eye -->
                                             <DoubleAnimation Storyboard.TargetName="EyeOpen"
                                                              Storyboard.TargetProperty="Opacity"
                                                              To="0" Duration="0:0:0.2">
@@ -72,8 +71,7 @@
                                                     <CubicEase EasingMode="EaseOut"/>
                                                 </DoubleAnimation.EasingFunction>
                                             </DoubleAnimation>
-
-                                            <!-- Show closed eye and restore scale -->
+                                            <!-- Fade in closed eye -->
                                             <DoubleAnimation Storyboard.TargetName="EyeClosed"
                                                              Storyboard.TargetProperty="Opacity"
                                                              To="1" Duration="0:0:0.2">
@@ -101,7 +99,7 @@
                                 <Trigger.ExitActions>
                                     <BeginStoryboard>
                                         <Storyboard>
-                                            <!-- Show open eye and restore scale -->
+                                            <!-- Fade in open eye -->
                                             <DoubleAnimation Storyboard.TargetName="EyeOpen"
                                                              Storyboard.TargetProperty="Opacity"
                                                              To="1" Duration="0:0:0.2">
@@ -123,8 +121,7 @@
                                                     <CubicEase EasingMode="EaseOut"/>
                                                 </DoubleAnimation.EasingFunction>
                                             </DoubleAnimation>
-
-                                            <!-- Fade closed eye and reduce scale -->
+                                            <!-- Fade out closed eye -->
                                             <DoubleAnimation Storyboard.TargetName="EyeClosed"
                                                              Storyboard.TargetProperty="Opacity"
                                                              To="0" Duration="0:0:0.2">
@@ -155,7 +152,7 @@
                 </Setter.Value>
             </Setter>
             <Style.Triggers>
-                <!-- Hover Effect: Subtle scale for interactivity -->
+                <!-- Hover: subtle scale-up -->
                 <Trigger Property="IsMouseOver" Value="True">
                     <Trigger.EnterActions>
                         <BeginStoryboard>
@@ -194,8 +191,7 @@
                         </BeginStoryboard>
                     </Trigger.ExitActions>
                 </Trigger>
-
-                <!-- Click/Press Effect: Small scale for premium interactivity -->
+                <!-- Press: scale-down feedback -->
                 <Trigger Property="IsPressed" Value="True">
                     <Trigger.EnterActions>
                         <BeginStoryboard>
@@ -244,23 +240,23 @@
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
 
-        <!-- LEFT PANEL -->
-        <DockPanel Grid.Column="0"
-                   Background="{DynamicResource CalcSurfaceBrush}">
+        <!-- ── LEFT PANEL: expression list ─────────────────────────────── -->
+        <DockPanel Grid.Column="0" Background="{DynamicResource CalcSurfaceBrush}">
 
+            <!-- Panel header -->
             <Border DockPanel.Dock="Top"
                     Background="{DynamicResource CalcSurfaceBrush}"
                     BorderBrush="{DynamicResource BorderBrush}"
                     BorderThickness="0,0,0,1"
                     Padding="12,8">
                 <DockPanel>
-                    <TextBlock Text="Expresiones"
+                    <TextBlock Text="Expressions"
                                Foreground="{DynamicResource DisplayResultForegroundBrush}"
                                FontSize="14"
                                FontWeight="SemiBold"
-                                          VerticalAlignment="Center"/>
-                               <!-- Small '+' button, without inheriting the 68×68 size from FuncButtonStyle -->
-                               <Button DockPanel.Dock="Right"
+                               VerticalAlignment="Center"/>
+                    <!-- Add expression button — small, overrides the 68×68 default size -->
+                    <Button DockPanel.Dock="Right"
                             Content="+"
                             Width="32" Height="32"
                             FontSize="20"
@@ -296,6 +292,7 @@
                 </DockPanel>
             </Border>
 
+            <!-- Expression entries -->
             <ScrollViewer VerticalScrollBarVisibility="Auto">
                 <ItemsControl ItemsSource="{Binding Expressions}">
                     <ItemsControl.ItemTemplate>
@@ -311,20 +308,23 @@
                                         <ColumnDefinition Width="Auto"/>
                                     </Grid.ColumnDefinitions>
 
+                                    <!-- Colour swatch -->
                                     <Rectangle Grid.Column="0" Fill="{Binding Color}"/>
 
+                                    <!-- Visibility toggle -->
                                     <CheckBox Grid.Column="1"
                                               Style="{StaticResource EyeToggleStyle}"
                                               IsChecked="{Binding Visible}"
                                               Margin="8,0"
                                               VerticalAlignment="Center"/>
 
+                                    <!-- Function text input -->
                                     <TextBox Grid.Column="2"
                                              Style="{DynamicResource GraphFunctionInputStyle}"
                                              Text="{Binding Text, UpdateSourceTrigger=PropertyChanged}"
                                              VerticalAlignment="Center"/>
 
-                                    <!-- Botón "×" pequeño igual que el "+" -->
+                                    <!-- Remove expression button -->
                                     <Button Grid.Column="3"
                                             Content="×"
                                             Width="20" Height="20"
@@ -375,11 +375,9 @@
                       Background="{DynamicResource BorderBrush}"
                       Cursor="SizeWE"/>
 
-        <!-- RIGHT PANEL — graph -->
-        <Grid Grid.Column="1"
-              Background="{DynamicResource GraphCanvasBackgroundBrush}">
+        <!-- ── RIGHT PANEL: ScottPlot graph canvas ──────────────────────── -->
+        <Grid Grid.Column="1" Background="{DynamicResource GraphCanvasBackgroundBrush}">
             <scottplot:WpfPlot x:Name="WpfPlot"/>
         </Grid>
-
     </Grid>
 </UserControl>

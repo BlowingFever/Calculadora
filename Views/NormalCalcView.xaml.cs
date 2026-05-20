@@ -1,15 +1,14 @@
-﻿using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Input;
-using Calculadora.ViewModels;
+﻿using System.Windows.Controls;
 
 namespace Calculadora.Views
 {
-    // Intentionally empty. All logic is in NormalCalcViewModel.
+    /// <summary>
+    /// Code-behind for the standard calculator view.
+    /// All interaction logic is handled by <see cref="Calculadora.ViewModels.NormalCalcViewModel"/>.
+    /// </summary>
     public partial class NormalCalcView : UserControl
     {
-        public NormalCalcView() {
-            InitializeComponent();
-        }
+        /// <summary>Initializes the <see cref="NormalCalcView"/> component.</summary>
+        public NormalCalcView() => InitializeComponent();
     }
 }
