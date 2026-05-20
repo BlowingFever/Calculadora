@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Globalization;
 using System.Windows.Input;
 using Calculadora.Common;
@@ -8,18 +8,20 @@ namespace Calculadora.ViewModels
 {
     public class NormalCalcViewModel : ViewModelBase
     {
-        // ── Dependencias ─────────────────────────────────────────────────────
+        // -- Dependencies
         private readonly CalculatorModel _model = new();
 
-        // ── Estado interno de la calculadora ────────────────────────────────
-        private double _pendingOperand = 0;   // Primer número de la operación
-        private string _pendingOperator = "";  // El operador (+, -, *, /)
-        private bool _waitingForSecond = true; // ¿El próximo dígito empieza número nuevo?
+        // -- Calculator Internal State
+        // Computation tokens: intermediate results get collapsed here for calculation
+        private readonly System.Collections.Generic.List<string> _tokens = new();
+        // Display tokens: full expression history, never collapsed, only for the Expression label
+        private readonly System.Collections.Generic.List<string> _expressionTokens = new();
+
+        private bool _waitingForSecond = true;
         private bool _hasError = false;
+        private bool _justEvaluated = false;
 
-        // ── Propiedades enlazadas a la UI ────────────────────────────────────
-
-        // Línea grande: el número que se está escribiendo o el resultado.
+        // -- UI Bindings
         private string _displayValue = "0";
         public string Display
         {
@@ -27,7 +29,6 @@ namespace Calculadora.ViewModels
             private set => SetProperty(ref _displayValue, value);
         }
 
-        // Línea pequeña sobre el display: muestra la operación en curso ("12 +").
         private string _expression = "";
         public string Expression
         {
@@ -35,7 +36,7 @@ namespace Calculadora.ViewModels
             private set => SetProperty(ref _expression, value);
         }
 
-        // ── Comandos ─────────────────────────────────────────────────────────
+        // -- Commands
         public ICommand DigitCommand { get; }
         public ICommand OperatorCommand { get; }
         public ICommand EqualsCommand { get; }
@@ -55,25 +56,31 @@ namespace Calculadora.ViewModels
             PercentCommand = new RelayCommand(OnPercent);
         }
 
-        // ── Lógica de cada botón ─────────────────────────────────────────────
+        // -- Button Event Handlers
 
         private void OnDigit(string? digit)
         {
             if (_hasError || digit == null) return;
 
+            if (_justEvaluated)
+            {
+                // Start a fresh operation if a digit is typed right after Equals
+                ClearTokens();
+                Expression = "";
+                _justEvaluated = false;
+                Display = digit;
+                _waitingForSecond = false;
+                return;
+            }
+
             if (_waitingForSecond)
             {
-                // Empezamos un número nuevo
-                Display = digit == "0" ? "0" : digit;
+                Display = digit;
                 _waitingForSecond = false;
-
-                // Si no hay operador pendiente, limpiamos la expresión (inicio fresco)
-                if (string.IsNullOrEmpty(_pendingOperator))
-                    Expression = "";
             }
             else
             {
-                // Limitamos la longitud para no desbordar el display
+                // Limit input length to prevent UI overflow (ignoring formatting symbols)
                 if (Display.Replace("-", "").Replace(".", "").Length >= 12) return;
                 Display = Display == "0" ? digit : Display + digit;
             }
@@ -83,50 +90,82 @@ namespace Calculadora.ViewModels
         {
             if (_hasError || op == null) return;
 
-            // Caso: usuario cambia el operador antes de escribir el segundo número
-            if (_waitingForSecond && !string.IsNullOrEmpty(_pendingOperator))
+            if (_justEvaluated)
             {
-                _pendingOperator = op;
-                Expression = $"{FormatNumber(_pendingOperand)} {GetOperatorSymbol(op)}";
+                // Chain operation using the last result as the starting operand
+                ClearTokens();
+                _tokens.Add(Display);
+                _expressionTokens.Add(Display);
+                _tokens.Add(op);
+                _expressionTokens.Add(op);
+                Expression = BuildDisplayExpression();
+                _waitingForSecond = true;
+                _justEvaluated = false;
                 return;
             }
 
-            if (!ParseDisplay(out double current)) return;
-
-            if (!string.IsNullOrEmpty(_pendingOperator) && !_waitingForSecond)
+            if (_waitingForSecond)
             {
-                // Cálculo encadenado: ya había una operación pendiente
-                double result = _model.Calculate(_pendingOperand, current, _pendingOperator);
-                if (!IsValidResult(result)) return;
-                Display = FormatNumber(result);
-                _pendingOperand = result;
-            }
-            else
-            {
-                // Primer operador: guardamos el número actual
-                _pendingOperand = current;
+                // Chaining two operators consecutively triggers a syntax error
+                TriggerError();
+                return;
             }
 
-            _pendingOperator = op;
-            Expression = $"{FormatNumber(_pendingOperand)} {GetOperatorSymbol(op)}";
+            // Push current display value into both lists
+            _tokens.Add(Display);
+            _expressionTokens.Add(Display);
+
+            // Collapse the computation tokens respecting operator precedence
+            if (!CollapseTokens(GetPrecedence(op)))
+            {
+                TriggerError();
+                return;
+            }
+
+            // Push the new operator into both lists
+            _tokens.Add(op);
+            _expressionTokens.Add(op);
+
+            Expression = BuildDisplayExpression();
             _waitingForSecond = true;
         }
 
         private void OnEquals()
         {
-            if (_hasError || string.IsNullOrEmpty(_pendingOperator)) return;
-            if (!ParseDisplay(out double current)) return;
+            if (_hasError) return;
+            if (_justEvaluated) return;
 
-            double result = _model.Calculate(_pendingOperand, current, _pendingOperator);
-            if (!IsValidResult(result)) return;
+            if (_waitingForSecond)
+            {
+                // Pressing equals without a final operand is a syntax error (e.g. "5 + =")
+                TriggerError();
+                return;
+            }
 
-            // Mostramos la expresión completa antes del resultado
-            Expression = $"{FormatNumber(_pendingOperand)} {GetOperatorSymbol(_pendingOperator)} {FormatNumber(current)} =";
+            // Push the final operand into both lists
+            _tokens.Add(Display);
+            _expressionTokens.Add(Display);
+
+            // Snapshot the full expression for the history label before collapsing
+            string fullExpression = BuildDisplayExpression() + " =";
+
+            // Force-collapse everything (precedence 0 evaluates all pending operators)
+            if (!CollapseTokens(0))
+            {
+                TriggerError();
+                return;
+            }
+
+            if (_tokens.Count != 1 ||
+                !double.TryParse(_tokens[0], NumberStyles.Any, CultureInfo.InvariantCulture, out double result))
+            {
+                TriggerError();
+                return;
+            }
+
             Display = FormatNumber(result);
-
-            // El resultado queda listo como primer operando para la siguiente operación
-            _pendingOperand = result;
-            _pendingOperator = "";
+            Expression = fullExpression;
+            _justEvaluated = true;
             _waitingForSecond = true;
         }
 
@@ -134,15 +173,25 @@ namespace Calculadora.ViewModels
         {
             Display = "0";
             Expression = "";
-            _pendingOperand = 0;
-            _pendingOperator = "";
+            ClearTokens();
             _waitingForSecond = true;
+            _justEvaluated = false;
             _hasError = false;
         }
 
         private void OnDecimal()
         {
             if (_hasError) return;
+
+            if (_justEvaluated)
+            {
+                ClearTokens();
+                Expression = "";
+                _justEvaluated = false;
+                Display = "0.";
+                _waitingForSecond = false;
+                return;
+            }
 
             if (_waitingForSecond)
             {
@@ -157,45 +206,120 @@ namespace Calculadora.ViewModels
 
         private void OnToggleSign()
         {
-            if (_hasError || Display == "0") return;
+            if (_hasError) return;
+
+            if (_justEvaluated)
+            {
+                ClearTokens();
+                _justEvaluated = false;
+            }
+
+            if (Display == "0") return;
             Display = Display.StartsWith("-") ? Display[1..] : "-" + Display;
         }
 
         private void OnPercent()
         {
             if (_hasError) return;
+
+            if (_justEvaluated)
+            {
+                ClearTokens();
+                _justEvaluated = false;
+            }
+
             if (!ParseDisplay(out double current)) return;
             Display = FormatNumber(current / 100.0);
         }
 
-        // ── Utilidades privadas ──────────────────────────────────────────────
+        // -- Private Utilities
 
-        // Intenta convertir el display actual a double.
-        // Usamos InvariantCulture porque nosotros controlamos el punto decimal.
+        // Collapses computation tokens whose operator precedence >= targetPrecedence.
+        // _expressionTokens is intentionally NOT touched here — it always keeps the full history.
+        private bool CollapseTokens(int targetPrecedence)
+        {
+            while (_tokens.Count >= 3)
+            {
+                string op = _tokens[_tokens.Count - 2];
+                int prec = GetPrecedence(op);
+                if (prec < targetPrecedence) break;
+
+                string num2Str = _tokens[_tokens.Count - 1];
+                string num1Str = _tokens[_tokens.Count - 3];
+
+                if (!double.TryParse(num1Str, NumberStyles.Any, CultureInfo.InvariantCulture, out double n1) ||
+                    !double.TryParse(num2Str, NumberStyles.Any, CultureInfo.InvariantCulture, out double n2))
+                    return false;
+
+                double result = _model.Calculate(n1, n2, op);
+                if (!double.IsFinite(result) || double.IsNaN(result))
+                    return false;
+
+                // Replace the [Operand1, Operator, Operand2] triple with the collapsed Result
+                _tokens.RemoveRange(_tokens.Count - 3, 3);
+                _tokens.Add(result.ToString(CultureInfo.InvariantCulture));
+                Display = FormatNumber(result);
+            }
+            return true;
+        }
+
+        private static int GetPrecedence(string op) => op switch
+        {
+            "+" or "-" => 1,
+            "*" or "/" => 2,
+            _ => 0
+        };
+
+        // Builds the visible expression string from the full _expressionTokens history
+        private string BuildDisplayExpression()
+        {
+            var sb = new System.Text.StringBuilder();
+            for (int i = 0; i < _expressionTokens.Count; i++)
+            {
+                if (i > 0) sb.Append(" ");
+                string token = _expressionTokens[i];
+                if (i % 2 == 1) // Operator position
+                {
+                    sb.Append(GetOperatorSymbol(token));
+                }
+                else // Number position
+                {
+                    if (double.TryParse(token, NumberStyles.Any, CultureInfo.InvariantCulture, out double val))
+                        sb.Append(FormatNumber(val));
+                    else
+                        sb.Append(token);
+                }
+            }
+            return sb.ToString();
+        }
+
+        // Clears both token lists atomically
+        private void ClearTokens()
+        {
+            _tokens.Clear();
+            _expressionTokens.Clear();
+        }
+
+        private void TriggerError()
+        {
+            Display = "Error";
+            Expression = "";
+            ClearTokens();
+            _hasError = true;
+            _waitingForSecond = true;
+            _justEvaluated = false;
+        }
+
         private bool ParseDisplay(out double value)
             => double.TryParse(Display, NumberStyles.Any, CultureInfo.InvariantCulture, out value);
 
-        // Valida el resultado y gestiona errores (ej: división por cero).
-        private bool IsValidResult(double result)
-        {
-            if (!double.IsNaN(result) && !double.IsInfinity(result)) return true;
-
-            Display = "Error";
-            Expression = "";
-            _hasError = true;
-            return false;
-        }
-
-        // Convierte un double a string limpio, sin decimales innecesarios.
         private static string FormatNumber(double value)
         {
             if (value == Math.Floor(value) && Math.Abs(value) < 1e15)
                 return ((long)value).ToString(CultureInfo.InvariantCulture);
-
             return value.ToString("G10", CultureInfo.InvariantCulture);
         }
 
-        // Convierte el operador interno al símbolo visual que se muestra.
         private static string GetOperatorSymbol(string op) => op switch
         {
             "+" => "+",

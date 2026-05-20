@@ -32,7 +32,7 @@
                     Height="1"
                     Background="{DynamicResource BorderBrush}"/>
 
-            <!-- Barra inferior -->
+            <!-- Bottom bar -->
             <Grid Grid.Row="1"
                   Background="{DynamicResource CalcSurfaceBrush}"
                   Margin="10,6,10,6">
@@ -61,9 +61,9 @@
                 </StackPanel>
 
                 <!--
-                    ThemeToggleButton: fondo transparent para que
-                    herede el CalcSurfaceBrush del Grid padre.
-                    El estilo ThemeToggleButtonStyle ya tiene Background=Transparent.
+                    ThemeToggleButton: transparent background so that
+                    it inherits the CalcSurfaceBrush from the parent Grid.
+                    The ThemeToggleButtonStyle already has Background=Transparent.
                 -->
                 <models:ThemeToggleButton
                     Grid.Column="1"

@@ -3,7 +3,7 @@
 
     <!--=====================================================-->
     <!--Shared Theme-->
-    <!--=====================================================-->
+    <!--=====================================================--> 
 
     <!--Root Colors-->
     <Color x:Key="AccentColor">#E8820C</Color>
@@ -18,7 +18,7 @@
 
     <!--=====================================================-->
     <!--Dark Theme-->
-    <!--=====================================================-->
+    <!--=====================================================--> 
     <ResourceDictionary x:Key="Dark">
 
         <!--Window/General Background-->
@@ -82,12 +82,12 @@
         <SolidColorBrush x:Key="GraphInputBorderBrush">#333844</SolidColorBrush>
         <!--_______________????????????????????????????????????????????????????????????????????????-->
 
-        <!-- Toggle de tema -->
+        <!-- Theme toggle -->
         <Color x:Key="ThemeToggleForegroundColor">#9CA3AF</Color>
         <SolidColorBrush x:Key="ThemeToggleForegroundBrush">#9CA3AF</SolidColorBrush>
 
-        <!-- Sombras neumórficas – en oscuro no hay neumorfismo real,   -->
-        <!-- se usan transparentes para que DynamicResource no falle.   -->
+        <!-- Neomorphic shadows – in dark mode there is no real neumorphism,   -->
+        <!-- transparent is used so that DynamicResource doesn't fail.   -->
         <Color x:Key="NeumorphicLightColor">#00000000</Color>
         <Color x:Key="NeumorphicDarkColor">#00000000</Color>
         <SolidColorBrush x:Key="NeumorphicLightBrush">Transparent</SolidColorBrush>
@@ -96,15 +96,15 @@
     </ResourceDictionary>
 
     <!-- ============================================================ -->
-    <!--  TEMA CLARO                                                    -->
+    <!--  LIGHT THEME                                                    -->
     <!-- ============================================================ -->
     <ResourceDictionary x:Key="Light">
 
-        <!-- Ventana / fondo general -->
+        <!-- Window / General background -->
         <Color x:Key="WindowBackgroundColor">#E8EAF0</Color>
         <SolidColorBrush x:Key="WindowBackgroundBrush">#E8EAF0</SolidColorBrush>
 
-        <!-- Superficie de la calculadora -->
+        <!-- Calculator surface -->
         <Color x:Key="CalcSurfaceColor">#F0F2F7</Color>
         <SolidColorBrush x:Key="CalcSurfaceBrush">#F0F2F7</SolidColorBrush>
 
@@ -116,7 +116,7 @@
         <SolidColorBrush x:Key="DisplayExpressionForegroundBrush">#9CA3AF</SolidColorBrush>
         <SolidColorBrush x:Key="DisplayResultForegroundBrush">#1F2937</SolidColorBrush>
 
-        <!-- Botones numéricos -->
+        <!-- Numeric buttons -->
         <Color x:Key="NumButtonBackgroundColor">#E8EAF0</Color>
         <Color x:Key="NumButtonHoverColor">#DDE0E8</Color>
         <Color x:Key="NumButtonPressedColor">#D0D3DC</Color>
@@ -126,7 +126,7 @@
         <SolidColorBrush x:Key="NumButtonPressedBrush">#D0D3DC</SolidColorBrush>
         <SolidColorBrush x:Key="NumButtonForegroundBrush">#1F2937</SolidColorBrush>
 
-        <!-- Botones de función -->
+        <!-- Function buttons -->
         <Color x:Key="FuncButtonBackgroundColor">#DDE0EA</Color>
         <Color x:Key="FuncButtonHoverColor">#D0D4DE</Color>
         <Color x:Key="FuncButtonPressedColor">#C4C8D2</Color>
@@ -136,11 +136,11 @@
         <SolidColorBrush x:Key="FuncButtonPressedBrush">#C4C8D2</SolidColorBrush>
         <SolidColorBrush x:Key="FuncButtonForegroundBrush">#374151</SolidColorBrush>
 
-        <!-- Borde / separadores -->
+        <!-- Border / Separators -->
         <Color x:Key="BorderColor">#D1D5DB</Color>
         <SolidColorBrush x:Key="BorderBrush">#D1D5DB</SolidColorBrush>
 
-        <!-- Calculadora gráfica -->
+        <!-- Graphic calculator -->
         <Color x:Key="GraphCanvasBackgroundColor">#FFFFFF</Color>
         <Color x:Key="GraphGridLineColor">#E5E7EB</Color>
         <Color x:Key="GraphAxisColor">#9CA3AF</Color>
@@ -148,7 +148,7 @@
         <SolidColorBrush x:Key="GraphGridLineBrush">#E5E7EB</SolidColorBrush>
         <SolidColorBrush x:Key="GraphAxisBrush">#9CA3AF</SolidColorBrush>
 
-        <!-- Panel de entrada gráfica -->
+        <!-- Graphic input panel -->
         <Color x:Key="GraphInputBackgroundColor">#F5F7FA</Color>
         <Color x:Key="GraphInputForegroundColor">#1F2937</Color>
         <Color x:Key="GraphInputBorderColor">#D1D5DB</Color>
@@ -156,11 +156,11 @@
         <SolidColorBrush x:Key="GraphInputForegroundBrush">#1F2937</SolidColorBrush>
         <SolidColorBrush x:Key="GraphInputBorderBrush">#D1D5DB</SolidColorBrush>
 
-        <!-- Toggle de tema -->
+        <!-- Theme toggle -->
         <Color x:Key="ThemeToggleForegroundColor">#6B7280</Color>
         <SolidColorBrush x:Key="ThemeToggleForegroundBrush">#6B7280</SolidColorBrush>
 
-        <!-- Sombras neumórficas (solo relevantes en tema claro) -->
+        <!-- Neomorphic shadows (only relevant in light theme) -->
         <Color x:Key="NeumorphicLightColor">#FFFFFF</Color>
         <Color x:Key="NeumorphicDarkColor">#C8CDD8</Color>
         <SolidColorBrush x:Key="NeumorphicLightBrush">#FFFFFF</SolidColorBrush>

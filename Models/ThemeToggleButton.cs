@@ -1,4 +1,4 @@
-﻿using System.Windows;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 using Calculadora.Models;
@@ -13,7 +13,7 @@ namespace Calculadora.Models
         {
             InitializeComponent();
             _syncing = true;
-            // IsDark=true → IsChecked=false (muestra luna, tema oscuro activo)
+            // IsDark=true aligns with IsChecked=false (renders the moon icon for dark mode)
             Btn.IsChecked = !ThemeManager.IsDark;
             _syncing = false;
             ThemeManager.ThemeChanged += OnThemeChanged;
@@ -22,14 +22,14 @@ namespace Calculadora.Models
 
         private void Btn_Checked(object sender, RoutedEventArgs e)
         {
-            // IsChecked=true → usuario quiere tema CLARO → mostrar SOL
+            // IsChecked=true indicates user requests Light Theme (sun icon)
             if (!_syncing)
                 ThemeManager.Apply(dark: false);
         }
 
         private void Btn_Unchecked(object sender, RoutedEventArgs e)
         {
-            // IsChecked=false → usuario quiere tema OSCURO → mostrar LUNA
+            // IsChecked=false indicates user requests Dark Theme (moon icon)
             if (!_syncing)
                 ThemeManager.Apply(dark: true);
         }

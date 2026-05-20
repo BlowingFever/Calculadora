@@ -1,5 +1,5 @@
-﻿using System.Windows;
-using Calculadora.Models;   // ← namespace correcto
+using System.Windows;
+using Calculadora.Models;
 
 namespace Calculadora
 {

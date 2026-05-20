@@ -8,11 +8,11 @@
                   Style="{StaticResource ThemeToggleButtonStyle}"
                   Checked="Btn_Checked"
                   Unchecked="Btn_Unchecked"
-                  ToolTip="Cambiar tema">
+                  ToolTip="Change theme">
 
         <Grid Width="24" Height="24">
 
-            <!-- LUNA: tema oscuro activo -->
+            <!-- MOON: dark theme active -->
             <Viewbox x:Name="MoonIcon"
                      Width="20" Height="20"
                      Opacity="1"
@@ -24,7 +24,7 @@
                       Data="M21,12.79 A9,9 0 1,1 11.21,3 A7,7 0 0,0 21,12.79 Z"/>
             </Viewbox>
 
-            <!-- SOL: tema claro activo — mismo color que la luna -->
+            <!-- SUN: light theme active — same color as the moon -->
             <Viewbox x:Name="SunIcon"
                      Width="20" Height="20"
                      Opacity="0"

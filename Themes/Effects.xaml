@@ -4,31 +4,31 @@
     xmlns:sys="clr-namespace:System;assembly=mscorlib">
 
     <!-- ============================================================ -->
-    <!--  EFECTOS, ANIMACIONES Y TRIGGERS                              -->
+    <!--  EFFECTS, ANIMATIONS AND TRIGGERS                              -->
     <!--                                                               -->
-    <!--  ORDEN DE CARGA EN App.xaml (obligatorio):                   -->
-    <!--    1. Typography.xaml   (define GraphInputTextStyle)          -->
-    <!--    2. Colors.xaml       (define los Brush de tema)            -->
-    <!--    3. Effects.xaml      (usa BasedOn y DynamicResource)       -->
+    <!--  LOADING ORDER IN App.xaml (mandatory):                      -->
+    <!--    1. Typography.xaml   (defines GraphInputTextStyle)          -->
+    <!--    2. Colors.xaml       (defines theme Brushes)                -->
+    <!--    3. Effects.xaml      (uses BasedOn and DynamicResource)     -->
     <!-- ============================================================ -->
 
-    <!-- ── Geometría ─────────────────────────────────────────────── -->
+    <!-- ── Geometry ─────────────────────────────────────────────── -->
     <CornerRadius x:Key="ButtonCornerRadius">14</CornerRadius>
     <CornerRadius x:Key="DisplayCornerRadius">0</CornerRadius>
     <CornerRadius x:Key="CalcSurfaceCornerRadius">28</CornerRadius>
     <CornerRadius x:Key="GraphPanelCornerRadius">16</CornerRadius>
     <CornerRadius x:Key="InputFieldCornerRadius">10</CornerRadius>
 
-    <!-- ── Tamaños de botón ──────────────────────────────────────── -->
+    <!-- ── Button Sizes ────────────────────────────────────────────── -->
     <sys:Double x:Key="ButtonSize">68</sys:Double>
     <sys:Double x:Key="ButtonSpacing">10</sys:Double>
 
-    <!-- ── Duraciones ────────────────────────────────────────────── -->
+    <!-- ── Durations ──────────────────────────────────────────────── -->
     <Duration x:Key="HoverDuration">0:0:0.12</Duration>
     <Duration x:Key="PressDuration">0:0:0.07</Duration>
     <Duration x:Key="ReleaseDuration">0:0:0.15</Duration>
 
-    <!-- ── Opacidades ────────────────────────────────────────────── -->
+    <!-- ── Opacities ────────────────────────────────────────────────── -->
     <sys:Double x:Key="DisabledOpacity">0.38</sys:Double>
     <sys:Double x:Key="ButtonPressedScale">0.94</sys:Double>
 
@@ -37,10 +37,10 @@
     <CubicEase x:Key="EaseIn"  EasingMode="EaseIn"/>
 
     <!-- ============================================================ -->
-    <!--  ESTILO BASE (sin ColorAnimation de tema)                     -->
+    <!--  BASE STYLE (without theme ColorAnimation)                     -->
     <!--                                                               -->
-    <!--  Anima únicamente la escala al pulsar (independiente tema).  -->
-    <!--  Cada estilo hijo gestiona el color con Setter en Triggers.  -->
+    <!--  Animates only the scale when pressed (theme-independent).   -->
+    <!--  Each child style manages color with Setter in Triggers.     -->
     <!-- ============================================================ -->
     <Style x:Key="CalcButtonBaseStyle" TargetType="Button">
         <Setter Property="MinWidth"              Value="48"/>
@@ -68,7 +68,7 @@
                     </Border>
                     <ControlTemplate.Triggers>
 
-                        <!-- Escala al pulsar: independiente del tema -->
+                        <!-- Scale on press: theme-independent -->
                         <Trigger Property="IsPressed" Value="True">
                             <Trigger.EnterActions>
                                 <BeginStoryboard>
@@ -116,7 +116,7 @@
     </Style>
 
     <!-- ============================================================ -->
-    <!--  BOTÓN NUMÉRICO                                               -->
+    <!--  NUMERIC BUTTON                                                -->
     <!-- ============================================================ -->
     <Style x:Key="NumButtonStyle" TargetType="Button"
            BasedOn="{StaticResource CalcButtonBaseStyle}">
@@ -134,7 +134,7 @@
     </Style>
 
     <!-- ============================================================ -->
-    <!--  BOTÓN DE OPERADOR  (÷ × − + =)                              -->
+    <!--  OPERATOR BUTTON  (÷ × − + =)                              -->
     <!-- ============================================================ -->
     <Style x:Key="OpButtonStyle" TargetType="Button"
            BasedOn="{StaticResource CalcButtonBaseStyle}">

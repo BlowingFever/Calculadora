@@ -1,16 +1,13 @@
-﻿using System.Windows.Input;
+using System.Windows.Input;
 using Calculadora.Common;
 
 namespace Calculadora.ViewModels
 {
-    // ViewModel principal.
-    // Su única responsabilidad: saber QUÉ vista está activa
-    // y cambiarla cuando el usuario pulsa los botones de navegación.
+    // Main ViewModel responsible for handling active view navigation.
     public class MainViewModel : ViewModelBase
     {
-        // La vista activa. ContentControl en MainWindow se enlaza aquí.
-        // Cuando cambia, WPF busca el DataTemplate que corresponde al tipo
-        // del objeto y renderiza la View adecuada automáticamente.
+        // Active view bound to ContentControl in MainWindow.
+        // WPF resolves the matching DataTemplate automatically.
         private ViewModelBase _currentView;
         public ViewModelBase CurrentView
         {
@@ -18,12 +15,11 @@ namespace Calculadora.ViewModels
             private set => SetProperty(ref _currentView, value);
         }
 
-        // Instancias de cada ViewModel. Se crean una sola vez y se reutilizan.
-        // Así la calculadora no se reinicia al navegar entre vistas.
+        // Singletons reused to preserve calculation states between view transitions.
         private readonly NormalCalcViewModel _normalCalcVm = new();
         private readonly GraphCalcViewModel _graphCalcVm = new();
 
-        // Comandos enlazados a los botones de la barra de navegación.
+        // Navigation commands bound to footer buttons.
         public ICommand ShowNormalCalculatorCommand { get; }
         public ICommand ShowGraphCalculatorCommand { get; }
 
@@ -32,7 +28,7 @@ namespace Calculadora.ViewModels
             ShowNormalCalculatorCommand = new RelayCommand(() => CurrentView = _normalCalcVm);
             ShowGraphCalculatorCommand = new RelayCommand(() => CurrentView = _graphCalcVm);
 
-            // Vista por defecto al arrancar la aplicación.
+            // Default startup view.
             _currentView = _normalCalcVm;
         }
     }

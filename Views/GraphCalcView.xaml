@@ -4,7 +4,7 @@
              xmlns:scottplot="clr-namespace:ScottPlot.WPF;assembly=ScottPlot.WPF">
 
     <UserControl.Resources>
-        <!-- Estilo personalizado para el CheckBox de ojo animado -->
+        <!-- Custom style for the CheckBox with animated eye icon -->
         <Style x:Key="EyeToggleStyle" TargetType="CheckBox">
             <Setter Property="Background" Value="Transparent"/>
             <Setter Property="BorderThickness" Value="0"/>
@@ -22,7 +22,7 @@
                 <Setter.Value>
                     <ControlTemplate TargetType="CheckBox">
                         <Grid x:Name="Container" Background="Transparent">
-                            <!-- Imagen Ojo Abierto (Visible) -->
+                            <!-- Open Eye Image (Visible) -->
                             <Image x:Name="EyeOpen"
                                    Source="pack://application:,,,/Calculadora;component/Assets/eye_open.png"
                                    Width="20" Height="20"
@@ -33,7 +33,7 @@
                                 </Image.RenderTransform>
                             </Image>
 
-                            <!-- Imagen Ojo Cerrado (Oculto) -->
+                            <!-- Closed Eye Image (Hidden) -->
                             <Image x:Name="EyeClosed"
                                    Source="pack://application:,,,/Calculadora;component/Assets/eye_closed.png"
                                    Width="20" Height="20"
@@ -45,12 +45,12 @@
                             </Image>
                         </Grid>
                         <ControlTemplate.Triggers>
-                            <!-- Estado: Ocultar (IsChecked = False) -->
+                            <!-- State: Hide (IsChecked = False) -->
                             <Trigger Property="IsChecked" Value="False">
                                 <Trigger.EnterActions>
                                     <BeginStoryboard>
                                         <Storyboard>
-                                            <!-- Desvanecer ojo abierto y reducir escala -->
+                                            <!-- Fade open eye and reduce scale -->
                                             <DoubleAnimation Storyboard.TargetName="EyeOpen"
                                                              Storyboard.TargetProperty="Opacity"
                                                              To="0" Duration="0:0:0.2">
@@ -73,7 +73,7 @@
                                                 </DoubleAnimation.EasingFunction>
                                             </DoubleAnimation>
 
-                                            <!-- Mostrar ojo cerrado y restaurar escala -->
+                                            <!-- Show closed eye and restore scale -->
                                             <DoubleAnimation Storyboard.TargetName="EyeClosed"
                                                              Storyboard.TargetProperty="Opacity"
                                                              To="1" Duration="0:0:0.2">
@@ -101,7 +101,7 @@
                                 <Trigger.ExitActions>
                                     <BeginStoryboard>
                                         <Storyboard>
-                                            <!-- Mostrar ojo abierto y restaurar escala -->
+                                            <!-- Show open eye and restore scale -->
                                             <DoubleAnimation Storyboard.TargetName="EyeOpen"
                                                              Storyboard.TargetProperty="Opacity"
                                                              To="1" Duration="0:0:0.2">
@@ -124,7 +124,7 @@
                                                 </DoubleAnimation.EasingFunction>
                                             </DoubleAnimation>
 
-                                            <!-- Desvanecer ojo cerrado y reducir escala -->
+                                            <!-- Fade closed eye and reduce scale -->
                                             <DoubleAnimation Storyboard.TargetName="EyeClosed"
                                                              Storyboard.TargetProperty="Opacity"
                                                              To="0" Duration="0:0:0.2">
@@ -155,7 +155,7 @@
                 </Setter.Value>
             </Setter>
             <Style.Triggers>
-                <!-- Efecto de Hover: Escala sutil para interactividad -->
+                <!-- Hover Effect: Subtle scale for interactivity -->
                 <Trigger Property="IsMouseOver" Value="True">
                     <Trigger.EnterActions>
                         <BeginStoryboard>
@@ -195,7 +195,7 @@
                     </Trigger.ExitActions>
                 </Trigger>
 
-                <!-- Efecto de Click/Press: Escala pequeña para interactividad premium -->
+                <!-- Click/Press Effect: Small scale for premium interactivity -->
                 <Trigger Property="IsPressed" Value="True">
                     <Trigger.EnterActions>
                         <BeginStoryboard>
@@ -244,7 +244,7 @@
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
 
-        <!-- PANEL IZQUIERDO -->
+        <!-- LEFT PANEL -->
         <DockPanel Grid.Column="0"
                    Background="{DynamicResource CalcSurfaceBrush}">
 
@@ -258,9 +258,9 @@
                                Foreground="{DynamicResource DisplayResultForegroundBrush}"
                                FontSize="14"
                                FontWeight="SemiBold"
-                               VerticalAlignment="Center"/>
-                    <!-- Botón "+" pequeño, sin heredar el tamaño 68×68 de FuncButtonStyle -->
-                    <Button DockPanel.Dock="Right"
+                                          VerticalAlignment="Center"/>
+                               <!-- Small '+' button, without inheriting the 68×68 size from FuncButtonStyle -->
+                               <Button DockPanel.Dock="Right"
                             Content="+"
                             Width="32" Height="32"
                             FontSize="20"
@@ -270,7 +270,7 @@
                             BorderThickness="0"
                             Cursor="Hand"
                             Command="{Binding AddExpressionCommand}"
-                            ToolTip="Agregar expresión">
+                            ToolTip="Add expression">
                         <Button.Template>
                             <ControlTemplate TargetType="Button">
                                 <Border x:Name="Root"
@@ -327,7 +327,7 @@
                                     <!-- Botón "×" pequeño igual que el "+" -->
                                     <Button Grid.Column="3"
                                             Content="×"
-                                            Width="32" Height="32"
+                                            Width="20" Height="20"
                                             FontSize="16"
                                             Background="Transparent"
                                             Foreground="{DynamicResource DisplayExpressionForegroundBrush}"
@@ -335,7 +335,7 @@
                                             Cursor="Hand"
                                             Margin="4,0"
                                             VerticalAlignment="Center"
-                                            ToolTip="Eliminar expresión"
+                                            ToolTip="Delete expression"
                                             Command="{Binding DataContext.RemoveExpressionCommand,
                                                       RelativeSource={RelativeSource AncestorType=UserControl}}"
                                             CommandParameter="{Binding}">
@@ -375,7 +375,7 @@
                       Background="{DynamicResource BorderBrush}"
                       Cursor="SizeWE"/>
 
-        <!-- PANEL DERECHO — gráfico -->
+        <!-- RIGHT PANEL — graph -->
         <Grid Grid.Column="1"
               Background="{DynamicResource GraphCanvasBackgroundBrush}">
             <scottplot:WpfPlot x:Name="WpfPlot"/>

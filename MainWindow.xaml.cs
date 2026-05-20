@@ -1,8 +1,8 @@
-﻿using System.Windows;
+using System.Windows;
 
 namespace Calculadora
 {
-    // Intencionalmente vacío. Todo está en MainViewModel.
+    // Intentionally empty. All UI logic is managed in MainViewModel.
     public partial class MainWindow : Window
     {
         public MainWindow() => InitializeComponent();

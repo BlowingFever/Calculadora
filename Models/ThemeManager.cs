@@ -1,9 +1,9 @@
-﻿using System;
+using System;
 using System.Linq;
 using System.Windows;
 using Wpf.Ui.Appearance;
 
-namespace Calculadora.Models   // ← namespace correcto según carpeta
+namespace Calculadora.Models
 {
     public static class ThemeManager
     {

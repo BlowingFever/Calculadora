@@ -1,14 +1,11 @@
-﻿using System;
+using System;
 
 namespace Calculadora.Models
 {
-    // Lógica aritmética pura.
-    // Esta clase NO sabe nada de WPF, ViewModels ni UI.
-    // Solo recibe números y operadores, y devuelve resultados.
+    // Decoupled arithmetic logic that processes calculations independently of WPF/MVVM.
     public class CalculatorModel
     {
-        // Realiza la operación entre dos números.
-        // Devuelve double.NaN si la operación es inválida (ej: x / 0).
+        // Performs the operation. Returns double.NaN for invalid operations (e.g., division by zero).
         public double Calculate(double a, double b, string op)
         {
             return op switch
@@ -17,7 +14,7 @@ namespace Calculadora.Models
                 "-" => a - b,
                 "*" => a * b,
                 "/" => b != 0 ? a / b : double.NaN,
-                _ => b  // Operador desconocido: devuelve b sin cambios
+                _ => b  // Unknown operator: returns b unchanged
             };
         }
     }

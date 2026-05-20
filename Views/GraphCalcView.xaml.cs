@@ -12,33 +12,30 @@ namespace Calculadora.Views
         {
             InitializeComponent();
 
-            // Suscribirse al evento global de cambio de tema
+            // Subscribe to global theme changes
             ThemeManager.ThemeChanged += OnThemeChanged;
 
-            // Desuscribirse al descargar el control para evitar fugas de memoria
+            // Unsubscribe on unload to prevent memory leaks
             this.Unloaded += (s, e) =>
             {
                 ThemeManager.ThemeChanged -= OnThemeChanged;
             };
 
-            // ── ScottPlot: inicialización ──────────────────────────────
-            //
-            // Se ejecuta en Loaded para garantizar que el DataContext ya está asignado.
-            //
+            // ScottPlot initialization in Loaded event to guarantee DataContext availability
             this.Loaded += (_, _) =>
             {
                 if (DataContext is not GraphCalcViewModel vm) return;
 
-                // Aplicar el tema inicial del gráfico
+                // Synchronize initial theme
                 UpdatePlotTheme();
 
-                // Suscribirse al evento de cambio de límites (zoom/pan) para recalcular dinámicamente
+                // Recalculate plot limits on zoom/pan interaction
                 WpfPlot.Plot.RenderManager.AxisLimitsChanged += (sender, args) => RefreshPlot(vm);
 
-                // Suscribirse al evento del ViewModel para redibujar cuando cambien los datos.
+                // Refresh rendering when ViewModel signals data updates
                 vm.PlotRefreshRequested += (_, _) => RefreshPlot(vm);
 
-                // Dibujo inicial.
+                // Render initial draw
                 RefreshPlot(vm);
             };
         }
@@ -48,37 +45,33 @@ namespace Calculadora.Views
             UpdatePlotTheme();
         }
 
-        // ── Método de tematización del gráfico ──────────────────────────
-        //
-        // Sincroniza dinámicamente el aspecto de ScottPlot con el tema actual (claro/oscuro).
-        //
+        // Synchronizes ScottPlot colors with the active light/dark theme
         private void UpdatePlotTheme()
         {
             if (WpfPlot?.Plot is null) return;
 
-            // Obtener colores dinámicos desde los recursos de la aplicación (definidos en Themes/Colors.xaml)
+            // Fetch colors from Application Resources
             var canvasBg = GetScottPlotColor("GraphCanvasBackgroundColor", new ScottPlot.Color(0x09, 0x0B, 0x12));
             var axisColor = GetScottPlotColor("GraphAxisColor", new ScottPlot.Color(0x9C, 0xA3, 0xAF));
             var gridLineColor = GetScottPlotColor("GraphGridLineColor", new ScottPlot.Color(0x2A, 0x2F, 0x3A));
 
-            // Para el fondo de datos, usamos un tono con ligero contraste y estética acorde al tema actual
+            // Determine slightly contrasted background shade based on theme
             ScottPlot.Color dataBg = ThemeManager.IsDark 
-                ? new ScottPlot.Color(0x16, 0x1B, 0x27)   // Fondo ligeramente más claro en tema oscuro
-                : new ScottPlot.Color(0xF9, 0xFA, 0xFB);  // Fondo blanco/gris muy suave en tema claro
+                ? new ScottPlot.Color(0x16, 0x1B, 0x27)   
+                : new ScottPlot.Color(0xF9, 0xFA, 0xFB);  
 
             // Asignar colores a ScottPlot
             WpfPlot.Plot.FigureBackground.Color = canvasBg;
             WpfPlot.Plot.DataBackground.Color = dataBg;
             WpfPlot.Plot.Axes.Color(axisColor);
 
-            // Ajustar el color de las líneas principales de la cuadrícula
+            // Configure grid lines color
             WpfPlot.Plot.Grid.MajorLineColor = gridLineColor;
 
             WpfPlot.Refresh();
         }
 
-        // ── Helper para obtener colores de recursos WPF con fallback ────
-        //
+        // Helper to extract WPF colors from Resources, falling back to a default value if missing
         private ScottPlot.Color GetScottPlotColor(string resourceKey, ScottPlot.Color defaultColor)
         {
             try
@@ -98,16 +91,12 @@ namespace Calculadora.Views
             }
             catch
             {
-                // Fallback seguro en caso de error
+                // Safe fallback in case of errors
             }
             return defaultColor;
         }
 
-        // ── Método de renderizado ──────────────────────────────────────
-        //
-        // Esta es la ÚNICA lógica permitida en el code-behind:
-        // recibe datos ya calculados del ViewModel y los pasa al control de UI.
-        //
+        // Refreshes the plot data and triggers redrawing on the UI control
         private void RefreshPlot(GraphCalcViewModel vm)
         {
             var limits = WpfPlot.Plot.Axes.GetLimits();
@@ -116,7 +105,7 @@ namespace Calculadora.Views
             double yMin = limits.Bottom;
             double yMax = limits.Top;
 
-            // Si por alguna razón el rango no es válido, usamos valores por defecto
+            // Fallback to defaults if range values are invalid
             if (double.IsNaN(xMin) || double.IsInfinity(xMin)) xMin = -10.0;
             if (double.IsNaN(xMax) || double.IsInfinity(xMax)) xMax = 10.0;
             if (double.IsNaN(yMin) || double.IsInfinity(yMin)) yMin = -10.0;
@@ -124,7 +113,7 @@ namespace Calculadora.Views
 
             WpfPlot.Plot.Clear();
 
-            // Dibujar los ejes cartesianos infinitos X e Y cruzándose en (0,0) para guiar al usuario
+            // Draw baseline infinite X and Y axes crossing at (0,0)
             var axisColor = GetScottPlotColor("GraphAxisColor", ThemeManager.IsDark 
                 ? new ScottPlot.Color(0x9C, 0xA3, 0xAF) 
                 : new ScottPlot.Color(0x9C, 0xA3, 0xAF));

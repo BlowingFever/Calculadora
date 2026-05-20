@@ -8,16 +8,8 @@ using Calculadora.Models;
 
 namespace Calculadora.ViewModels
 {
-    // ViewModel del módulo de calculadora gráfica.
-    //
-    // Responsabilidades:
-    //   1. Gestionar la lista de expresiones (añadir, eliminar, colores).
-    //   2. Exponer el evento PlotRefreshRequested para que la Vista sepa
-    //      cuándo debe redibujar el gráfico (puente MVVM ↔ ScottPlot).
-    //   3. En el futuro: evaluar expresiones con mXparser y pasar los datos
-    //      a la Vista mediante GetPlotData().
-    //
-    // No contiene ninguna referencia a elementos de UI (control, ventana, etc.).
+    // ViewModel managing the graphing calculator logic and expressions.
+    // Exposes refresh notifications to guide view rendering on ScottPlot.
     public class GraphCalcViewModel : ViewModelBase
     {
         static GraphCalcViewModel()
@@ -25,38 +17,28 @@ namespace Calculadora.ViewModels
             org.mariuszgromada.math.mxparser.License.iConfirmNonCommercialUse("WPF Graph Calculator User");
         }
 
-        // ── Paleta de colores secuencial ──────────────────────────────────────
-        // Cada nueva expresión recibe automáticamente el siguiente color.
-
+        // Palette of hexadecimal colors to assign to newly added equations sequentially.
         private static readonly string[] ColorPalette =
         {
-            "#2196F3",   // Azul
-            "#F44336",   // Rojo
-            "#4CAF50",   // Verde
-            "#FF9800",   // Naranja
-            "#9C27B0",   // Violeta
-            "#00BCD4",   // Cian
+            "#2196F3",   // Blue
+            "#F44336",   // Red
+            "#4CAF50",   // Green
+            "#FF9800",   // Orange
+            "#9C27B0",   // Purple
+            "#00BCD4",   // Cyan
         };
 
         private int _paletteIndex = 0;
 
-        // ── Colección observable ──────────────────────────────────────────────
-        // ObservableCollection notifica a la UI automáticamente cuando
-        // se añade o elimina un elemento — sin código extra.
-
+        // Observable collection bound to UI elements for listing equations.
         public ObservableCollection<ExpressionItem> Expressions { get; } = new();
 
-        // ── Comandos ──────────────────────────────────────────────────────────
+        // Commands for managing expression collection entries.
 
         public ICommand AddExpressionCommand    { get; }
         public ICommand RemoveExpressionCommand { get; }
 
-        // ── Evento de refresco del gráfico (puente MVVM ↔ ScottPlot) ─────────
-        //
-        // El ViewModel lo dispara cuando los datos cambian.
-        // La Vista se suscribe y se encarga del renderizado.
-        // Así 0 código de UI entra en el ViewModel.
-        //
+        // Event raised when expression edits or collection shifts require plot refresh.
         public event EventHandler? PlotRefreshRequested;
 
         // ── Constructor ───────────────────────────────────────────────────────
@@ -66,14 +48,14 @@ namespace Calculadora.ViewModels
             AddExpressionCommand    = new RelayCommand(AddExpression);
             RemoveExpressionCommand = new RelayCommand<ExpressionItem>(RemoveExpression);
 
-            // Seguir los cambios de la colección para disparar el refresco.
+            // Trigger plot refresh when items are added or removed from the collection
             Expressions.CollectionChanged += OnExpressionsCollectionChanged;
 
-            // Arrancamos con un campo vacío ya visible.
+            // Populate an initial empty expression field on startup
             AddExpression();
         }
 
-        // ── Handlers de comandos ──────────────────────────────────────────────
+        // -- Command Handlers
 
         private void AddExpression()
         {
@@ -82,8 +64,7 @@ namespace Calculadora.ViewModels
                 Color = ColorPalette[_paletteIndex % ColorPalette.Length]
             };
 
-            // Nos suscribimos a los cambios del item para detectar ediciones
-            // de texto y cambios de visibilidad, y así poder disparar el refresco.
+            // Subscribe to catch subsequent property edits (e.g., text or visibility changes)
             item.PropertyChanged += OnExpressionItemPropertyChanged;
 
             _paletteIndex++;
@@ -94,14 +75,13 @@ namespace Calculadora.ViewModels
         {
             if (item == null) return;
 
-            // Importante: cancelar la suscripción antes de eliminar
-            // para evitar fugas de memoria (memory leaks).
+            // Unsubscribe to avoid memory leaks
             item.PropertyChanged -= OnExpressionItemPropertyChanged;
 
             Expressions.Remove(item);
         }
 
-        // ── Handlers de eventos internos ──────────────────────────────────────
+        // -- Internal Event Handlers
 
         private void OnExpressionsCollectionChanged(object? sender, NotifyCollectionChangedEventArgs e)
         {
@@ -110,24 +90,19 @@ namespace Calculadora.ViewModels
 
         private void OnExpressionItemPropertyChanged(object? sender, PropertyChangedEventArgs e)
         {
-            // Se dispara cuando el usuario edita el texto o activa/desactiva
-            // la visibilidad de una expresión.
+            // Trigger refresh on property updates like user input text or visible toggles
             RequestPlotRefresh();
         }
 
-        // ── Método auxiliar de refresco ──────────────────────────────────────
+        // Raises the plot refresh request event
         private void RequestPlotRefresh()
             => PlotRefreshRequested?.Invoke(this, EventArgs.Empty);
 
-        // ── Proveedor de datos para el gráfico ───────────────────────
-        //
-        // Evalúa la expresión matemática del item en el rango X e Y configurado
-        // y devuelve los arrays de puntos listos para ScottPlot.
-        // Soporta expresiones del tipo:
-        //   - y = f(x) o expresiones estándar en términos de 'x'.
-        //   - x = f(y) o expresiones en términos de 'y' (curvas verticales o parábolas respecto a Y).
-        //   - x = C (líneas verticales constantes, ej: x = 5).
-        //
+        // Evaluates a mathematical equation with mXparser within the bounding limits.
+        // Returns coordinates arrays for plotting. Supports:
+        // - Standard y = f(x)
+        // - Vertical curves x = f(y)
+        // - Constant vertical lines x = Constant
         public (double[] xs, double[] ys)? GetPlotData(ExpressionItem item, double xMin, double xMax, double yMin, double yMax)
         {
             if (string.IsNullOrWhiteSpace(item.Text)) return null;
@@ -143,7 +118,7 @@ namespace Calculadora.ViewModels
                 bool isVerticalConstant = false;
                 string expressionToEvaluate = text;
 
-                // Detectar si tiene '=' para separar lado izquierdo y derecho
+                // Parse LHS and RHS if equation contains '='
                 int eqIndex = text.IndexOf('=');
                 if (eqIndex > 0)
                 {
@@ -153,7 +128,7 @@ namespace Calculadora.ViewModels
                     if (lhs == "x")
                     {
                         expressionToEvaluate = rhs;
-                        // Si contiene 'y' es x = f(y), de lo contrario es una vertical constante x = C
+                        // If RHS has 'y', it represents x = f(y); otherwise, it is a vertical constant x = C
                         if (rhs.ToLower().Contains("y"))
                         {
                             isFunctionOfY = true;
@@ -171,14 +146,14 @@ namespace Calculadora.ViewModels
                 }
                 else
                 {
-                    // Si no tiene '=', pero contiene 'y', asumimos x = f(y)
+                    // If it doesn't have '=', but contains 'y', we assume x = f(y)
                     if (text.ToLower().Contains("y"))
                     {
                         isFunctionOfY = true;
                     }
                 }
 
-                // CASO 1: Línea vertical constante (ej. x = 5)
+                // CASE 1: Constant vertical line (e.g., x = 5)
                 if (isVerticalConstant)
                 {
                     var expr = new org.mariuszgromada.math.mxparser.Expression(expressionToEvaluate);
@@ -193,7 +168,7 @@ namespace Calculadora.ViewModels
                     return (xs, ys);
                 }
 
-                // CASO 2: Función de Y (ej. x = y^2 o x = 2y + 1)
+                // CASE 2: Function of Y (e.g., x = y^2 or x = 2y + 1)
                 if (isFunctionOfY)
                 {
                     var f = new org.mariuszgromada.math.mxparser.Function($"f(y) = {expressionToEvaluate}");
@@ -212,7 +187,7 @@ namespace Calculadora.ViewModels
                     return (xs, ys);
                 }
 
-                // CASO 3: Función estándar de X (ej. y = x^2 o y = sin(x) o x^2)
+                // CASE 3: Standard function of X (e.g., y = x^2, y = sin(x))
                 {
                     var f = new org.mariuszgromada.math.mxparser.Function($"f(x) = {expressionToEvaluate}");
                     if (!f.checkSyntax()) return null;
