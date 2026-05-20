@@ -58,7 +58,7 @@ namespace Calculadora.Views
 
             // Obtener colores dinámicos desde los recursos de la aplicación (definidos en Themes/Colors.xaml)
             var canvasBg = GetScottPlotColor("GraphCanvasBackgroundColor", new ScottPlot.Color(0x09, 0x0B, 0x12));
-            var axisColor = GetScottPlotColor("GraphAxisColor", new ScottPlot.Color(0x8B, 0x98, 0xA9));
+            var axisColor = GetScottPlotColor("GraphAxisColor", new ScottPlot.Color(0x9C, 0xA3, 0xAF));
             var gridLineColor = GetScottPlotColor("GraphGridLineColor", new ScottPlot.Color(0x2A, 0x2F, 0x3A));
 
             // Para el fondo de datos, usamos un tono con ligero contraste y estética acorde al tema actual
@@ -113,19 +113,36 @@ namespace Calculadora.Views
             var limits = WpfPlot.Plot.Axes.GetLimits();
             double xMin = limits.Left;
             double xMax = limits.Right;
+            double yMin = limits.Bottom;
+            double yMax = limits.Top;
 
             // Si por alguna razón el rango no es válido, usamos valores por defecto
             if (double.IsNaN(xMin) || double.IsInfinity(xMin)) xMin = -10.0;
             if (double.IsNaN(xMax) || double.IsInfinity(xMax)) xMax = 10.0;
+            if (double.IsNaN(yMin) || double.IsInfinity(yMin)) yMin = -10.0;
+            if (double.IsNaN(yMax) || double.IsInfinity(yMax)) yMax = 10.0;
 
             WpfPlot.Plot.Clear();
+
+            // Dibujar los ejes cartesianos infinitos X e Y cruzándose en (0,0) para guiar al usuario
+            var axisColor = GetScottPlotColor("GraphAxisColor", ThemeManager.IsDark 
+                ? new ScottPlot.Color(0x9C, 0xA3, 0xAF) 
+                : new ScottPlot.Color(0x9C, 0xA3, 0xAF));
+
+            var xZeroLine = WpfPlot.Plot.Add.HorizontalLine(0);
+            xZeroLine.Color = axisColor;
+            xZeroLine.LineWidth = 1.5F;
+
+            var yZeroLine = WpfPlot.Plot.Add.VerticalLine(0);
+            yZeroLine.Color = axisColor;
+            yZeroLine.LineWidth = 1.5F;
 
             foreach (var item in vm.Expressions)
             {
                 if (!item.Visible || string.IsNullOrWhiteSpace(item.Text))
                     continue;
 
-                var data = vm.GetPlotData(item, xMin, xMax);
+                var data = vm.GetPlotData(item, xMin, xMax, yMin, yMax);
                 if (data is null) continue;
 
                 var (xs, ys) = data.Value;

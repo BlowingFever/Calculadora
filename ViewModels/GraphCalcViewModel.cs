@@ -121,10 +121,14 @@ namespace Calculadora.ViewModels
 
         // ── Proveedor de datos para el gráfico ───────────────────────
         //
-        // Evalúa la expresión matemática del item en el rango X configurado
+        // Evalúa la expresión matemática del item en el rango X e Y configurado
         // y devuelve los arrays de puntos listos para ScottPlot.
+        // Soporta expresiones del tipo:
+        //   - y = f(x) o expresiones estándar en términos de 'x'.
+        //   - x = f(y) o expresiones en términos de 'y' (curvas verticales o parábolas respecto a Y).
+        //   - x = C (líneas verticales constantes, ej: x = 5).
         //
-        public (double[] xs, double[] ys)? GetPlotData(ExpressionItem item, double xMin, double xMax)
+        public (double[] xs, double[] ys)? GetPlotData(ExpressionItem item, double xMin, double xMax, double yMin, double yMax)
         {
             if (string.IsNullOrWhiteSpace(item.Text)) return null;
 
@@ -134,21 +138,97 @@ namespace Calculadora.ViewModels
 
             try
             {
-                var f = new org.mariuszgromada.math.mxparser.Function($"f(x) = {item.Text}");
-                if (!f.checkSyntax()) return null;
+                string text = item.Text.Trim();
+                bool isFunctionOfY = false;
+                bool isVerticalConstant = false;
+                string expressionToEvaluate = text;
 
-                var arg = new org.mariuszgromada.math.mxparser.Argument("x", 0);
-                var expr = new org.mariuszgromada.math.mxparser.Expression("f(x)", f, arg);
-
-                for (int i = 0; i < points; i++)
+                // Detectar si tiene '=' para separar lado izquierdo y derecho
+                int eqIndex = text.IndexOf('=');
+                if (eqIndex > 0)
                 {
-                    double x = xMin + (xMax - xMin) * i / (points - 1);
-                    arg.setArgumentValue(x);
-                    xs[i] = x;
-                    ys[i] = expr.calculate();
+                    string lhs = text.Substring(0, eqIndex).Trim().ToLower();
+                    string rhs = text.Substring(eqIndex + 1).Trim();
+
+                    if (lhs == "x")
+                    {
+                        expressionToEvaluate = rhs;
+                        // Si contiene 'y' es x = f(y), de lo contrario es una vertical constante x = C
+                        if (rhs.ToLower().Contains("y"))
+                        {
+                            isFunctionOfY = true;
+                        }
+                        else
+                        {
+                            isVerticalConstant = true;
+                        }
+                    }
+                    else if (lhs == "y")
+                    {
+                        expressionToEvaluate = rhs;
+                        isFunctionOfY = false;
+                    }
+                }
+                else
+                {
+                    // Si no tiene '=', pero contiene 'y', asumimos x = f(y)
+                    if (text.ToLower().Contains("y"))
+                    {
+                        isFunctionOfY = true;
+                    }
                 }
 
-                return (xs, ys);
+                // CASO 1: Línea vertical constante (ej. x = 5)
+                if (isVerticalConstant)
+                {
+                    var expr = new org.mariuszgromada.math.mxparser.Expression(expressionToEvaluate);
+                    double constantX = expr.calculate();
+                    if (double.IsNaN(constantX)) return null;
+
+                    for (int i = 0; i < points; i++)
+                    {
+                        xs[i] = constantX;
+                        ys[i] = yMin + (yMax - yMin) * i / (points - 1);
+                    }
+                    return (xs, ys);
+                }
+
+                // CASO 2: Función de Y (ej. x = y^2 o x = 2y + 1)
+                if (isFunctionOfY)
+                {
+                    var f = new org.mariuszgromada.math.mxparser.Function($"f(y) = {expressionToEvaluate}");
+                    if (!f.checkSyntax()) return null;
+
+                    var arg = new org.mariuszgromada.math.mxparser.Argument("y", 0);
+                    var expr = new org.mariuszgromada.math.mxparser.Expression("f(y)", f, arg);
+
+                    for (int i = 0; i < points; i++)
+                    {
+                        double y = yMin + (yMax - yMin) * i / (points - 1);
+                        arg.setArgumentValue(y);
+                        ys[i] = y;
+                        xs[i] = expr.calculate();
+                    }
+                    return (xs, ys);
+                }
+
+                // CASO 3: Función estándar de X (ej. y = x^2 o y = sin(x) o x^2)
+                {
+                    var f = new org.mariuszgromada.math.mxparser.Function($"f(x) = {expressionToEvaluate}");
+                    if (!f.checkSyntax()) return null;
+
+                    var arg = new org.mariuszgromada.math.mxparser.Argument("x", 0);
+                    var expr = new org.mariuszgromada.math.mxparser.Expression("f(x)", f, arg);
+
+                    for (int i = 0; i < points; i++)
+                    {
+                        double x = xMin + (xMax - xMin) * i / (points - 1);
+                        arg.setArgumentValue(x);
+                        xs[i] = x;
+                        ys[i] = expr.calculate();
+                    }
+                    return (xs, ys);
+                }
             }
             catch
             {
