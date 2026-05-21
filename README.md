@@ -1,32 +1,32 @@
-# 🧮 Calculadora
+# 🧮 Calculator
 
-> Aplicación de escritorio para Windows hecha con **WPF** y **C#**, siguiendo el patrón de arquitectura **MVVM**.
-Ofrece dos modos: una calculadora estándar y una calculadora gráfica para representar funciones matemáticas.
-
----
-
-## Tabla de contenidos
-
-- [Licencia y autoría](#licencia-y-autoría)
-- [Requisitos del sistema](#requisitos-del-sistema)
-- [Características principales](#características-principales)
-- [Guía de instalación](#guía-de-instalación)
-- [Guía de usuario](#guía-de-usuario)
-- [Ejemplos de uso y capturas de pantalla](#ejemplos-de-uso-y-capturas-de-pantalla)
-- [Estructura del proyecto](#estructura-del-proyecto)
-- [Dependencias](#dependencias)
-- [Conclusiones y reflexiones](#conclusiones-y-reflexiones)
+> Desktop application for Windows built with **WPF** and **C#**, following the **MVVM** architectural pattern.
+It offers two modes: a standard calculator and a graphical calculator for plotting mathematical functions.
 
 ---
 
-## Licencia y autoría
+## Table of Contents
 
-| Campo | Detalles |
+- [License and authorship](#license-and-authorship)
+- [System requirements](#system-requirements)
+- [Main features](#main-features)
+- [Installation guide](#installation-guide)
+- [User guide](#user-guide)
+- [Usage examples and screenshots](#usage-examples-and-screenshots)
+- [Project structure](#project-structure)
+- [Dependencies](#dependencies)
+- [Conclusions and reflections](#conclusions-and-reflections)
+
+---
+
+## License and Authorship
+
+| Field | Details |
 |-------|---------|
-| **Autor** | [BlowingFever](https://github.com/BlowingFever) & [Arnaudevv](https://github.com/Arnaudevv) |
-| **Licencia** | Licencia MIT |
-| **Año** | 2026 |
-| **Repositorio** | [Calculadora](https://github.com/BlowingFever/Calculadora) |
+| **Author** | [BlowingFever](https://github.com/BlowingFever) & [Arnaudevv](https://github.com/Arnaudevv) |
+| **License** | MIT License |
+| **Year** | 2026 |
+| **Repository** | [Calculator](https://github.com/BlowingFever/Calculadora) |
 
 ```
 MIT License
@@ -38,102 +38,102 @@ of this software and associated documentation files (the "Software"), to deal
 in the Software without restriction...
 ```
 
-Consulta el archivo [`LICENSE`](./LICENSE) para ver la licencia al completo.
+See the [`LICENSE`](./LICENSE) file for the full license text.
 
 ---
 
-## Requisitos del sistema ⚙️
+## System Requirements ⚙️
 
-Asegúrate de cumplir los siguientes requisitos antes de instalar y ejecutar la aplicación:
+Make sure you meet the following requirements before installing and running the application:
 
-| Requisito | Versión mínima |
+| Requirement | Minimum version |
 |-------------|----------------|
-| **Sistema operativo** | Windows 10 / Windows 11 |
-| **SDK de .NET** | .NET 10.0 |
-| **IDE recomendado** | Visual Studio 2022 o posterior |
-| **NuGet** | Incluido con Visual Studio |
+| **Operating system** | Windows 10 / Windows 11 |
+| **.NET SDK** | .NET 10.0 |
+| **Recommended IDE** | Visual Studio 2022 or later |
+| **NuGet** | Included with Visual Studio |
 
-> ⚠ **Importante:** La aplicación usa WPF, lo que significa que **no es compatible con Linux ni macOS**.
-
----
-
-## Características principales ✨
-
-La aplicación ofrece dos calculadoras accesibles desde una barra de navegación inferior:
-
-### Calculadora estándar
-- Operaciones aritméticas básicas: **suma, resta, multiplicación y división**
-- Soporte para expresiones matemáticas gracias a la librería **mXparser**
-
-### Calculadora gráfica 📈
-- Representación visual de **funciones matemáticas** en un gráfico interactivo
-- Renderizado de gráficas con **ScottPlot 5**
-- Cambio entre la calculadora estándar y la gráfica sin necesidad de reiniciar la app
-
-### Diseño y experiencia de usuario
-- Navegación entre modos mediante botones en la barra inferior
-- **Temas visuales** custom gestionados en la carpeta `Themes`
-- Arquitectura **MVVM** pura
-- `DataContext` instanciado directamente desde XAML
-- Soporte de iconos con `Assets` y `svg`
+> ⚠ **Important:** The application uses WPF, which means it is **not compatible with Linux or macOS**.
 
 ---
 
-## Guía de instalación 🚀
+## Main Features ✨
 
-### Paso 1 — Clonar el repositorio
+The application offers two calculators accessible from a bottom navigation bar:
+
+### Standard Calculator
+- Basic arithmetic operations: **addition, subtraction, multiplication and division**
+- Support for mathematical expressions thanks to the **mXparser** library
+
+### Graphical Calculator 📈
+- Visual representation of **mathematical functions** on an interactive graph
+- Graph rendering with **ScottPlot 5**
+- Switch between the standard and graphical calculator without restarting the app
+
+### Design and User Experience
+- Navigation between modes via buttons in the bottom bar
+- Custom **visual themes** managed in the `Themes` folder
+- Pure **MVVM** architecture
+- `DataContext` instantiated directly from XAML
+- Icon support with `Assets` and `svg`
+
+---
+
+## Installation Guide 🚀
+
+### Step 1 — Clone the repository
 
 ```bash
 git clone https://github.com/BlowingFever/Calculadora.git
 cd Calculadora
 ```
 
-### Paso 2 — Restaurar dependencias NuGet
+### Step 2 — Restore NuGet dependencies
 
-Abre un terminal en la raíz del proyecto y ejecuta:
+Open a terminal at the project root and run:
 
 ```bash
 dotnet restore
 ```
 
-Esto descargará las tres librerías necesarias:
+This will download the three required libraries:
 - `MathParser.org-mXparser` (v6.1.1)
 - `ScottPlot.WPF` (v5.1.58)
 - `WPF-UI` (v4.3.0)
 
-### Paso 3 — Compilar el proyecto
+### Step 3 — Build the project
 
 ```bash
 dotnet build
 ```
 
-### Paso 4 — Ejecutar la aplicación
+### Step 4 — Run the application
 
 ```bash
 dotnet run
 ```
 
-Alternativamente, abre `Calculadora.slnx` con **Visual Studio 2022** y pulsa `F5` para iniciar en modo depuración.
+Alternatively, open `Calculadora.slnx` with **Visual Studio 2022** and press `F5` to start in debug mode.
 
-> 💡 **Tip:** Si usas Visual Studio, los paquetes NuGet se restauran automáticamente al abrir la solución.
+> 💡 **Tip:** If you use Visual Studio, NuGet packages are restored automatically when you open the solution.
 
 ---
 
-## Guía de usuario
+## User Guide
 
-### Estructura del proyecto
+### Project Structure
 
 ```
 Calculadora/
-├── 📁 Common/          # Clases compartidas y utilidades
-├── 📁 Models/          # Modelos de datos
-├── 📁 Themes/          # Diccionarios de recursos y temas 
-├── 📁 ViewModels/      # Lógica de presentación
+├── 📁 Common/          # Shared classes and utilities
+├── 📁 Models/          # Data models
+├── 📁 Themes/          # Resource dictionaries and themes
+├── 📁 ViewModels/      # Presentation logic
 │   └── MainViewModel.cs
-├── 📁 Views/           # Interfaces de usuario XAML
-├── 📄 App.xaml         # Recursos globales y Templates
-├── 📄 App.xaml.cs      # Punto de entrada de la aplicación
-├── 📄 MainWindow.xaml  # Ventana principal
+├── 📁 Views/           # XAML user interfaces
+├── 📄 App.xaml         # Global resources and Templates
+├── 📄 App.xaml.cs      # Application entry point
+├── 📄 MainWindow.xaml  # Main window
 ├── 📄 Calculadora.csproj
 ├── 📄 Calculadora.slnx
 └── 📄 LICENSE
@@ -141,111 +141,111 @@ Calculadora/
 
 ---
 
-### Usar la calculadora estándar
+### Using the Standard Calculator
 
-**Paso 1.** Al iniciar la aplicación, se muestra por defecto la **Calculadora Estándar**.
+**Step 1.** When the application starts, the **Standard Calculator** is shown by default.
 
-**Paso 2.** Escribe una expresión matemática en el campo de entrada. Puedes escribir expresiones como:
+**Step 2.** Type a mathematical expression in the input field. You can write expressions such as:
 ```
 3 + 5
 (10 - 2) * 4 / 2
 ```
 
-**Paso 3.** Pulsa el botón **"="** para ver el resultado de la operación.
+**Step 3.** Press the **"="** button to see the result of the operation.
 
-**Paso 4.** El resultado aparece en la pantalla principal. Puedes seguir encadenando más operaciones.
+**Step 4.** The result appears on the main screen. You can continue chaining more operations.
 
-**Paso 5.** Usa el botón **"C"** para borrar la operación actual y empezar de nuevo.
+**Step 5.** Use the **"C"** button to clear the current operation and start over.
 
 ---
 
-### Usar la calculadora gráfica
+### Using the Graphical Calculator
 
-**Paso 1.** En la barra inferior, haz clic en **"Calculadora Gráfica"** para cambiar al modo gráfico.
+**Step 1.** In the bottom bar, click **"Graphical Calculator"** to switch to graphical mode.
 
-**Paso 2.** Escribe una función matemática en el campo de texto. Por ejemplo:
+**Step 2.** Type a mathematical function in the text field. For example:
 ```
 sin(x)
 x*2 - 4
 cos(x) + 0.5*x
 ```
 
-**Paso 3.** El gráfico se renderizará automáticamente.
+**Step 3.** The graph will render automatically.
 
-**Paso 4.** Interactúa con el gráfico: amplía o reduce el tamaño con la rueda del ratón y muevete haciendo clic y arrastrando.
+**Step 4.** Interact with the graph: zoom in or out using the mouse wheel and pan by clicking and dragging.
 
-**Paso 5.** Para volver a la calculadora estándar, haz clic en **"Calculadora Normal"** en la barra inferior.
+**Step 5.** To return to the standard calculator, click **"Normal Calculator"** in the bottom bar.
 
 ---
 
-### Dependencias 📦
+### Dependencies 📦
 
-| Paquete NuGet | Versión | Propósito |
+| NuGet Package | Version | Purpose |
 |---------------|---------|---------|
-| `MathParser.org-mXparser` | 6.1.1 | Evaluación de expresiones matemáticas complejas |
-| `ScottPlot.WPF` | 5.1.58 | Renderizado de gráficas de funciones |
-| `WPF-UI` | 4.3.0 | Componentes de UI modernos para WPF |
+| `MathParser.org-mXparser` | 6.1.1 | Evaluation of complex mathematical expressions |
+| `ScottPlot.WPF` | 5.1.58 | Function graph rendering |
+| `WPF-UI` | 4.3.0 | Modern UI components for WPF |
 
 ---
 
-## Ejemplos de uso y capturas de pantalla
+## Usage Examples and Screenshots
 
-### Ejemplos — Calculadora estándar
+### Examples — Standard Calculator
 
-| Expresión introducida | Resultado esperado |
+| Input expression | Expected result |
 |--------------------|----------------|
 | `5 + 3 * 2` | `11` |
 | `-100 + 20 / 4` | `-95`|
 
-### Ejemplos — Calculadora gráfica
+### Examples — Graphical Calculator
 
-| Función | Descripción |
+| Function | Description |
 |----------|-------------|
-| `sin(x)` | Onda sinusoidal estándar |
-| `e^x` | Función de crecimiento exponencial |
+| `sin(x)` | Standard sine wave |
+| `e^x` | Exponential growth function |
 
-### Interfaz de la aplicación
+### Application Interface
 <table border="0" cellpadding="0" cellspacing="0" width="100%" style="border-collapse: collapse; border: none;">
   <tr>
     <td width="50%" style="border: none; padding: 5px;">
-      <img src="Screenshots/NormalCalc1.png" alt="Calculadora Estándar 1" width="100%" />
+      <img src="Screenshots/NormalCalc1.png" alt="Standard Calculator 1" width="100%" />
     </td>
     <td width="50%" style="border: none; padding: 5px;">
-      <img src="Screenshots/NormalCalc2.png" alt="Calculadora Estándar 2" width="100%" />
+      <img src="Screenshots/NormalCalc2.png" alt="Standard Calculator 2" width="100%" />
     </td>
   </tr>
 </table>
 
-![Captura](Screenshots/GraphicCalc.png)
+![Screenshot](Screenshots/GraphicCalc.png)
 
 ---
 
-## Conclusiones y reflexiones 💭
+## Conclusions and Reflections 💭
 
-### Aprendizajes técnicos
+### Technical Learnings
 
-Este proyecto ha permitido profundizar en varios aspectos del desarrollo de aplicaciones de escritorio con **C# y WPF**:
+This project has allowed us to dive deeper into several aspects of desktop application development with **C# and WPF**:
 
-- **Patrón MVVM aplicado de forma estricta:** La ventana principal no contiene ninguna línea de lógica en su code-behind. Toda la navegación entre vistas se gestiona a través de `MainViewModel` y los bindings XAML, lo que demuestra un sólido dominio del patrón y simplifica enormemente las pruebas y el mantenimiento.
+- **Strictly applied MVVM pattern:** The main window contains no logic whatsoever in its code-behind. All navigation between views is managed through `MainViewModel` and XAML bindings, which demonstrates a solid command of the pattern and greatly simplifies testing and maintenance.
 
-- **Navegación basada en ContentControl + DataTemplate:** En lugar de usar frames o páginas, el proyecto cambia la propiedad `CurrentView` del ViewModel y deja que WPF seleccione el `DataTemplate` adecuado desde `App.xaml`. Es una técnica elegante y no invasiva.
+- **ContentControl + DataTemplate-based navigation:** Instead of using frames or pages, the project changes the `CurrentView` property of the ViewModel and lets WPF select the appropriate `DataTemplate` from `App.xaml`. This is an elegant and non-invasive technique.
 
-- **Integración de librerías de terceros:** La combinación de `mXparser` para el análisis de expresiones y `ScottPlot` para la visualización ofrece una base muy potente con un mínimo de código propio.
+- **Third-party library integration:** The combination of `mXparser` for expression parsing and `ScottPlot` for visualization provides a very powerful foundation with minimal custom code.
 
-### Mejoras futuras
+### Future Improvements
 
-- 🧪 Añadir **pruebas unitarias** para los ViewModels y la lógica de cálculo.
-- 📜 Implementar un **historial de cálculos persistente** entre sesiones.
-- 🌍 Añadir soporte de **localización** (inglés, español, catalán).
-- 📱 Explorar **MAUI** para llevar la app a multiplataforma en el futuro.
-- ♿ Mejorar la **accesibilidad** con soporte para lectores de pantalla.
+- 🧪 Add **unit tests** for the ViewModels and calculation logic.
+- 📜 Implement a **persistent calculation history** across sessions.
+- 🌍 Add **localization** support (English, Spanish, Catalan).
+- 📱 Explore **MAUI** to bring the app to cross-platform in the future.
+- ♿ Improve **accessibility** with screen reader support.
 
-### Reflexión final
+### Final Reflection
 
-Este proyecto es un ejemplo sólido de cómo aplicar buenas prácticas de diseño de software en un contexto académico o personal. La clara separación de responsabilidades, el uso de bindings `ICommand` y el enlace de datos bidireccional hacen que el código sea legible, comprobable y extensible. La elección de `.NET 10` refleja un enfoque orientado al futuro, alineado con las últimas capacidades de la plataforma Microsoft.
+This project is a solid example of how to apply good software design practices in an academic or personal context. The clear separation of concerns, the use of `ICommand` bindings, and two-way data binding make the code readable, testable, and extensible. The choice of `.NET 10` reflects a future-oriented approach, aligned with the latest capabilities of the Microsoft platform.
 
 ---
 
 <p align="center">
-  Hecho con ❤️ por <a href="https://github.com/BlowingFever">BlowingFever</a> & <a href="https://github.com/Arnaudevv">Arnaudevv</a> · Licencia MIT · 2026
+  Made with ❤️ by <a href="https://github.com/BlowingFever">BlowingFever</a> & <a href="https://github.com/Arnaudevv">Arnaudevv</a> · MIT License · 2026
 </p>
