@@ -35,7 +35,6 @@ var hierarchy =
       [ "Calculadora.Models.ExpressionItem", "class_calculadora_1_1_models_1_1_expression_item.html", null ]
     ] ],
     [ "System.Windows.Markup.InternalTypeHelper", null, [
-      [ "XamlGeneratedNamespace.GeneratedInternalTypeHelper", "class_xaml_generated_namespace_1_1_generated_internal_type_helper.html", null ],
       [ "XamlGeneratedNamespace.GeneratedInternalTypeHelper", "class_xaml_generated_namespace_1_1_generated_internal_type_helper.html", null ]
     ] ],
     [ "System.Windows.Controls.UserControl", null, [

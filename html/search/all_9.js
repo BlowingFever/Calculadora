@@ -1,7 +1,7 @@
 var searchData=
 [
   ['generatedinternaltypehelper_0',['GeneratedInternalTypeHelper',['../class_xaml_generated_namespace_1_1_generated_internal_type_helper.html',1,'XamlGeneratedNamespace']]],
-  ['getpropertyvalue_1',['GetPropertyValue',['../class_xaml_generated_namespace_1_1_generated_internal_type_helper.html#afdc9fe15b56607d02082908d934480c6',1,'XamlGeneratedNamespace.GeneratedInternalTypeHelper.GetPropertyValue(System.Reflection.PropertyInfo propertyInfo, object target, System.Globalization.CultureInfo culture)'],['../class_xaml_generated_namespace_1_1_generated_internal_type_helper.html#afdc9fe15b56607d02082908d934480c6',1,'XamlGeneratedNamespace.GeneratedInternalTypeHelper.GetPropertyValue(System.Reflection.PropertyInfo propertyInfo, object target, System.Globalization.CultureInfo culture)']]],
+  ['getpropertyvalue_1',['GetPropertyValue',['../class_xaml_generated_namespace_1_1_generated_internal_type_helper.html#afdc9fe15b56607d02082908d934480c6',1,'XamlGeneratedNamespace::GeneratedInternalTypeHelper']]],
   ['gráfica_2',['gráfica',['../md__r_e_a_d_m_e.html#autotoc_md30',1,'Ejemplos — Calculadora gráfica'],['../md__r_e_a_d_m_e.html#autotoc_md24',1,'Usar la calculadora gráfica']]],
   ['gráfica_20📈_3',['Calculadora gráfica 📈',['../md__r_e_a_d_m_e.html#autotoc_md10',1,'']]],
   ['gra_4',['Gra',['../class_calculadora_1_1_views_1_1_gra.html',1,'Calculadora::Views']]],

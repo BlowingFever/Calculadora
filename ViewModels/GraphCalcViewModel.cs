@@ -9,57 +9,93 @@ using Calculadora.Models;
 namespace Calculadora.ViewModels
 {
     /// <summary>
-    /// ViewModel for the graphing calculator view.
-    /// Manages the collection of <see cref="ExpressionItem"/> entries and provides
-    /// plot data evaluated via mXparser, notifying the view when a redraw is needed.
+    /// ViewModel de la calculadora gráfica.
+    /// Gestiona la colección de expresiones matemáticas, evalúa cada una
+    /// mediante mXparser y notifica a la vista cuándo debe redibujar el gráfico.
     /// </summary>
+    /// <remarks>
+    /// Flujo de uso:
+    /// <list type="number">
+    ///   <item><description>El usuario escribe expresiones en la lista lateral (<see cref="Expressions"/>).</description></item>
+    ///   <item><description>Cualquier cambio en texto, color o visibilidad dispara <see cref="PlotRefreshRequested"/>.</description></item>
+    ///   <item><description>El code-behind de la vista se suscribe al evento y llama a <see cref="GetPlotData"/>
+    ///     para cada expresión visible.</description></item>
+    ///   <item><description>ScottPlot renderiza los datos resultantes.</description></item>
+    /// </list>
+    /// </remarks>
     public class GraphCalcViewModel : ViewModelBase
     {
+        // ── Inicialización estática ───────────────────────────────────────────
+
         /// <summary>
-        /// Confirms non-commercial use of the mXparser library at class load time.
+        /// Confirma el uso no comercial de la librería mXparser en el momento
+        /// en que se carga la clase (antes de que se cree ninguna instancia).
+        /// Este paso es obligatorio según la licencia de mXparser.
         /// </summary>
         static GraphCalcViewModel()
         {
             org.mariuszgromada.math.mxparser.License.iConfirmNonCommercialUse("WPF Graph Calculator User");
         }
 
+        // ── Paleta de colores ─────────────────────────────────────────────────
+
         /// <summary>
-        /// Sequential colour palette assigned to new expressions in round-robin order.
+        /// Paleta de colores cíclica asignada a las nuevas expresiones en orden de creación.
+        /// Los colores se repiten en bucle cuando se superan las 6 expresiones.
         /// </summary>
         private static readonly string[] ColorPalette =
         {
-            "#2196F3",  // Blue
-            "#F44336",  // Red
-            "#4CAF50",  // Green
-            "#FF9800",  // Orange
-            "#9C27B0",  // Purple
-            "#00BCD4",  // Cyan
+            "#2196F3",  // Azul
+            "#F44336",  // Rojo
+            "#4CAF50",  // Verde
+            "#FF9800",  // Naranja
+            "#9C27B0",  // Morado
+            "#00BCD4",  // Cian
         };
 
+        /// <summary>Índice actual en <see cref="ColorPalette"/>, incrementado al añadir expresiones.</summary>
         private int _paletteIndex = 0;
 
+        // ── Propiedades públicas ──────────────────────────────────────────────
+
         /// <summary>
-        /// Observable collection of expressions bound to the left-panel list.
+        /// Colección observable de expresiones enlazada a la lista lateral de la vista.
+        /// Cada elemento contiene el texto de la función, su color y su visibilidad.
         /// </summary>
         public ObservableCollection<ExpressionItem> Expressions { get; } = new();
 
-        /// <summary>Adds a new empty expression entry to <see cref="Expressions"/>.</summary>
-        public ICommand AddExpressionCommand { get; }
-
-        /// <summary>Removes a specific <see cref="ExpressionItem"/> from <see cref="Expressions"/>.</summary>
-        public ICommand RemoveExpressionCommand { get; }
+        // ── Comandos ──────────────────────────────────────────────────────────
 
         /// <summary>
-        /// Raised whenever the plot must be redrawn (expression text changed, visibility toggled,
-        /// or collection modified).
+        /// Añade una nueva entrada vacía a <see cref="Expressions"/> con el siguiente
+        /// color de la paleta.
+        /// </summary>
+        public ICommand AddExpressionCommand { get; }
+
+        /// <summary>
+        /// Elimina la entrada <see cref="ExpressionItem"/> especificada de <see cref="Expressions"/>
+        /// y cancela su suscripción a eventos de cambio de propiedad.
+        /// </summary>
+        public ICommand RemoveExpressionCommand { get; }
+
+        // ── Eventos ───────────────────────────────────────────────────────────
+
+        /// <summary>
+        /// Se dispara cuando es necesario redibujar el gráfico, es decir:
+        /// <list type="bullet">
+        ///   <item><description>El texto de una expresión cambia.</description></item>
+        ///   <item><description>La visibilidad de una expresión cambia.</description></item>
+        ///   <item><description>Se añade o elimina una expresión de la colección.</description></item>
+        /// </list>
         /// </summary>
         public event EventHandler? PlotRefreshRequested;
 
         // ── Constructor ───────────────────────────────────────────────────────
 
         /// <summary>
-        /// Initialises commands, subscribes to collection change events,
-        /// and populates one empty expression on startup.
+        /// Configura los comandos, se suscribe a los cambios de la colección
+        /// y añade una expresión vacía inicial para que el usuario pueda empezar
+        /// a escribir de inmediato.
         /// </summary>
         public GraphCalcViewModel()
         {
@@ -68,14 +104,14 @@ namespace Calculadora.ViewModels
 
             Expressions.CollectionChanged += OnExpressionsCollectionChanged;
 
-            AddExpression();
+            AddExpression(); // Expresión inicial vacía.
         }
 
-        // ── Command Handlers ──────────────────────────────────────────────────
+        // ── Manejadores de comandos ───────────────────────────────────────────
 
         /// <summary>
-        /// Creates a new <see cref="ExpressionItem"/> with the next palette colour,
-        /// subscribes to its property changes, and appends it to <see cref="Expressions"/>.
+        /// Crea un nuevo <see cref="ExpressionItem"/> con el siguiente color de la paleta,
+        /// se suscribe a sus cambios de propiedad y lo añade al final de <see cref="Expressions"/>.
         /// </summary>
         private void AddExpression()
         {
@@ -89,10 +125,10 @@ namespace Calculadora.ViewModels
         }
 
         /// <summary>
-        /// Unsubscribes from property change events and removes <paramref name="item"/>
-        /// from <see cref="Expressions"/>.
+        /// Cancela la suscripción de <paramref name="item"/> a los eventos de propiedad
+        /// y lo elimina de <see cref="Expressions"/>. Es seguro llamarlo con <c>null</c>.
         /// </summary>
-        /// <param name="item">Item to remove; no-op when <c>null</c>.</param>
+        /// <param name="item">Elemento a eliminar; no hace nada si es <c>null</c>.</param>
         private void RemoveExpression(ExpressionItem? item)
         {
             if (item == null) return;
@@ -100,40 +136,55 @@ namespace Calculadora.ViewModels
             Expressions.Remove(item);
         }
 
-        // ── Internal Event Handlers ───────────────────────────────────────────
+        // ── Manejadores de eventos internos ───────────────────────────────────
 
+        /// <summary>
+        /// Reacciona a cambios en la colección (añadir/eliminar elementos)
+        /// solicitando un redibujado del gráfico.
+        /// </summary>
         private void OnExpressionsCollectionChanged(object? sender, NotifyCollectionChangedEventArgs e)
             => RequestPlotRefresh();
 
+        /// <summary>
+        /// Reacciona a cambios en las propiedades de un <see cref="ExpressionItem"/>
+        /// (texto, color, visibilidad) solicitando un redibujado del gráfico.
+        /// </summary>
         private void OnExpressionItemPropertyChanged(object? sender, PropertyChangedEventArgs e)
             => RequestPlotRefresh();
 
-        /// <summary>Fires <see cref="PlotRefreshRequested"/>.</summary>
+        /// <summary>
+        /// Invoca el evento <see cref="PlotRefreshRequested"/> para notificar a la vista
+        /// que debe volver a dibujar el gráfico.
+        /// </summary>
         private void RequestPlotRefresh()
             => PlotRefreshRequested?.Invoke(this, EventArgs.Empty);
 
-        // ── Plot Data ─────────────────────────────────────────────────────────
+        // ── Evaluación de expresiones ─────────────────────────────────────────
 
         /// <summary>
-        /// Evaluates <paramref name="item"/>'s expression with mXparser over the given axis bounds
-        /// and returns coordinate arrays ready for ScottPlot.
+        /// Evalúa la expresión de <paramref name="item"/> con mXparser dentro de los
+        /// límites de los ejes visibles y devuelve 500 puntos de coordenadas (x, y)
+        /// listos para pasar a ScottPlot.
         /// </summary>
         /// <remarks>
-        /// Supports three expression forms:
-        /// <list type="bullet">
-        ///   <item><description>Standard function of X: <c>y = f(x)</c> or plain <c>f(x)</c>.</description></item>
-        ///   <item><description>Function of Y: <c>x = f(y)</c>.</description></item>
-        ///   <item><description>Vertical constant line: <c>x = C</c>.</description></item>
+        /// Soporta tres formas de expresión:
+        /// <list type="table">
+        ///   <listheader><term>Forma</term><description>Ejemplo</description></listheader>
+        ///   <item><term>Función de X</term><description><c>sin(x)</c> o <c>y = x^2 + 1</c></description></item>
+        ///   <item><term>Función de Y</term><description><c>x = y^2</c> (curva horizontal)</description></item>
+        ///   <item><term>Línea vertical constante</term><description><c>x = 5</c></description></item>
         /// </list>
+        /// Si la expresión tiene sintaxis inválida o lanza una excepción durante la
+        /// evaluación, el método devuelve <c>null</c> silenciosamente.
         /// </remarks>
-        /// <param name="item">The expression entry to evaluate.</param>
-        /// <param name="xMin">Left bound of the visible x-axis range.</param>
-        /// <param name="xMax">Right bound of the visible x-axis range.</param>
-        /// <param name="yMin">Bottom bound of the visible y-axis range.</param>
-        /// <param name="yMax">Top bound of the visible y-axis range.</param>
+        /// <param name="item">Entrada de expresión a evaluar.</param>
+        /// <param name="xMin">Límite izquierdo del eje X visible.</param>
+        /// <param name="xMax">Límite derecho del eje X visible.</param>
+        /// <param name="yMin">Límite inferior del eje Y visible.</param>
+        /// <param name="yMax">Límite superior del eje Y visible.</param>
         /// <returns>
-        /// A tuple of parallel x and y arrays (500 points each), or <c>null</c> if the
-        /// expression is empty, has invalid syntax, or throws during evaluation.
+        /// Una tupla <c>(xs, ys)</c> con 500 elementos cada array,
+        /// o <c>null</c> si la expresión está vacía, es inválida o falla en tiempo de evaluación.
         /// </returns>
         public (double[] xs, double[] ys)? GetPlotData(
             ExpressionItem item,
@@ -174,11 +225,11 @@ namespace Calculadora.ViewModels
                 }
                 else if (text.ToLower().Contains("y"))
                 {
-                    // No '=' but contains 'y' — treat as x = f(y).
+                    // Sin '=' pero con 'y': se interpreta como x = f(y).
                     isFunctionOfY = true;
                 }
 
-                // ── Case 1: Constant vertical line (e.g. x = 5) ──────────────
+                // ── Caso 1: Línea vertical constante (p. ej. x = 5) ──────────
                 if (isVerticalConstant)
                 {
                     var expr = new org.mariuszgromada.math.mxparser.Expression(expressionToEvaluate);
@@ -193,7 +244,7 @@ namespace Calculadora.ViewModels
                     return (xs, ys);
                 }
 
-                // ── Case 2: Function of Y (e.g. x = y^2) ────────────────────
+                // ── Caso 2: Función de Y (p. ej. x = y^2) ───────────────────
                 if (isFunctionOfY)
                 {
                     var f = new org.mariuszgromada.math.mxparser.Function($"f(y) = {expressionToEvaluate}");
@@ -212,7 +263,7 @@ namespace Calculadora.ViewModels
                     return (xs, ys);
                 }
 
-                // ── Case 3: Standard function of X (e.g. y = sin(x)) ─────────
+                // ── Caso 3: Función estándar de X (p. ej. y = sin(x)) ────────
                 {
                     var f = new org.mariuszgromada.math.mxparser.Function($"f(x) = {expressionToEvaluate}");
                     if (!f.checkSyntax()) return null;

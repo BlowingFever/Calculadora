@@ -9,37 +9,68 @@ using Calculadora.Models;
 namespace Calculadora.ViewModels
 {
     /// <summary>
-    /// ViewModel for the standard (non-graphing) calculator view.
-    /// Implements a precedence-aware infix evaluator using two token lists:
-    /// one for live computation and one for the full expression history shown on the display.
+    /// ViewModel de la calculadora estándar (no gráfica).
+    /// Implementa un evaluador de expresiones infijas con precedencia de operadores
+    /// mediante dos listas de tokens paralelas: una para el cómputo y otra para
+    /// el historial visual que se muestra encima del display.
     /// </summary>
+    /// <remarks>
+    /// Algoritmo de evaluación:
+    /// <list type="number">
+    ///   <item><description>Cada dígito se acumula en <see cref="Display"/>.</description></item>
+    ///   <item><description>Al pulsar un operador, el display se añade a <c>_tokens</c> y se llama
+    ///     a <see cref="CollapseTokens"/> para reducir cualquier operación pendiente de mayor o igual
+    ///     precedencia.</description></item>
+    ///   <item><description>Al pulsar <c>=</c>, se fuerza la reducción completa (precedencia 0)
+    ///     y se muestra el resultado.</description></item>
+    /// </list>
+    /// La pila <c>_expressionTokens</c> nunca se colapsa: sólo sirve para construir
+    /// la cadena de historial que ve el usuario.
+    /// </remarks>
     public class NormalCalcViewModel : ViewModelBase
     {
-        // ── Dependencies ──────────────────────────────────────────────────────
+        // ── Dependencias ──────────────────────────────────────────────────────
 
+        /// <summary>Motor aritmético que realiza las operaciones básicas.</summary>
         private readonly CalculatorModel _model = new();
 
-        // ── Internal State ────────────────────────────────────────────────────
+        // ── Estado interno ────────────────────────────────────────────────────
 
         /// <summary>
-        /// Working tokens used for computation; intermediate results are collapsed here.
+        /// Lista de tokens de trabajo usada para el cómputo.
+        /// Formato alternante: [número, operador, número, operador, …].
+        /// Los resultados intermedios reemplazan los tripletes reducidos.
         /// </summary>
         private readonly List<string> _tokens = new();
 
         /// <summary>
-        /// Full expression history tokens; never collapsed, used only for the expression label.
+        /// Lista de tokens de historial; nunca se colapsa.
+        /// Se usa exclusivamente para construir <see cref="Expression"/>.
         /// </summary>
         private readonly List<string> _expressionTokens = new();
 
+        /// <summary>
+        /// <c>true</c> cuando el display espera el inicio de un segundo operando.
+        /// En este estado, pulsar un dígito reemplaza el display en lugar de concatenar.
+        /// </summary>
         private bool _waitingForSecond = true;
+
+        /// <summary><c>true</c> cuando la calculadora está en estado de error y bloquea la entrada.</summary>
         private bool _hasError = false;
+
+        /// <summary>
+        /// <c>true</c> justo después de pulsar <c>=</c>.
+        /// El primer dígito siguiente inicia una nueva operación; un operador encadena desde el resultado.
+        /// </summary>
         private bool _justEvaluated = false;
 
-        // ── UI-Bound Properties ───────────────────────────────────────────────
+        // ── Propiedades enlazadas ─────────────────────────────────────────────
 
         private string _displayValue = "0";
 
-        /// <summary>Gets the main numeric display string.</summary>
+        /// <summary>
+        /// Obtiene la cadena numérica principal que se muestra en el display.
+        /// </summary>
         public string Display
         {
             get => _displayValue;
@@ -48,39 +79,47 @@ namespace Calculadora.ViewModels
 
         private string _expression = string.Empty;
 
-        /// <summary>Gets the expression history string shown above the main display.</summary>
+        /// <summary>
+        /// Obtiene la expresión acumulada que se muestra encima del display principal.
+        /// Ejemplo: <c>"12 + 34 × 5 ="</c>.
+        /// </summary>
         public string Expression
         {
             get => _expression;
             private set => SetProperty(ref _expression, value);
         }
 
-        // ── Commands ──────────────────────────────────────────────────────────
+        // ── Comandos ──────────────────────────────────────────────────────────
 
-        /// <summary>Appends a digit character to the current operand.</summary>
+        /// <summary>Añade un dígito al operando actual en el display.</summary>
         public ICommand DigitCommand { get; }
 
-        /// <summary>Pushes the current display value and the selected operator onto the token stack.</summary>
+        /// <summary>
+        /// Registra el operando actual y el operador elegido, reduciendo
+        /// las operaciones pendientes de mayor o igual precedencia.
+        /// </summary>
         public ICommand OperatorCommand { get; }
 
-        /// <summary>Evaluates the full expression and shows the result.</summary>
+        /// <summary>Evalúa la expresión completa y muestra el resultado final.</summary>
         public ICommand EqualsCommand { get; }
 
-        /// <summary>Resets the calculator to its initial state.</summary>
+        /// <summary>Resetea la calculadora a su estado inicial.</summary>
         public ICommand ClearCommand { get; }
 
-        /// <summary>Appends a decimal separator to the current operand.</summary>
+        /// <summary>Añade el separador decimal al operando actual.</summary>
         public ICommand DecimalCommand { get; }
 
-        /// <summary>Negates the current operand.</summary>
+        /// <summary>Invierte el signo del valor mostrado en el display.</summary>
         public ICommand ToggleSignCommand { get; }
 
-        /// <summary>Divides the current operand by 100.</summary>
+        /// <summary>Divide el valor del display entre 100 (convierte a porcentaje).</summary>
         public ICommand PercentCommand { get; }
 
         // ── Constructor ───────────────────────────────────────────────────────
 
-        /// <summary>Initializes all commands.</summary>
+        /// <summary>
+        /// Inicializa todos los comandos de la calculadora estándar.
+        /// </summary>
         public NormalCalcViewModel()
         {
             DigitCommand = new RelayCommand<string>(OnDigit);
@@ -92,20 +131,21 @@ namespace Calculadora.ViewModels
             PercentCommand = new RelayCommand(OnPercent);
         }
 
-        // ── Command Handlers ──────────────────────────────────────────────────
+        // ── Manejadores de comandos ───────────────────────────────────────────
 
         /// <summary>
-        /// Appends <paramref name="digit"/> to the display, or starts a fresh entry
-        /// if the previous action was <c>=</c>.
+        /// Agrega el dígito <paramref name="digit"/> al display.
+        /// Si se acaba de evaluar una expresión, descarta el historial y comienza de nuevo.
+        /// Si la calculadora espera el segundo operando, el dígito reemplaza el display en lugar
+        /// de concatenarse.
         /// </summary>
-        /// <param name="digit">Single digit character string (<c>"0"</c>–<c>"9"</c>).</param>
+        /// <param name="digit">Carácter de dígito, de <c>"0"</c> a <c>"9"</c>.</param>
         private void OnDigit(string? digit)
         {
             if (_hasError || digit == null) return;
 
             if (_justEvaluated)
             {
-                // Start a fresh operation after Equals.
                 ClearTokens();
                 Expression = string.Empty;
                 _justEvaluated = false;
@@ -121,24 +161,25 @@ namespace Calculadora.ViewModels
             }
             else
             {
-                // Limit input length to prevent UI overflow (formatting symbols excluded).
+                // Limita la longitud del operando para evitar desbordamiento visual.
                 if (Display.Replace("-", "").Replace(".", "").Length >= 12) return;
                 Display = Display == "0" ? digit : Display + digit;
             }
         }
 
         /// <summary>
-        /// Pushes the current display value and <paramref name="op"/> onto the token stacks,
-        /// collapsing any pending higher-precedence operations first.
+        /// Registra el operando actual en los stacks de tokens y añade el operador
+        /// <paramref name="op"/>. Antes de añadir el operador, colapsa las operaciones
+        /// pendientes cuya precedencia sea mayor o igual a la del nuevo operador.
         /// </summary>
-        /// <param name="op">Operator string: <c>"+"</c>, <c>"-"</c>, <c>"*"</c>, or <c>"/"</c>.</param>
+        /// <param name="op">Operador aritmético: <c>"+"</c>, <c>"-"</c>, <c>"*"</c> o <c>"/"</c>.</param>
         private void OnOperator(string? op)
         {
             if (_hasError || op == null) return;
 
             if (_justEvaluated)
             {
-                // Chain a new operation from the last result.
+                // Encadena una nueva operación partiendo del último resultado.
                 ClearTokens();
                 _tokens.Add(Display);
                 _expressionTokens.Add(Display);
@@ -152,7 +193,7 @@ namespace Calculadora.ViewModels
 
             if (_waitingForSecond)
             {
-                // Two consecutive operators without an operand is a syntax error.
+                // Dos operadores seguidos sin operando intermedio es un error de sintaxis.
                 TriggerError();
                 return;
             }
@@ -173,8 +214,9 @@ namespace Calculadora.ViewModels
         }
 
         /// <summary>
-        /// Finalises the expression, evaluates all remaining operators, and shows the result.
-        /// Sets <see cref="_justEvaluated"/> so the next digit starts a fresh calculation.
+        /// Finaliza la expresión, evalúa todos los operadores pendientes (precedencia 0)
+        /// y muestra el resultado. Activa <see cref="_justEvaluated"/> para que el
+        /// siguiente dígito inicie un cálculo nuevo.
         /// </summary>
         private void OnEquals()
         {
@@ -182,7 +224,7 @@ namespace Calculadora.ViewModels
 
             if (_waitingForSecond)
             {
-                // Equals without a final operand (e.g. "5 + =") is a syntax error.
+                // Pulsar '=' sin un operando final (p.ej. "5 + =") es un error.
                 TriggerError();
                 return;
             }
@@ -192,7 +234,7 @@ namespace Calculadora.ViewModels
 
             string fullExpression = BuildDisplayExpression() + " =";
 
-            // Precedence 0 forces evaluation of all pending operators.
+            // Precedencia 0 fuerza la evaluación de todos los operadores pendientes.
             if (!CollapseTokens(0))
             {
                 TriggerError();
@@ -212,7 +254,10 @@ namespace Calculadora.ViewModels
             _waitingForSecond = true;
         }
 
-        /// <summary>Resets the calculator to its default initial state.</summary>
+        /// <summary>
+        /// Restaura la calculadora a su estado inicial: display <c>"0"</c>,
+        /// expresión vacía y sin errores.
+        /// </summary>
         private void OnClear()
         {
             Display = "0";
@@ -224,8 +269,9 @@ namespace Calculadora.ViewModels
         }
 
         /// <summary>
-        /// Appends a decimal separator to the current operand, or starts a new <c>"0."</c>
-        /// entry if waiting for the next operand.
+        /// Añade el separador decimal al operando actual. Si el display ya contiene
+        /// un punto no añade otro. Si se está esperando el segundo operando, comienza
+        /// con <c>"0."</c>.
         /// </summary>
         private void OnDecimal()
         {
@@ -252,7 +298,10 @@ namespace Calculadora.ViewModels
                 Display += ".";
         }
 
-        /// <summary>Flips the sign of the current display value.</summary>
+        /// <summary>
+        /// Invierte el signo del valor actual en el display.
+        /// Si el valor es <c>"0"</c>, no hace nada.
+        /// </summary>
         private void OnToggleSign()
         {
             if (_hasError) return;
@@ -267,7 +316,10 @@ namespace Calculadora.ViewModels
             Display = Display.StartsWith("-") ? Display[1..] : "-" + Display;
         }
 
-        /// <summary>Divides the current display value by 100.</summary>
+        /// <summary>
+        /// Divide el valor actual del display entre 100.
+        /// Útil para calcular porcentajes directamente.
+        /// </summary>
         private void OnPercent()
         {
             if (_hasError) return;
@@ -282,15 +334,21 @@ namespace Calculadora.ViewModels
             Display = FormatNumber(current / 100.0);
         }
 
-        // ── Private Utilities ─────────────────────────────────────────────────
+        // ── Utilidades privadas ───────────────────────────────────────────────
 
         /// <summary>
-        /// Reduces the <see cref="_tokens"/> list by evaluating all pending operators whose
-        /// precedence is greater than or equal to <paramref name="targetPrecedence"/>.
-        /// <see cref="_expressionTokens"/> is intentionally left untouched.
+        /// Reduce la lista <see cref="_tokens"/> evaluando todos los operadores cuya
+        /// precedencia sea mayor o igual a <paramref name="targetPrecedence"/>.
+        /// La lista <see cref="_expressionTokens"/> no se modifica.
         /// </summary>
-        /// <param name="targetPrecedence">Minimum operator precedence to collapse.</param>
-        /// <returns><c>true</c> on success; <c>false</c> if a parse or arithmetic error occurs.</returns>
+        /// <param name="targetPrecedence">
+        /// Umbral de precedencia: sólo se colapsan operadores con este nivel o superior.
+        /// Pasar <c>0</c> colapsa absolutamente todos los operadores pendientes.
+        /// </param>
+        /// <returns>
+        /// <c>true</c> si la reducción se completó sin errores;
+        /// <c>false</c> si ocurrió un error de parseo o una operación inválida (p.ej. división por cero).
+        /// </returns>
         private bool CollapseTokens(int targetPrecedence)
         {
             while (_tokens.Count >= 3)
@@ -309,7 +367,7 @@ namespace Calculadora.ViewModels
                 double result = _model.Calculate(n1, n2, op);
                 if (!double.IsFinite(result) || double.IsNaN(result)) return false;
 
-                // Replace the [operand, operator, operand] triple with the computed result.
+                // Sustituye el triplete [num1, op, num2] por el resultado calculado.
                 _tokens.RemoveRange(_tokens.Count - 3, 3);
                 _tokens.Add(result.ToString(CultureInfo.InvariantCulture));
                 Display = FormatNumber(result);
@@ -317,9 +375,15 @@ namespace Calculadora.ViewModels
             return true;
         }
 
-        /// <summary>Returns the arithmetic precedence level for the given operator.</summary>
-        /// <param name="op">Operator string.</param>
-        /// <returns>2 for <c>*</c> and <c>/</c>; 1 for <c>+</c> and <c>-</c>; 0 for unknown.</returns>
+        /// <summary>
+        /// Devuelve el nivel de precedencia aritmética del operador dado.
+        /// </summary>
+        /// <param name="op">Cadena de operador.</param>
+        /// <returns>
+        /// <c>2</c> para <c>*</c> y <c>/</c>;
+        /// <c>1</c> para <c>+</c> y <c>-</c>;
+        /// <c>0</c> para cualquier otro valor.
+        /// </returns>
         private static int GetPrecedence(string op) => op switch
         {
             "+" or "-" => 1,
@@ -328,10 +392,10 @@ namespace Calculadora.ViewModels
         };
 
         /// <summary>
-        /// Builds the human-readable expression string from <see cref="_expressionTokens"/>,
-        /// replacing internal operator symbols with their display counterparts.
+        /// Construye la cadena de expresión legible a partir de <see cref="_expressionTokens"/>,
+        /// sustituyendo los símbolos internos de operador por sus equivalentes Unicode.
         /// </summary>
-        /// <returns>Formatted expression string.</returns>
+        /// <returns>Cadena formateada lista para mostrar al usuario.</returns>
         private string BuildDisplayExpression()
         {
             var sb = new StringBuilder();
@@ -339,7 +403,7 @@ namespace Calculadora.ViewModels
             {
                 if (i > 0) sb.Append(' ');
                 string token = _expressionTokens[i];
-                if (i % 2 == 1)
+                if (i % 2 == 1) // Los tokens en posición impar son operadores.
                 {
                     sb.Append(GetOperatorSymbol(token));
                 }
@@ -354,7 +418,7 @@ namespace Calculadora.ViewModels
             return sb.ToString();
         }
 
-        /// <summary>Clears both token lists atomically.</summary>
+        /// <summary>Vacía atómicamente las dos listas de tokens.</summary>
         private void ClearTokens()
         {
             _tokens.Clear();
@@ -362,8 +426,9 @@ namespace Calculadora.ViewModels
         }
 
         /// <summary>
-        /// Transitions the calculator into an error state, clearing all pending tokens.
-        /// The user must press <c>C</c> to recover.
+        /// Pone la calculadora en estado de error: limpia los tokens,
+        /// muestra <c>"Error"</c> en el display y bloquea la entrada.
+        /// El usuario debe pulsar <c>C</c> para recuperarse del error.
         /// </summary>
         private void TriggerError()
         {
@@ -375,18 +440,20 @@ namespace Calculadora.ViewModels
             _justEvaluated = false;
         }
 
-        /// <summary>Attempts to parse the current display string as a <see cref="double"/>.</summary>
-        /// <param name="value">Parsed value on success.</param>
-        /// <returns><c>true</c> if parsing succeeded.</returns>
+        /// <summary>
+        /// Intenta convertir la cadena actual del display a un <see cref="double"/>.
+        /// </summary>
+        /// <param name="value">Valor parseado si la conversión tiene éxito.</param>
+        /// <returns><c>true</c> si el parseo fue correcto; <c>false</c> en caso contrario.</returns>
         private bool ParseDisplay(out double value)
             => double.TryParse(Display, NumberStyles.Any, CultureInfo.InvariantCulture, out value);
 
         /// <summary>
-        /// Formats a <see cref="double"/> for display, omitting the decimal point for
-        /// whole numbers within the safe integer range.
+        /// Formatea un número <see cref="double"/> para mostrarlo en el display.
+        /// Los números enteros dentro del rango seguro se muestran sin punto decimal.
         /// </summary>
-        /// <param name="value">Value to format.</param>
-        /// <returns>Locale-independent formatted string.</returns>
+        /// <param name="value">Valor a formatear.</param>
+        /// <returns>Cadena formateada independiente de la cultura local.</returns>
         private static string FormatNumber(double value)
         {
             if (value == Math.Floor(value) && Math.Abs(value) < 1e15)
@@ -394,9 +461,12 @@ namespace Calculadora.ViewModels
             return value.ToString("G10", CultureInfo.InvariantCulture);
         }
 
-        /// <summary>Maps an internal operator token to its Unicode display symbol.</summary>
-        /// <param name="op">Internal operator string.</param>
-        /// <returns>Display symbol, e.g. <c>"×"</c> for <c>"*"</c>.</returns>
+        /// <summary>
+        /// Mapea el símbolo interno del operador al carácter Unicode correspondiente
+        /// para la cadena de historial.
+        /// </summary>
+        /// <param name="op">Operador interno (<c>"*"</c>, <c>"/"</c>, etc.).</param>
+        /// <returns>Símbolo de presentación (<c>"×"</c>, <c>"÷"</c>, etc.).</returns>
         private static string GetOperatorSymbol(string op) => op switch
         {
             "+" => "+",

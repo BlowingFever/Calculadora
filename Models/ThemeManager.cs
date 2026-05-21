@@ -7,35 +7,56 @@ namespace Calculadora.Models
 {
     /// <summary>
     /// Application-wide theme controller.
-    /// Applies the selected WPF UI theme and merges the corresponding colour sub-dictionary
-    /// from <c>Themes/Colors.xaml</c> into the application resource tree.
+    /// Applies the selected theme (dark/light) to both the WPF UI library
+    /// and the custom colour dictionary <c>Themes/Colors.xaml</c>.
     /// </summary>
+    /// <remarks>
+    /// This class is static and acts as an implicit singleton that can be called
+    /// from anywhere in the application without dependency injection.
+    ///
+    /// Theme-change flow:
+    /// <list type="number">
+    ///   <item><description><see cref="Apply"/> or <see cref="Toggle"/> is called.</description></item>
+    ///   <item><description>WPF UI is notified via <c>ApplicationThemeManager</c>.</description></item>
+    ///   <item><description>The matching colour sub-dictionary is merged into application resources.</description></item>
+    ///   <item><description><see cref="ThemeChanged"/> is raised so ViewModels can react.</description></item>
+    /// </list>
+    /// </remarks>
     public static class ThemeManager
     {
         private const string DarkKey = "Dark";
         private const string LightKey = "Light";
 
-        /// <summary>Gets a value indicating whether the dark theme is currently active.</summary>
+        /// <summary>
+        /// Gets a value indicating whether the dark theme is currently active.
+        /// </summary>
         public static bool IsDark { get; private set; } = true;
 
-        /// <summary>Raised after each successful theme switch.</summary>
+        /// <summary>
+        /// Raised after each successful theme switch.
+        /// ViewModels can subscribe to update icons or other theme-dependent properties.
+        /// </summary>
         public static event EventHandler? ThemeChanged;
 
         /// <summary>
-        /// Initializes the theme system and applies the startup theme.
+        /// Initialises the theme system and applies the startup theme.
+        /// Should be called once in <c>App.OnStartup</c>, before any window is shown.
         /// </summary>
         /// <param name="startDark">
         /// <c>true</c> (default) to start in dark mode; <c>false</c> for light mode.
         /// </param>
         public static void Initialize(bool startDark = true) => Apply(startDark);
 
-        /// <summary>Toggles between dark and light themes.</summary>
+        /// <summary>
+        /// Toggles between dark and light themes.
+        /// If the current theme is dark it switches to light, and vice-versa.
+        /// </summary>
         public static void Toggle() => Apply(!IsDark);
 
         /// <summary>
         /// Applies the specified theme immediately.
         /// </summary>
-        /// <param name="dark"><c>true</c> to apply dark theme; <c>false</c> for light.</param>
+        /// <param name="dark"><c>true</c> for the dark theme; <c>false</c> for light.</param>
         public static void Apply(bool dark)
         {
             IsDark = dark;
@@ -45,14 +66,17 @@ namespace Calculadora.Models
         }
 
         /// <summary>
-        /// Locates the <c>Colors.xaml</c> dictionary (loading it if absent), then copies all
-        /// entries from the requested colour sub-dictionary into the application root resources,
-        /// removing any entries belonging to the opposite theme first.
+        /// Locates the <c>Colors.xaml</c> dictionary (loading it if absent), removes entries
+        /// belonging to the opposite theme, then merges the requested colour sub-dictionary
+        /// into the application root resources.
         /// </summary>
-        /// <param name="key">Resource key of the sub-dictionary to activate (<c>"Dark"</c> or <c>"Light"</c>).</param>
+        /// <param name="key">
+        /// Resource key of the sub-dictionary to activate: <c>"Dark"</c> or <c>"Light"</c>.
+        /// </param>
         private static void MergeColorSubDictionary(string key)
         {
             ResourceDictionary? colorDict = FindColorsDictionary();
+
             if (colorDict is null)
             {
                 colorDict = new ResourceDictionary
@@ -67,6 +91,7 @@ namespace Calculadora.Models
             var appRes = Application.Current.Resources;
             string oppositeKey = key == DarkKey ? LightKey : DarkKey;
 
+            // Remove entries from the previous theme first to avoid key conflicts.
             if (colorDict[oppositeKey] is ResourceDictionary oldDict)
             {
                 foreach (var k in oldDict.Keys.Cast<object>().ToList())
@@ -74,14 +99,17 @@ namespace Calculadora.Models
                         appRes.Remove(k);
             }
 
+            // Merge entries from the new theme.
             foreach (var k in newDict.Keys.Cast<object>().ToList())
                 appRes[k] = newDict[k];
         }
 
         /// <summary>
-        /// Searches the merged dictionaries for the <c>Colors.xaml</c> resource dictionary.
+        /// Searches the application's merged dictionaries for <c>Colors.xaml</c>.
         /// </summary>
-        /// <returns>The dictionary if found; otherwise <c>null</c>.</returns>
+        /// <returns>
+        /// The <see cref="ResourceDictionary"/> if found; otherwise <c>null</c>.
+        /// </returns>
         private static ResourceDictionary? FindColorsDictionary()
         {
             foreach (var dict in Application.Current.Resources.MergedDictionaries)

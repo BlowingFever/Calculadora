@@ -119,7 +119,7 @@ document.addEventListener('DOMContentLoaded',() => { initNavTree('class_calculad
 </div><!--header-->
 <div class="contents">
 
-<p>Represents a single mathematical expression entry in the graphing calculator UI.  
+<p>Represents a single mathematical expression entry in the graphing calculator UI. Each instance maps to one row in the side-panel list and one curve on the ScottPlot canvas.  
  <a href="#details">More...</a></p>
 <div class="dynheader">
 Inheritance diagram for Calculadora.Models.ExpressionItem:</div>
@@ -137,25 +137,26 @@ Protected Member Functions</h2></td></tr>
 Properties</h2></td></tr>
 <tr class="memitem:a248214a6b1ee555be6ab3365496a511e" id="r_a248214a6b1ee555be6ab3365496a511e"><td class="memItemLeft"><a id="a248214a6b1ee555be6ab3365496a511e" name="a248214a6b1ee555be6ab3365496a511e"></a>
 Guid&#160;</td><td class="memItemRight"><b>Id</b> = Guid.NewGuid()<code> [get]</code></td></tr>
-<tr class="memdesc:a248214a6b1ee555be6ab3365496a511e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Unique identifier used to map this entry to its curve on the ScottPlot canvas. <br /></td></tr>
+<tr class="memdesc:a248214a6b1ee555be6ab3365496a511e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Unique identifier generated at construction time. Used to associate this entry with its corresponding curve in ScottPlot even when the text or colour changes. <br /></td></tr>
 <tr class="memitem:a6f5bcf3e860a37c91c3b1ddd3ad05312" id="r_a6f5bcf3e860a37c91c3b1ddd3ad05312"><td class="memItemLeft"><a id="a6f5bcf3e860a37c91c3b1ddd3ad05312" name="a6f5bcf3e860a37c91c3b1ddd3ad05312"></a>
 string&#160;</td><td class="memItemRight"><b>Text</b><code> [get, set]</code></td></tr>
-<tr class="memdesc:a6f5bcf3e860a37c91c3b1ddd3ad05312"><td class="mdescLeft">&#160;</td><td class="mdescRight">The mathematical function text entered by the user, e.g. <code>"x^2 + sin(x)"</code>. <br /></td></tr>
+<tr class="memdesc:a6f5bcf3e860a37c91c3b1ddd3ad05312"><td class="mdescLeft">&#160;</td><td class="mdescRight">The mathematical function text entered by the user. Examples: <code>"x^2"</code>, <code>"sin(x) + cos(x)"</code>, <code>"x = y^2"</code>. <br /></td></tr>
 <tr class="memitem:a8b1e07f66e1c0e8e2fc6737babb2479f" id="r_a8b1e07f66e1c0e8e2fc6737babb2479f"><td class="memItemLeft"><a id="a8b1e07f66e1c0e8e2fc6737babb2479f" name="a8b1e07f66e1c0e8e2fc6737babb2479f"></a>
 string&#160;</td><td class="memItemRight"><b>Color</b><code> [get, set]</code></td></tr>
-<tr class="memdesc:a8b1e07f66e1c0e8e2fc6737babb2479f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Hexadecimal color string (<code>"#RRGGBB"</code>) used to render the plotted curve. <br /></td></tr>
+<tr class="memdesc:a8b1e07f66e1c0e8e2fc6737babb2479f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Hexadecimal colour string (<code>"#RRGGBB"</code>) used to render the plotted curve. Assigned automatically from the colour palette in <code>GraphCalcViewModel</code>. <br /></td></tr>
 <tr class="memitem:a0d39d94699248f4cf1ce92c8212cfb1d" id="r_a0d39d94699248f4cf1ce92c8212cfb1d"><td class="memItemLeft"><a id="a0d39d94699248f4cf1ce92c8212cfb1d" name="a0d39d94699248f4cf1ce92c8212cfb1d"></a>
 bool&#160;</td><td class="memItemRight"><b>Visible</b><code> [get, set]</code></td></tr>
-<tr class="memdesc:a0d39d94699248f4cf1ce92c8212cfb1d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Controls whether the curve is rendered on the plot. <br /></td></tr>
+<tr class="memdesc:a0d39d94699248f4cf1ce92c8212cfb1d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Controls whether the curve is rendered on the plot. Users can hide/show expressions without removing them. <br /></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 id="header-events" class="groupheader"><a id="events" name="events"></a>
 Events</h2></td></tr>
 <tr class="memitem:a69e4e16f6d68e63c6aeecacad4a0b912" id="r_a69e4e16f6d68e63c6aeecacad4a0b912"><td class="memItemLeft"><a id="a69e4e16f6d68e63c6aeecacad4a0b912" name="a69e4e16f6d68e63c6aeecacad4a0b912"></a>
 PropertyChangedEventHandler?&#160;</td><td class="memItemRight"><b>PropertyChanged</b></td></tr>
+<tr class="memdesc:a69e4e16f6d68e63c6aeecacad4a0b912"><td class="mdescLeft">&#160;</td><td class="mdescRight">Raised when the value of any property on this instance changes, allowing bound controls to update automatically. <br /></td></tr>
 </table>
 <a name="details" id="details"></a><h2 id="header-details" class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>Represents a single mathematical expression entry in the graphing calculator UI. </p>
-<p>Implements INotifyPropertyChanged directly (rather than inheriting <code>ViewModelBase</code>) so it can be data-bound inside an <code>ItemsControl</code> without pulling in the full ViewModel hierarchy. </p>
+<div class="textblock"><p>Represents a single mathematical expression entry in the graphing calculator UI. Each instance maps to one row in the side-panel list and one curve on the ScottPlot canvas. </p>
+<p>Implements INotifyPropertyChanged directly rather than inheriting <code>ViewModelBase</code>, so it can be data-bound inside an <code>ItemsControl</code> without pulling in the full ViewModel hierarchy into the model layer. </p>
 </div><a name="doc-func-members" id="doc-func-members"></a><h2 id="header-doc-func-members" class="groupheader">Member Function Documentation</h2>
 <a id="ab1adf8c0fa5da2c42b35eea1a7166f0f" name="ab1adf8c0fa5da2c42b35eea1a7166f0f"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ab1adf8c0fa5da2c42b35eea1a7166f0f">&#9670;&#160;</a></span>OnPropertyChanged()</h2>
@@ -183,7 +184,7 @@ PropertyChangedEventHandler?&#160;</td><td class="memItemRight"><b>PropertyChang
 <p>Raises PropertyChanged for the calling member. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">propertyName</td><td>Inferred automatically from the call site.</td></tr>
+    <tr><td class="paramname">propertyName</td><td>Name of the property that changed. Inferred automatically by the compiler via CallerMemberNameAttribute. </td></tr>
   </table>
   </dd>
 </dl>

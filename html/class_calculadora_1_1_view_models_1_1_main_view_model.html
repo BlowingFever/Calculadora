@@ -119,7 +119,7 @@ document.addEventListener('DOMContentLoaded',() => { initNavTree('class_calculad
 </div><!--header-->
 <div class="contents">
 
-<p>Root ViewModel that owns the active view and exposes navigation commands. WPF resolves the correct <code>DataTemplate</code> for CurrentView automatically via the type-keyed templates registered in <code>App.xaml</code>.  
+<p>Root ViewModel that owns the active view and exposes navigation commands. WPF resolves the correct <code>DataTemplate</code> for CurrentView automatically via type-keyed templates registered in <code>App.xaml</code>.  
  <a href="#details">More...</a></p>
 <div class="dynheader">
 Inheritance diagram for Calculadora.ViewModels.MainViewModel:</div>
@@ -127,7 +127,7 @@ Inheritance diagram for Calculadora.ViewModels.MainViewModel:</div>
  <div class="center">
   <img src="class_calculadora_1_1_view_models_1_1_main_view_model.png" usemap="#Calculadora_2EViewModels_2EMainViewModel_map" alt=""/>
   <map id="Calculadora_2EViewModels_2EMainViewModel_map" name="Calculadora_2EViewModels_2EMainViewModel_map">
-<area href="class_calculadora_1_1_common_1_1_view_model_base.html" title="Base class for all MVVM ViewModels. Centralises INotifyPropertyChanged boilerplate so derived classes..." alt="Calculadora.Common.ViewModelBase" shape="rect" coords="0,56,249,80"/>
+<area href="class_calculadora_1_1_common_1_1_view_model_base.html" title="Abstract base class for all ViewModels in the application. Centralises INotifyPropertyChanged boilerp..." alt="Calculadora.Common.ViewModelBase" shape="rect" coords="0,56,249,80"/>
   </map>
 </div></div>
 <table class="memberdecls">
@@ -135,33 +135,35 @@ Inheritance diagram for Calculadora.ViewModels.MainViewModel:</div>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:a236dbeb897f9abdfc048b6b26f98894c" id="r_a236dbeb897f9abdfc048b6b26f98894c"><td class="memItemLeft"><a id="a236dbeb897f9abdfc048b6b26f98894c" name="a236dbeb897f9abdfc048b6b26f98894c"></a>
 &#160;</td><td class="memItemRight"><b>MainViewModel</b> ()</td></tr>
-<tr class="memdesc:a236dbeb897f9abdfc048b6b26f98894c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Wires navigation commands and sets the default startup view to the standard calculator. <br /></td></tr>
+<tr class="memdesc:a236dbeb897f9abdfc048b6b26f98894c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Wires the navigation commands and sets the default startup view to the standard calculator. <br /></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 id="header-properties" class="groupheader"><a id="properties" name="properties"></a>
 Properties</h2></td></tr>
 <tr class="memitem:af41d2c36ddfa9a1aea268d4fbb6c2131" id="r_af41d2c36ddfa9a1aea268d4fbb6c2131"><td class="memItemLeft"><a id="af41d2c36ddfa9a1aea268d4fbb6c2131" name="af41d2c36ddfa9a1aea268d4fbb6c2131"></a>
 <a class="el" href="class_calculadora_1_1_common_1_1_view_model_base.html">ViewModelBase</a>&#160;</td><td class="memItemRight"><b>CurrentView</b><code> [get]</code></td></tr>
-<tr class="memdesc:af41d2c36ddfa9a1aea268d4fbb6c2131"><td class="mdescLeft">&#160;</td><td class="mdescRight">The currently displayed ViewModel, bound to the <code>ContentControl</code> in <code>MainWindow.xaml</code>. <br /></td></tr>
+<tr class="memdesc:af41d2c36ddfa9a1aea268d4fbb6c2131"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the ViewModel that is currently displayed. Bound to the <code>ContentControl</code> in <code>MainWindow.xaml</code>. Changing this value causes WPF to swap the visual content automatically. <br /></td></tr>
 <tr class="memitem:a28da7c7d309ac5ec77c0f34b5ece6edc" id="r_a28da7c7d309ac5ec77c0f34b5ece6edc"><td class="memItemLeft"><a id="a28da7c7d309ac5ec77c0f34b5ece6edc" name="a28da7c7d309ac5ec77c0f34b5ece6edc"></a>
 ICommand&#160;</td><td class="memItemRight"><b>ShowNormalCalculatorCommand</b><code> [get]</code></td></tr>
-<tr class="memdesc:a28da7c7d309ac5ec77c0f34b5ece6edc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Switches CurrentView to the standard calculator. <br /></td></tr>
+<tr class="memdesc:a28da7c7d309ac5ec77c0f34b5ece6edc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Switches CurrentView to the standard calculator. Bound to navigation buttons/tabs in the view. <br /></td></tr>
 <tr class="memitem:a338a09f377749ce7dd2b4e5d04cebc20" id="r_a338a09f377749ce7dd2b4e5d04cebc20"><td class="memItemLeft"><a id="a338a09f377749ce7dd2b4e5d04cebc20" name="a338a09f377749ce7dd2b4e5d04cebc20"></a>
 ICommand&#160;</td><td class="memItemRight"><b>ShowGraphCalculatorCommand</b><code> [get]</code></td></tr>
-<tr class="memdesc:a338a09f377749ce7dd2b4e5d04cebc20"><td class="mdescLeft">&#160;</td><td class="mdescRight">Switches CurrentView to the graphing calculator. <br /></td></tr>
+<tr class="memdesc:a338a09f377749ce7dd2b4e5d04cebc20"><td class="mdescLeft">&#160;</td><td class="mdescRight">Switches CurrentView to the graphing calculator. Bound to navigation buttons/tabs in the view. <br /></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 id="header-inherited" class="groupheader"><a id="inherited" name="inherited"></a>
 Additional Inherited Members</h2></td></tr>
 <tr class="inherit_header pro_methods_class_calculadora_1_1_common_1_1_view_model_base"><td colspan="2">Protected Member Functions inherited from <a class="el" href="class_calculadora_1_1_common_1_1_view_model_base.html">Calculadora.Common.ViewModelBase</a></td></tr>
 <tr class="memitem:acf9ceeb56c3e7f5dd6b33d645b995382 pro_methods_class_calculadora_1_1_common_1_1_view_model_base" id="r_acf9ceeb56c3e7f5dd6b33d645b995382"><td class="memItemLeft">void&#160;</td><td class="memItemRight"><a class="el" href="class_calculadora_1_1_common_1_1_view_model_base.html#acf9ceeb56c3e7f5dd6b33d645b995382">OnPropertyChanged</a> ([CallerMemberName] string? propertyName=null)</td></tr>
-<tr class="memdesc:acf9ceeb56c3e7f5dd6b33d645b995382 pro_methods_class_calculadora_1_1_common_1_1_view_model_base"><td class="mdescLeft">&#160;</td><td class="mdescRight">Raises PropertyChanged for the specified property. System.Runtime.CompilerServices.CallerMemberNameAttribute automatically infers the property name when called from inside a property setter.  <br /></td></tr>
+<tr class="memdesc:acf9ceeb56c3e7f5dd6b33d645b995382 pro_methods_class_calculadora_1_1_common_1_1_view_model_base"><td class="mdescLeft">&#160;</td><td class="mdescRight">Raises PropertyChanged for the specified property. Thanks to CallerMemberNameAttribute, the property name is inferred automatically when called from inside a property setter.  <br /></td></tr>
 <tr class="memitem:ae22411ddb5b33eca773cb87579d0e4bc pro_methods_class_calculadora_1_1_common_1_1_view_model_base" id="r_ae22411ddb5b33eca773cb87579d0e4bc"><td class="memItemLeft">bool&#160;</td><td class="memItemRight"><a class="el" href="class_calculadora_1_1_common_1_1_view_model_base.html#ae22411ddb5b33eca773cb87579d0e4bc">SetProperty&lt; T &gt;</a> (ref T field, T value, [CallerMemberName] string? propertyName=null)</td></tr>
-<tr class="memdesc:ae22411ddb5b33eca773cb87579d0e4bc pro_methods_class_calculadora_1_1_common_1_1_view_model_base"><td class="mdescLeft">&#160;</td><td class="mdescRight">Assigns <em>value</em>  to <em>field</em>  and raises PropertyChanged only when the value actually changes.  <br /></td></tr>
+<tr class="memdesc:ae22411ddb5b33eca773cb87579d0e4bc pro_methods_class_calculadora_1_1_common_1_1_view_model_base"><td class="mdescLeft">&#160;</td><td class="mdescRight">Assigns <em>value</em>  to the backing <em>field</em>  and raises PropertyChanged only when the value actually changes.  <br /></td></tr>
 <tr class="inherit_header events_class_calculadora_1_1_common_1_1_view_model_base"><td colspan="2">Events inherited from <a class="el" href="class_calculadora_1_1_common_1_1_view_model_base.html">Calculadora.Common.ViewModelBase</a></td></tr>
 <tr class="memitem:ad60ce6592f008ae89b5c7e638e0b6cf4 events_class_calculadora_1_1_common_1_1_view_model_base" id="r_ad60ce6592f008ae89b5c7e638e0b6cf4"><td class="memItemLeft">
 PropertyChangedEventHandler?&#160;</td><td class="memItemRight"><b>PropertyChanged</b></td></tr>
+<tr class="memdesc:ad60ce6592f008ae89b5c7e638e0b6cf4 events_class_calculadora_1_1_common_1_1_view_model_base"><td class="mdescLeft">&#160;</td><td class="mdescRight">Raised when the value of a bound property changes. WPF subscribes to this event automatically to refresh bound controls. <br /></td></tr>
 </table>
 <a name="details" id="details"></a><h2 id="header-details" class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>Root ViewModel that owns the active view and exposes navigation commands. WPF resolves the correct <code>DataTemplate</code> for CurrentView automatically via the type-keyed templates registered in <code>App.xaml</code>. </p>
+<div class="textblock"><p>Root ViewModel that owns the active view and exposes navigation commands. WPF resolves the correct <code>DataTemplate</code> for CurrentView automatically via type-keyed templates registered in <code>App.xaml</code>. </p>
+<p>Child <a class="el" href="namespace_calculadora_1_1_view_models.html">ViewModels</a> are created as singletons so that their state (calculation history, graph expressions, etc.) is preserved when the user switches between views and returns. </p>
 </div><hr/>The documentation for this class was generated from the following file:<ul>
 <li>ViewModels/<b>MainViewModel.cs</b></li>
 </ul>

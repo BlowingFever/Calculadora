@@ -119,7 +119,7 @@ document.addEventListener('DOMContentLoaded',() => { initNavTree('class_calculad
 </div><!--header-->
 <div class="contents">
 
-<p>ViewModel for the standard (non-graphing) calculator view. Implements a precedence-aware infix evaluator using two token lists: one for live computation and one for the full expression history shown on the display.  
+<p>ViewModel de la calculadora estándar (no gráfica). Implementa un evaluador de expresiones infijas con precedencia de operadores mediante dos listas de tokens paralelas: una para el cómputo y otra para el historial visual que se muestra encima del display.  
  <a href="#details">More...</a></p>
 <div class="dynheader">
 Inheritance diagram for Calculadora.ViewModels.NormalCalcViewModel:</div>
@@ -127,7 +127,7 @@ Inheritance diagram for Calculadora.ViewModels.NormalCalcViewModel:</div>
  <div class="center">
   <img src="class_calculadora_1_1_view_models_1_1_normal_calc_view_model.png" usemap="#Calculadora_2EViewModels_2ENormalCalcViewModel_map" alt=""/>
   <map id="Calculadora_2EViewModels_2ENormalCalcViewModel_map" name="Calculadora_2EViewModels_2ENormalCalcViewModel_map">
-<area href="class_calculadora_1_1_common_1_1_view_model_base.html" title="Base class for all MVVM ViewModels. Centralises INotifyPropertyChanged boilerplate so derived classes..." alt="Calculadora.Common.ViewModelBase" shape="rect" coords="0,56,287,80"/>
+<area href="class_calculadora_1_1_common_1_1_view_model_base.html" title="Abstract base class for all ViewModels in the application. Centralises INotifyPropertyChanged boilerp..." alt="Calculadora.Common.ViewModelBase" shape="rect" coords="0,56,287,80"/>
   </map>
 </div></div>
 <table class="memberdecls">
@@ -135,51 +135,61 @@ Inheritance diagram for Calculadora.ViewModels.NormalCalcViewModel:</div>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:aac067ceb89c4a4250e7016b09ccf2786" id="r_aac067ceb89c4a4250e7016b09ccf2786"><td class="memItemLeft"><a id="aac067ceb89c4a4250e7016b09ccf2786" name="aac067ceb89c4a4250e7016b09ccf2786"></a>
 &#160;</td><td class="memItemRight"><b>NormalCalcViewModel</b> ()</td></tr>
-<tr class="memdesc:aac067ceb89c4a4250e7016b09ccf2786"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initializes all commands. <br /></td></tr>
+<tr class="memdesc:aac067ceb89c4a4250e7016b09ccf2786"><td class="mdescLeft">&#160;</td><td class="mdescRight">Inicializa todos los comandos de la calculadora estándar. <br /></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 id="header-properties" class="groupheader"><a id="properties" name="properties"></a>
 Properties</h2></td></tr>
 <tr class="memitem:a4c8b5c6ffbab40e7c6f4afe911610105" id="r_a4c8b5c6ffbab40e7c6f4afe911610105"><td class="memItemLeft"><a id="a4c8b5c6ffbab40e7c6f4afe911610105" name="a4c8b5c6ffbab40e7c6f4afe911610105"></a>
 string&#160;</td><td class="memItemRight"><b>Display</b><code> [get]</code></td></tr>
-<tr class="memdesc:a4c8b5c6ffbab40e7c6f4afe911610105"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the main numeric display string. <br /></td></tr>
+<tr class="memdesc:a4c8b5c6ffbab40e7c6f4afe911610105"><td class="mdescLeft">&#160;</td><td class="mdescRight">Obtiene la cadena numérica principal que se muestra en el display. <br /></td></tr>
 <tr class="memitem:ae5784a13e0953735d5435ebb5302ffd2" id="r_ae5784a13e0953735d5435ebb5302ffd2"><td class="memItemLeft"><a id="ae5784a13e0953735d5435ebb5302ffd2" name="ae5784a13e0953735d5435ebb5302ffd2"></a>
 string&#160;</td><td class="memItemRight"><b>Expression</b><code> [get]</code></td></tr>
-<tr class="memdesc:ae5784a13e0953735d5435ebb5302ffd2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the expression history string shown above the main display. <br /></td></tr>
+<tr class="memdesc:ae5784a13e0953735d5435ebb5302ffd2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Obtiene la expresión acumulada que se muestra encima del display principal. Ejemplo: <code>"12 + 34 × 5 ="</code>. <br /></td></tr>
 <tr class="memitem:a913e23d13a6c2f4ab8f6147b51177ac3" id="r_a913e23d13a6c2f4ab8f6147b51177ac3"><td class="memItemLeft"><a id="a913e23d13a6c2f4ab8f6147b51177ac3" name="a913e23d13a6c2f4ab8f6147b51177ac3"></a>
 ICommand&#160;</td><td class="memItemRight"><b>DigitCommand</b><code> [get]</code></td></tr>
-<tr class="memdesc:a913e23d13a6c2f4ab8f6147b51177ac3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Appends a digit character to the current operand. <br /></td></tr>
+<tr class="memdesc:a913e23d13a6c2f4ab8f6147b51177ac3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Añade un dígito al operando actual en el display. <br /></td></tr>
 <tr class="memitem:aab099f2baed11a9cf671f1fc8999afbb" id="r_aab099f2baed11a9cf671f1fc8999afbb"><td class="memItemLeft"><a id="aab099f2baed11a9cf671f1fc8999afbb" name="aab099f2baed11a9cf671f1fc8999afbb"></a>
 ICommand&#160;</td><td class="memItemRight"><b>OperatorCommand</b><code> [get]</code></td></tr>
-<tr class="memdesc:aab099f2baed11a9cf671f1fc8999afbb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Pushes the current display value and the selected operator onto the token stack. <br /></td></tr>
+<tr class="memdesc:aab099f2baed11a9cf671f1fc8999afbb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Registra el operando actual y el operador elegido, reduciendo las operaciones pendientes de mayor o igual precedencia. <br /></td></tr>
 <tr class="memitem:afc7fa13635269dfbffc9de03782993f4" id="r_afc7fa13635269dfbffc9de03782993f4"><td class="memItemLeft"><a id="afc7fa13635269dfbffc9de03782993f4" name="afc7fa13635269dfbffc9de03782993f4"></a>
 ICommand&#160;</td><td class="memItemRight"><b>EqualsCommand</b><code> [get]</code></td></tr>
-<tr class="memdesc:afc7fa13635269dfbffc9de03782993f4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Evaluates the full expression and shows the result. <br /></td></tr>
+<tr class="memdesc:afc7fa13635269dfbffc9de03782993f4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Evalúa la expresión completa y muestra el resultado final. <br /></td></tr>
 <tr class="memitem:a7563ad8bc9dda74c51d7ca62f7605359" id="r_a7563ad8bc9dda74c51d7ca62f7605359"><td class="memItemLeft"><a id="a7563ad8bc9dda74c51d7ca62f7605359" name="a7563ad8bc9dda74c51d7ca62f7605359"></a>
 ICommand&#160;</td><td class="memItemRight"><b>ClearCommand</b><code> [get]</code></td></tr>
-<tr class="memdesc:a7563ad8bc9dda74c51d7ca62f7605359"><td class="mdescLeft">&#160;</td><td class="mdescRight">Resets the calculator to its initial state. <br /></td></tr>
+<tr class="memdesc:a7563ad8bc9dda74c51d7ca62f7605359"><td class="mdescLeft">&#160;</td><td class="mdescRight">Resetea la calculadora a su estado inicial. <br /></td></tr>
 <tr class="memitem:aa38592952ee78cf9ce000ac5259bdd71" id="r_aa38592952ee78cf9ce000ac5259bdd71"><td class="memItemLeft"><a id="aa38592952ee78cf9ce000ac5259bdd71" name="aa38592952ee78cf9ce000ac5259bdd71"></a>
 ICommand&#160;</td><td class="memItemRight"><b>DecimalCommand</b><code> [get]</code></td></tr>
-<tr class="memdesc:aa38592952ee78cf9ce000ac5259bdd71"><td class="mdescLeft">&#160;</td><td class="mdescRight">Appends a decimal separator to the current operand. <br /></td></tr>
+<tr class="memdesc:aa38592952ee78cf9ce000ac5259bdd71"><td class="mdescLeft">&#160;</td><td class="mdescRight">Añade el separador decimal al operando actual. <br /></td></tr>
 <tr class="memitem:a6f88477b8969cb04822a99ca32c155c4" id="r_a6f88477b8969cb04822a99ca32c155c4"><td class="memItemLeft"><a id="a6f88477b8969cb04822a99ca32c155c4" name="a6f88477b8969cb04822a99ca32c155c4"></a>
 ICommand&#160;</td><td class="memItemRight"><b>ToggleSignCommand</b><code> [get]</code></td></tr>
-<tr class="memdesc:a6f88477b8969cb04822a99ca32c155c4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Negates the current operand. <br /></td></tr>
+<tr class="memdesc:a6f88477b8969cb04822a99ca32c155c4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Invierte el signo del valor mostrado en el display. <br /></td></tr>
 <tr class="memitem:af4ecc70e90484163339e3d75008557d2" id="r_af4ecc70e90484163339e3d75008557d2"><td class="memItemLeft"><a id="af4ecc70e90484163339e3d75008557d2" name="af4ecc70e90484163339e3d75008557d2"></a>
 ICommand&#160;</td><td class="memItemRight"><b>PercentCommand</b><code> [get]</code></td></tr>
-<tr class="memdesc:af4ecc70e90484163339e3d75008557d2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Divides the current operand by 100. <br /></td></tr>
+<tr class="memdesc:af4ecc70e90484163339e3d75008557d2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Divide el valor del display entre 100 (convierte a porcentaje). <br /></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 id="header-inherited" class="groupheader"><a id="inherited" name="inherited"></a>
 Additional Inherited Members</h2></td></tr>
 <tr class="inherit_header pro_methods_class_calculadora_1_1_common_1_1_view_model_base"><td colspan="2">Protected Member Functions inherited from <a class="el" href="class_calculadora_1_1_common_1_1_view_model_base.html">Calculadora.Common.ViewModelBase</a></td></tr>
 <tr class="memitem:acf9ceeb56c3e7f5dd6b33d645b995382 pro_methods_class_calculadora_1_1_common_1_1_view_model_base" id="r_acf9ceeb56c3e7f5dd6b33d645b995382"><td class="memItemLeft">void&#160;</td><td class="memItemRight"><a class="el" href="class_calculadora_1_1_common_1_1_view_model_base.html#acf9ceeb56c3e7f5dd6b33d645b995382">OnPropertyChanged</a> ([CallerMemberName] string? propertyName=null)</td></tr>
-<tr class="memdesc:acf9ceeb56c3e7f5dd6b33d645b995382 pro_methods_class_calculadora_1_1_common_1_1_view_model_base"><td class="mdescLeft">&#160;</td><td class="mdescRight">Raises PropertyChanged for the specified property. System.Runtime.CompilerServices.CallerMemberNameAttribute automatically infers the property name when called from inside a property setter.  <br /></td></tr>
+<tr class="memdesc:acf9ceeb56c3e7f5dd6b33d645b995382 pro_methods_class_calculadora_1_1_common_1_1_view_model_base"><td class="mdescLeft">&#160;</td><td class="mdescRight">Raises PropertyChanged for the specified property. Thanks to CallerMemberNameAttribute, the property name is inferred automatically when called from inside a property setter.  <br /></td></tr>
 <tr class="memitem:ae22411ddb5b33eca773cb87579d0e4bc pro_methods_class_calculadora_1_1_common_1_1_view_model_base" id="r_ae22411ddb5b33eca773cb87579d0e4bc"><td class="memItemLeft">bool&#160;</td><td class="memItemRight"><a class="el" href="class_calculadora_1_1_common_1_1_view_model_base.html#ae22411ddb5b33eca773cb87579d0e4bc">SetProperty&lt; T &gt;</a> (ref T field, T value, [CallerMemberName] string? propertyName=null)</td></tr>
-<tr class="memdesc:ae22411ddb5b33eca773cb87579d0e4bc pro_methods_class_calculadora_1_1_common_1_1_view_model_base"><td class="mdescLeft">&#160;</td><td class="mdescRight">Assigns <em>value</em>  to <em>field</em>  and raises PropertyChanged only when the value actually changes.  <br /></td></tr>
+<tr class="memdesc:ae22411ddb5b33eca773cb87579d0e4bc pro_methods_class_calculadora_1_1_common_1_1_view_model_base"><td class="mdescLeft">&#160;</td><td class="mdescRight">Assigns <em>value</em>  to the backing <em>field</em>  and raises PropertyChanged only when the value actually changes.  <br /></td></tr>
 <tr class="inherit_header events_class_calculadora_1_1_common_1_1_view_model_base"><td colspan="2">Events inherited from <a class="el" href="class_calculadora_1_1_common_1_1_view_model_base.html">Calculadora.Common.ViewModelBase</a></td></tr>
 <tr class="memitem:ad60ce6592f008ae89b5c7e638e0b6cf4 events_class_calculadora_1_1_common_1_1_view_model_base" id="r_ad60ce6592f008ae89b5c7e638e0b6cf4"><td class="memItemLeft">
 PropertyChangedEventHandler?&#160;</td><td class="memItemRight"><b>PropertyChanged</b></td></tr>
+<tr class="memdesc:ad60ce6592f008ae89b5c7e638e0b6cf4 events_class_calculadora_1_1_common_1_1_view_model_base"><td class="mdescLeft">&#160;</td><td class="mdescRight">Raised when the value of a bound property changes. WPF subscribes to this event automatically to refresh bound controls. <br /></td></tr>
 </table>
 <a name="details" id="details"></a><h2 id="header-details" class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>ViewModel for the standard (non-graphing) calculator view. Implements a precedence-aware infix evaluator using two token lists: one for live computation and one for the full expression history shown on the display. </p>
+<div class="textblock"><p>ViewModel de la calculadora estándar (no gráfica). Implementa un evaluador de expresiones infijas con precedencia de operadores mediante dos listas de tokens paralelas: una para el cómputo y otra para el historial visual que se muestra encima del display. </p>
+<p>Algoritmo de evaluación: </p><ol>
+<li>
+Cada dígito se acumula en Display. </li>
+<li>
+Al pulsar un operador, el display se añade a <code>_tokens</code> y se llama a CollapseTokens para reducir cualquier operación pendiente de mayor o igual precedencia. </li>
+<li>
+Al pulsar <code>=</code>, se fuerza la reducción completa (precedencia 0) y se muestra el resultado. </li>
+</ol>
+<p>La pila <code>_expressionTokens</code> nunca se colapsa: sólo sirve para construir la cadena de historial que ve el usuario. </p>
 </div><hr/>The documentation for this class was generated from the following file:<ul>
 <li>ViewModels/<b>CalcViewModel.cs</b></li>
 </ul>

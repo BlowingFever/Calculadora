@@ -131,7 +131,7 @@ Inheritance diagram for Calculadora.Common.RelayCommand&lt; T &gt;:</div>
 <tr class="heading"><td colspan="2"><h2 id="header-pub-methods" class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:af3cdb8a99eb3fe28594ac50185e5b002" id="r_af3cdb8a99eb3fe28594ac50185e5b002"><td class="memItemLeft">&#160;</td><td class="memItemRight"><a class="el" href="#af3cdb8a99eb3fe28594ac50185e5b002">RelayCommand</a> (Action&lt; T?&gt; execute, Func&lt; T?, bool &gt;? canExecute=null)</td></tr>
-<tr class="memdesc:af3cdb8a99eb3fe28594ac50185e5b002"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initializes a new instance of RelayCommand&lt;T&gt;.  <br /></td></tr>
+<tr class="memdesc:af3cdb8a99eb3fe28594ac50185e5b002"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialises a new instance of RelayCommand&lt;T&gt;.  <br /></td></tr>
 <tr class="memitem:a757adedb4745bc5df5a0622a9a336f7a" id="r_a757adedb4745bc5df5a0622a9a336f7a"><td class="memItemLeft"><a id="a757adedb4745bc5df5a0622a9a336f7a" name="a757adedb4745bc5df5a0622a9a336f7a"></a>
 bool&#160;</td><td class="memItemRight"><b>CanExecute</b> (object? parameter)</td></tr>
 <tr class="memitem:a83c1d18b2bfb67fcded3644872190ea9" id="r_a83c1d18b2bfb67fcded3644872190ea9"><td class="memItemLeft"><a id="a83c1d18b2bfb67fcded3644872190ea9" name="a83c1d18b2bfb67fcded3644872190ea9"></a>
@@ -150,8 +150,10 @@ EventHandler?&#160;</td><td class="memItemRight"><b>CanExecuteChanged</b><code> 
   </table>
   </dd>
 </dl>
-<p>Usage: <code>new <a class="el" href="class_calculadora_1_1_common_1_1_relay_command.html" title="Parameterless ICommand implementation backed by delegates.">RelayCommand</a>&lt;string&gt;(text =&gt; DoSomethingWith(text));</code> </p>
-</div><a name="doc-func-members" id="doc-func-members"></a><h2 id="header-doc-func-members" class="groupheader">Member Function Documentation</h2>
+<p>Typical usage: </p><div class="fragment"><div class="line">DigitCommand  = <span class="keyword">new</span> <a class="code hl_function" href="#af3cdb8a99eb3fe28594ac50185e5b002">RelayCommand&lt;string&gt;</a>(digit =&gt; OnDigit(digit));</div>
+<div class="line">RemoveCommand = <span class="keyword">new</span> <a class="code hl_function" href="#af3cdb8a99eb3fe28594ac50185e5b002">RelayCommand&lt;ExpressionItem&gt;</a>(item =&gt; Remove(item));</div>
+<div class="ttc" id="aclass_calculadora_1_1_common_1_1_relay_command-1-g_html_af3cdb8a99eb3fe28594ac50185e5b002"><div class="ttname"><a href="#af3cdb8a99eb3fe28594ac50185e5b002">Calculadora.Common.RelayCommand-1-g.RelayCommand</a></div><div class="ttdeci">RelayCommand(Action&lt; T?&gt; execute, Func&lt; T?, bool &gt;? canExecute=null)</div><div class="ttdoc">Initialises a new instance of RelayCommand&lt;T&gt;.</div><div class="ttdef"><b>Definition</b> RelayCommand.cs:89</div></div>
+</div><!-- fragment --> </div><a name="doc-func-members" id="doc-func-members"></a><h2 id="header-doc-func-members" class="groupheader">Member Function Documentation</h2>
 <a id="af3cdb8a99eb3fe28594ac50185e5b002" name="af3cdb8a99eb3fe28594ac50185e5b002"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#af3cdb8a99eb3fe28594ac50185e5b002">&#9670;&#160;</a></span>RelayCommand()</h2>
 
@@ -179,17 +181,17 @@ EventHandler?&#160;</td><td class="memItemRight"><b>CanExecuteChanged</b><code> 
 </table>
 </div><div class="memdoc">
 
-<p>Initializes a new instance of RelayCommand&lt;T&gt;. </p>
+<p>Initialises a new instance of RelayCommand&lt;T&gt;. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">execute</td><td>The action to invoke when the command executes.</td></tr>
-    <tr><td class="paramname">canExecute</td><td>Optional predicate controlling command availability.</td></tr>
+    <tr><td class="paramname">execute</td><td>The typed action to invoke when the command executes. Must not be <code>null</code>. </td></tr>
+    <tr><td class="paramname">canExecute</td><td>Optional typed predicate controlling command availability. </td></tr>
   </table>
   </dd>
 </dl>
 <dl class="exception"><dt>Exceptions</dt><dd>
   <table class="exception">
-    <tr><td class="paramname">ArgumentNullException</td><td>Thrown when <em>execute</em>  is <code>null</code>.</td></tr>
+    <tr><td class="paramname">ArgumentNullException</td><td>Thrown when <em>execute</em>  is <code>null</code>. </td></tr>
   </table>
   </dd>
 </dl>

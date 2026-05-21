@@ -5,9 +5,16 @@ namespace Calculadora.Common
 {
     /// <summary>
     /// Parameterless <see cref="ICommand"/> implementation backed by delegates.
+    /// Allows commands to be defined concisely inside a ViewModel without a dedicated class.
     /// </summary>
     /// <remarks>
-    /// Usage: <c>new RelayCommand(() => DoSomething());</c>
+    /// Typical usage:
+    /// <code>
+    /// ClearCommand = new RelayCommand(() => OnClear());
+    /// SaveCommand  = new RelayCommand(() => OnSave(), () => CanSave);
+    /// </code>
+    /// Command availability is re-evaluated automatically after every user interaction
+    /// via the WPF <see cref="System.Windows.Input.CommandManager"/>.
     /// </remarks>
     public class RelayCommand : ICommand
     {
@@ -15,11 +22,18 @@ namespace Calculadora.Common
         private readonly Func<bool>? _canExecute;
 
         /// <summary>
-        /// Initializes a new instance of <see cref="RelayCommand"/>.
+        /// Initialises a new instance of <see cref="RelayCommand"/>.
         /// </summary>
-        /// <param name="execute">The action to invoke when the command executes.</param>
-        /// <param name="canExecute">Optional predicate controlling command availability.</param>
-        /// <exception cref="ArgumentNullException">Thrown when <paramref name="execute"/> is <c>null</c>.</exception>
+        /// <param name="execute">
+        /// The action to invoke when the command executes. Must not be <c>null</c>.
+        /// </param>
+        /// <param name="canExecute">
+        /// Optional predicate that controls whether the command is available.
+        /// When omitted the command is always enabled.
+        /// </param>
+        /// <exception cref="ArgumentNullException">
+        /// Thrown when <paramref name="execute"/> is <c>null</c>.
+        /// </exception>
         public RelayCommand(Action execute, Func<bool>? canExecute = null)
         {
             _execute = execute ?? throw new ArgumentNullException(nameof(execute));
@@ -33,8 +47,9 @@ namespace Calculadora.Common
         public void Execute(object? parameter) => _execute();
 
         /// <summary>
-        /// Hooks into the WPF command manager so the UI re-queries command availability on
-        /// every user interaction.
+        /// Hooks into <see cref="CommandManager.RequerySuggested"/> so the UI
+        /// re-queries <see cref="CanExecute"/> after every user interaction,
+        /// keeping buttons enabled/disabled reactively.
         /// </summary>
         public event EventHandler? CanExecuteChanged
         {
@@ -48,7 +63,11 @@ namespace Calculadora.Common
     /// </summary>
     /// <typeparam name="T">The type of the command parameter.</typeparam>
     /// <remarks>
-    /// Usage: <c>new RelayCommand&lt;string&gt;(text => DoSomethingWith(text));</c>
+    /// Typical usage:
+    /// <code>
+    /// DigitCommand  = new RelayCommand&lt;string&gt;(digit => OnDigit(digit));
+    /// RemoveCommand = new RelayCommand&lt;ExpressionItem&gt;(item => Remove(item));
+    /// </code>
     /// </remarks>
     public class RelayCommand<T> : ICommand
     {
@@ -56,11 +75,17 @@ namespace Calculadora.Common
         private readonly Func<T?, bool>? _canExecute;
 
         /// <summary>
-        /// Initializes a new instance of <see cref="RelayCommand{T}"/>.
+        /// Initialises a new instance of <see cref="RelayCommand{T}"/>.
         /// </summary>
-        /// <param name="execute">The action to invoke when the command executes.</param>
-        /// <param name="canExecute">Optional predicate controlling command availability.</param>
-        /// <exception cref="ArgumentNullException">Thrown when <paramref name="execute"/> is <c>null</c>.</exception>
+        /// <param name="execute">
+        /// The typed action to invoke when the command executes. Must not be <c>null</c>.
+        /// </param>
+        /// <param name="canExecute">
+        /// Optional typed predicate controlling command availability.
+        /// </param>
+        /// <exception cref="ArgumentNullException">
+        /// Thrown when <paramref name="execute"/> is <c>null</c>.
+        /// </exception>
         public RelayCommand(Action<T?> execute, Func<T?, bool>? canExecute = null)
         {
             _execute = execute ?? throw new ArgumentNullException(nameof(execute));
@@ -73,7 +98,7 @@ namespace Calculadora.Common
         /// <inheritdoc/>
         public void Execute(object? parameter) => _execute((T?)parameter);
 
-        /// <inheritdoc/>
+        /// <inheritdoc cref="RelayCommand.CanExecuteChanged"/>
         public event EventHandler? CanExecuteChanged
         {
             add => CommandManager.RequerySuggested += value;

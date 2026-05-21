@@ -119,16 +119,17 @@ document.addEventListener('DOMContentLoaded',() => { initNavTree('class_calculad
 </div><!--header-->
 <div class="contents">
 
-<p>Stateless arithmetic engine, fully decoupled from WPF and MVVM infrastructure.  
+<p>Stateless arithmetic engine, fully decoupled from WPF and the MVVM infrastructure. Provides a single calculation operation that can be reused by any ViewModel.  
  <a href="#details">More...</a></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 id="header-pub-methods" class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:a692ba23da866e11698b7792e4e35635b" id="r_a692ba23da866e11698b7792e4e35635b"><td class="memItemLeft">double&#160;</td><td class="memItemRight"><a class="el" href="#a692ba23da866e11698b7792e4e35635b">Calculate</a> (double a, double b, string op)</td></tr>
-<tr class="memdesc:a692ba23da866e11698b7792e4e35635b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Performs the arithmetic operation identified by <em>op</em>  on the two operands.  <br /></td></tr>
+<tr class="memdesc:a692ba23da866e11698b7792e4e35635b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Performs the arithmetic operation identified by <em>op</em>  on the two supplied operands.  <br /></td></tr>
 </table>
 <a name="details" id="details"></a><h2 id="header-details" class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>Stateless arithmetic engine, fully decoupled from WPF and MVVM infrastructure. </p>
+<div class="textblock"><p>Stateless arithmetic engine, fully decoupled from WPF and the MVVM infrastructure. Provides a single calculation operation that can be reused by any ViewModel. </p>
+<p>Because this class holds no mutable state it is safe to create a single instance and share it across multiple <a class="el" href="namespace_calculadora_1_1_view_models.html">ViewModels</a>. </p>
 </div><a name="doc-func-members" id="doc-func-members"></a><h2 id="header-doc-func-members" class="groupheader">Member Function Documentation</h2>
 <a id="a692ba23da866e11698b7792e4e35635b" name="a692ba23da866e11698b7792e4e35635b"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a692ba23da866e11698b7792e4e35635b">&#9670;&#160;</a></span>Calculate()</h2>
@@ -162,16 +163,28 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Performs the arithmetic operation identified by <em>op</em>  on the two operands. </p>
+<p>Performs the arithmetic operation identified by <em>op</em>  on the two supplied operands. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">a</td><td>Left-hand operand.</td></tr>
     <tr><td class="paramname">b</td><td>Right-hand operand.</td></tr>
-    <tr><td class="paramname">op</td><td>Operator string: one of <code>"+"</code>, <code>"-"</code>, <code>"*"</code>, <code>"/"</code>.</td></tr>
+    <tr><td class="paramname">op</td><td>Operator string. Recognised values: <table class="doxtable">
+<tr>
+<th>Value</th><th>Operation </th></tr>
+<tr>
+<td><code>"+"</code></td><td>Addition </td></tr>
+<tr>
+<td><code>"-"</code></td><td>Subtraction </td></tr>
+<tr>
+<td><code>"*"</code></td><td>Multiplication </td></tr>
+<tr>
+<td><code>"/"</code></td><td>Division — returns double.NaN when <em>b</em>  is zero. </td></tr>
+</table>
+</td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>The computed result, or double.NaN for invalid operations (e.g. division by zero). Unknown operators return <em>b</em>  unchanged. </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>The computed result, or double.NaN for division by zero. Unknown operators return <em>b</em>  unchanged. </dd></dl>
 
 </div>
 </div>

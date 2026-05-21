@@ -6,11 +6,12 @@ namespace Calculadora.Models
 {
     /// <summary>
     /// Represents a single mathematical expression entry in the graphing calculator UI.
+    /// Each instance maps to one row in the side-panel list and one curve on the ScottPlot canvas.
     /// </summary>
     /// <remarks>
-    /// Implements <see cref="INotifyPropertyChanged"/> directly (rather than inheriting
-    /// <c>ViewModelBase</c>) so it can be data-bound inside an <c>ItemsControl</c> without
-    /// pulling in the full ViewModel hierarchy.
+    /// Implements <see cref="INotifyPropertyChanged"/> directly rather than inheriting
+    /// <c>ViewModelBase</c>, so it can be data-bound inside an <c>ItemsControl</c>
+    /// without pulling in the full ViewModel hierarchy into the model layer.
     /// </remarks>
     public class ExpressionItem : INotifyPropertyChanged
     {
@@ -19,12 +20,15 @@ namespace Calculadora.Models
         private bool _visible = true;
 
         /// <summary>
-        /// Unique identifier used to map this entry to its curve on the ScottPlot canvas.
+        /// Unique identifier generated at construction time.
+        /// Used to associate this entry with its corresponding curve in ScottPlot
+        /// even when the text or colour changes.
         /// </summary>
         public Guid Id { get; } = Guid.NewGuid();
 
         /// <summary>
-        /// The mathematical function text entered by the user, e.g. <c>"x^2 + sin(x)"</c>.
+        /// The mathematical function text entered by the user.
+        /// Examples: <c>"x^2"</c>, <c>"sin(x) + cos(x)"</c>, <c>"x = y^2"</c>.
         /// </summary>
         public string Text
         {
@@ -33,7 +37,8 @@ namespace Calculadora.Models
         }
 
         /// <summary>
-        /// Hexadecimal color string (<c>"#RRGGBB"</c>) used to render the plotted curve.
+        /// Hexadecimal colour string (<c>"#RRGGBB"</c>) used to render the plotted curve.
+        /// Assigned automatically from the colour palette in <c>GraphCalcViewModel</c>.
         /// </summary>
         public string Color
         {
@@ -43,6 +48,7 @@ namespace Calculadora.Models
 
         /// <summary>
         /// Controls whether the curve is rendered on the plot.
+        /// Users can hide/show expressions without removing them.
         /// </summary>
         public bool Visible
         {
@@ -50,13 +56,19 @@ namespace Calculadora.Models
             set { _visible = value; OnPropertyChanged(); }
         }
 
-        /// <inheritdoc/>
+        /// <summary>
+        /// Raised when the value of any property on this instance changes,
+        /// allowing bound controls to update automatically.
+        /// </summary>
         public event PropertyChangedEventHandler? PropertyChanged;
 
         /// <summary>
         /// Raises <see cref="PropertyChanged"/> for the calling member.
         /// </summary>
-        /// <param name="propertyName">Inferred automatically from the call site.</param>
+        /// <param name="propertyName">
+        /// Name of the property that changed.
+        /// Inferred automatically by the compiler via <see cref="CallerMemberNameAttribute"/>.
+        /// </param>
         protected void OnPropertyChanged([CallerMemberName] string? propertyName = null)
             => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
     }

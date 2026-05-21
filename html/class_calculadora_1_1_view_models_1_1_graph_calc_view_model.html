@@ -119,7 +119,7 @@ document.addEventListener('DOMContentLoaded',() => { initNavTree('class_calculad
 </div><!--header-->
 <div class="contents">
 
-<p>ViewModel for the graphing calculator view. Manages the collection of ExpressionItem entries and provides plot data evaluated via mXparser, notifying the view when a redraw is needed.  
+<p>ViewModel de la calculadora gráfica. Gestiona la colección de expresiones matemáticas, evalúa cada una mediante mXparser y notifica a la vista cuándo debe redibujar el gráfico.  
  <a href="#details">More...</a></p>
 <div class="dynheader">
 Inheritance diagram for Calculadora.ViewModels.GraphCalcViewModel:</div>
@@ -127,7 +127,7 @@ Inheritance diagram for Calculadora.ViewModels.GraphCalcViewModel:</div>
  <div class="center">
   <img src="class_calculadora_1_1_view_models_1_1_graph_calc_view_model.png" usemap="#Calculadora_2EViewModels_2EGraphCalcViewModel_map" alt=""/>
   <map id="Calculadora_2EViewModels_2EGraphCalcViewModel_map" name="Calculadora_2EViewModels_2EGraphCalcViewModel_map">
-<area href="class_calculadora_1_1_common_1_1_view_model_base.html" title="Base class for all MVVM ViewModels. Centralises INotifyPropertyChanged boilerplate so derived classes..." alt="Calculadora.Common.ViewModelBase" shape="rect" coords="0,56,282,80"/>
+<area href="class_calculadora_1_1_common_1_1_view_model_base.html" title="Abstract base class for all ViewModels in the application. Centralises INotifyPropertyChanged boilerp..." alt="Calculadora.Common.ViewModelBase" shape="rect" coords="0,56,282,80"/>
   </map>
 </div></div>
 <table class="memberdecls">
@@ -135,46 +135,65 @@ Inheritance diagram for Calculadora.ViewModels.GraphCalcViewModel:</div>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:a3b710d8b1e3b5091326d569debc491cc" id="r_a3b710d8b1e3b5091326d569debc491cc"><td class="memItemLeft"><a id="a3b710d8b1e3b5091326d569debc491cc" name="a3b710d8b1e3b5091326d569debc491cc"></a>
 &#160;</td><td class="memItemRight"><b>GraphCalcViewModel</b> ()</td></tr>
-<tr class="memdesc:a3b710d8b1e3b5091326d569debc491cc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialises commands, subscribes to collection change events, and populates one empty expression on startup. <br /></td></tr>
+<tr class="memdesc:a3b710d8b1e3b5091326d569debc491cc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Configura los comandos, se suscribe a los cambios de la colección y añade una expresión vacía inicial para que el usuario pueda empezar a escribir de inmediato. <br /></td></tr>
 <tr class="memitem:ada79bd10f9b9d3b6ebceafa40866c1ef" id="r_ada79bd10f9b9d3b6ebceafa40866c1ef"><td class="memItemLeft"><a id="ada79bd10f9b9d3b6ebceafa40866c1ef" name="ada79bd10f9b9d3b6ebceafa40866c1ef"></a>
 double[] double[]? ys&#160;</td><td class="memItemRight"><b>GetPlotData</b> (<a class="el" href="class_calculadora_1_1_models_1_1_expression_item.html">ExpressionItem</a> item, double xMin, double xMax, double yMin, double yMax)</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 id="header-pub-attribs" class="groupheader"><a id="pub-attribs" name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
 <tr class="memitem:a34f787e2bba459ecc18d663897acf611" id="r_a34f787e2bba459ecc18d663897acf611"><td class="memItemLeft">double[]&#160;</td><td class="memItemRight"><a class="el" href="#a34f787e2bba459ecc18d663897acf611">xs</a></td></tr>
-<tr class="memdesc:a34f787e2bba459ecc18d663897acf611"><td class="mdescLeft">&#160;</td><td class="mdescRight">Evaluates <em>item</em> 's expression with mXparser over the given axis bounds and returns coordinate arrays ready for ScottPlot.  <br /></td></tr>
+<tr class="memdesc:a34f787e2bba459ecc18d663897acf611"><td class="mdescLeft">&#160;</td><td class="mdescRight">Evalúa la expresión de <em>item</em>  con mXparser dentro de los límites de los ejes visibles y devuelve 500 puntos de coordenadas (x, y) listos para pasar a ScottPlot.  <br /></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 id="header-properties" class="groupheader"><a id="properties" name="properties"></a>
 Properties</h2></td></tr>
 <tr class="memitem:a23cb5a8f3f9e16f497254ccc7ba9870d" id="r_a23cb5a8f3f9e16f497254ccc7ba9870d"><td class="memItemLeft"><a id="a23cb5a8f3f9e16f497254ccc7ba9870d" name="a23cb5a8f3f9e16f497254ccc7ba9870d"></a>
 ObservableCollection&lt; <a class="el" href="class_calculadora_1_1_models_1_1_expression_item.html">ExpressionItem</a> &gt;&#160;</td><td class="memItemRight"><b>Expressions</b> = new()<code> [get]</code></td></tr>
-<tr class="memdesc:a23cb5a8f3f9e16f497254ccc7ba9870d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Observable collection of expressions bound to the left-panel list. <br /></td></tr>
+<tr class="memdesc:a23cb5a8f3f9e16f497254ccc7ba9870d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Colección observable de expresiones enlazada a la lista lateral de la vista. Cada elemento contiene el texto de la función, su color y su visibilidad. <br /></td></tr>
 <tr class="memitem:aeef6cf3c0e1636f4d134c2be850966ab" id="r_aeef6cf3c0e1636f4d134c2be850966ab"><td class="memItemLeft"><a id="aeef6cf3c0e1636f4d134c2be850966ab" name="aeef6cf3c0e1636f4d134c2be850966ab"></a>
 ICommand&#160;</td><td class="memItemRight"><b>AddExpressionCommand</b><code> [get]</code></td></tr>
-<tr class="memdesc:aeef6cf3c0e1636f4d134c2be850966ab"><td class="mdescLeft">&#160;</td><td class="mdescRight">Adds a new empty expression entry to Expressions. <br /></td></tr>
+<tr class="memdesc:aeef6cf3c0e1636f4d134c2be850966ab"><td class="mdescLeft">&#160;</td><td class="mdescRight">Añade una nueva entrada vacía a Expressions con el siguiente color de la paleta. <br /></td></tr>
 <tr class="memitem:a13a44d31a0f0df89c5a8360aaa9039bf" id="r_a13a44d31a0f0df89c5a8360aaa9039bf"><td class="memItemLeft"><a id="a13a44d31a0f0df89c5a8360aaa9039bf" name="a13a44d31a0f0df89c5a8360aaa9039bf"></a>
 ICommand&#160;</td><td class="memItemRight"><b>RemoveExpressionCommand</b><code> [get]</code></td></tr>
-<tr class="memdesc:a13a44d31a0f0df89c5a8360aaa9039bf"><td class="mdescLeft">&#160;</td><td class="mdescRight">Removes a specific ExpressionItem from Expressions. <br /></td></tr>
+<tr class="memdesc:a13a44d31a0f0df89c5a8360aaa9039bf"><td class="mdescLeft">&#160;</td><td class="mdescRight">Elimina la entrada ExpressionItem especificada de Expressions y cancela su suscripción a eventos de cambio de propiedad. <br /></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 id="header-events" class="groupheader"><a id="events" name="events"></a>
 Events</h2></td></tr>
 <tr class="memitem:a4664b927209d78aca29ca31c8f05f875" id="r_a4664b927209d78aca29ca31c8f05f875"><td class="memItemLeft"><a id="a4664b927209d78aca29ca31c8f05f875" name="a4664b927209d78aca29ca31c8f05f875"></a>
 EventHandler?&#160;</td><td class="memItemRight"><b>PlotRefreshRequested</b></td></tr>
-<tr class="memdesc:a4664b927209d78aca29ca31c8f05f875"><td class="mdescLeft">&#160;</td><td class="mdescRight">Raised whenever the plot must be redrawn (expression text changed, visibility toggled, or collection modified). <br /></td></tr>
+<tr class="memdesc:a4664b927209d78aca29ca31c8f05f875"><td class="mdescLeft">&#160;</td><td class="mdescRight">Se dispara cuando es necesario redibujar el gráfico, es decir: </p><ul>
+<li>
+El texto de una expresión cambia. </li>
+<li>
+La visibilidad de una expresión cambia. </li>
+<li>
+Se añade o elimina una expresión de la colección. </li>
+</ul>
+<p>. <br /></td></tr>
 <tr class="inherit_header events_class_calculadora_1_1_common_1_1_view_model_base"><td colspan="2">Events inherited from <a class="el" href="class_calculadora_1_1_common_1_1_view_model_base.html">Calculadora.Common.ViewModelBase</a></td></tr>
 <tr class="memitem:ad60ce6592f008ae89b5c7e638e0b6cf4 events_class_calculadora_1_1_common_1_1_view_model_base" id="r_ad60ce6592f008ae89b5c7e638e0b6cf4"><td class="memItemLeft">
 PropertyChangedEventHandler?&#160;</td><td class="memItemRight"><b>PropertyChanged</b></td></tr>
+<tr class="memdesc:ad60ce6592f008ae89b5c7e638e0b6cf4 events_class_calculadora_1_1_common_1_1_view_model_base"><td class="mdescLeft">&#160;</td><td class="mdescRight">Raised when the value of a bound property changes. WPF subscribes to this event automatically to refresh bound controls. <br /></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 id="header-inherited" class="groupheader"><a id="inherited" name="inherited"></a>
 Additional Inherited Members</h2></td></tr>
 <tr class="inherit_header pro_methods_class_calculadora_1_1_common_1_1_view_model_base"><td colspan="2">Protected Member Functions inherited from <a class="el" href="class_calculadora_1_1_common_1_1_view_model_base.html">Calculadora.Common.ViewModelBase</a></td></tr>
 <tr class="memitem:acf9ceeb56c3e7f5dd6b33d645b995382 pro_methods_class_calculadora_1_1_common_1_1_view_model_base" id="r_acf9ceeb56c3e7f5dd6b33d645b995382"><td class="memItemLeft">void&#160;</td><td class="memItemRight"><a class="el" href="class_calculadora_1_1_common_1_1_view_model_base.html#acf9ceeb56c3e7f5dd6b33d645b995382">OnPropertyChanged</a> ([CallerMemberName] string? propertyName=null)</td></tr>
-<tr class="memdesc:acf9ceeb56c3e7f5dd6b33d645b995382 pro_methods_class_calculadora_1_1_common_1_1_view_model_base"><td class="mdescLeft">&#160;</td><td class="mdescRight">Raises PropertyChanged for the specified property. System.Runtime.CompilerServices.CallerMemberNameAttribute automatically infers the property name when called from inside a property setter.  <br /></td></tr>
+<tr class="memdesc:acf9ceeb56c3e7f5dd6b33d645b995382 pro_methods_class_calculadora_1_1_common_1_1_view_model_base"><td class="mdescLeft">&#160;</td><td class="mdescRight">Raises PropertyChanged for the specified property. Thanks to CallerMemberNameAttribute, the property name is inferred automatically when called from inside a property setter.  <br /></td></tr>
 <tr class="memitem:ae22411ddb5b33eca773cb87579d0e4bc pro_methods_class_calculadora_1_1_common_1_1_view_model_base" id="r_ae22411ddb5b33eca773cb87579d0e4bc"><td class="memItemLeft">bool&#160;</td><td class="memItemRight"><a class="el" href="class_calculadora_1_1_common_1_1_view_model_base.html#ae22411ddb5b33eca773cb87579d0e4bc">SetProperty&lt; T &gt;</a> (ref T field, T value, [CallerMemberName] string? propertyName=null)</td></tr>
-<tr class="memdesc:ae22411ddb5b33eca773cb87579d0e4bc pro_methods_class_calculadora_1_1_common_1_1_view_model_base"><td class="mdescLeft">&#160;</td><td class="mdescRight">Assigns <em>value</em>  to <em>field</em>  and raises PropertyChanged only when the value actually changes.  <br /></td></tr>
+<tr class="memdesc:ae22411ddb5b33eca773cb87579d0e4bc pro_methods_class_calculadora_1_1_common_1_1_view_model_base"><td class="mdescLeft">&#160;</td><td class="mdescRight">Assigns <em>value</em>  to the backing <em>field</em>  and raises PropertyChanged only when the value actually changes.  <br /></td></tr>
 </table>
 <a name="details" id="details"></a><h2 id="header-details" class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>ViewModel for the graphing calculator view. Manages the collection of ExpressionItem entries and provides plot data evaluated via mXparser, notifying the view when a redraw is needed. </p>
+<div class="textblock"><p>ViewModel de la calculadora gráfica. Gestiona la colección de expresiones matemáticas, evalúa cada una mediante mXparser y notifica a la vista cuándo debe redibujar el gráfico. </p>
+<p>Flujo de uso: </p><ol>
+<li>
+El usuario escribe expresiones en la lista lateral (Expressions). </li>
+<li>
+Cualquier cambio en texto, color o visibilidad dispara PlotRefreshRequested. </li>
+<li>
+El code-behind de la vista se suscribe al evento y llama a GetPlotData para cada expresión visible. </li>
+<li>
+ScottPlot renderiza los datos resultantes. </li>
+</ol>
 </div><a name="doc-variable-members" id="doc-variable-members"></a><h2 id="header-doc-variable-members" class="groupheader">Member Data Documentation</h2>
 <a id="a34f787e2bba459ecc18d663897acf611" name="a34f787e2bba459ecc18d663897acf611"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a34f787e2bba459ecc18d663897acf611">&#9670;&#160;</a></span>xs</h2>
@@ -188,26 +207,29 @@ Additional Inherited Members</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Evaluates <em>item</em> 's expression with mXparser over the given axis bounds and returns coordinate arrays ready for ScottPlot. </p>
-<p>Supports three expression forms: </p><ul>
-<li>
-Standard function of X: <code>y = f(x)</code> or plain <code>f(x)</code>. </li>
-<li>
-Function of Y: <code>x = f(y)</code>. </li>
-<li>
-Vertical constant line: <code>x = C</code>. </li>
-</ul>
+<p>Evalúa la expresión de <em>item</em>  con mXparser dentro de los límites de los ejes visibles y devuelve 500 puntos de coordenadas (x, y) listos para pasar a ScottPlot. </p>
+<p>Soporta tres formas de expresión: </p><table class="doxtable">
+<tr>
+<th>Forma</th><th>Ejemplo </th></tr>
+<tr>
+<td>Función de X</td><td><code>sin(x)</code> o <code>y = x^2 + 1</code> </td></tr>
+<tr>
+<td>Función de Y</td><td><code>x = y^2</code> (curva horizontal) </td></tr>
+<tr>
+<td>Línea vertical constante</td><td><code>x = 5</code> </td></tr>
+</table>
+<p>Si la expresión tiene sintaxis inválida o lanza una excepción durante la evaluación, el método devuelve <code>null</code> silenciosamente. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">item</td><td>The expression entry to evaluate.</td></tr>
-    <tr><td class="paramname">xMin</td><td>Left bound of the visible x-axis range.</td></tr>
-    <tr><td class="paramname">xMax</td><td>Right bound of the visible x-axis range.</td></tr>
-    <tr><td class="paramname">yMin</td><td>Bottom bound of the visible y-axis range.</td></tr>
-    <tr><td class="paramname">yMax</td><td>Top bound of the visible y-axis range.</td></tr>
+    <tr><td class="paramname">item</td><td>Entrada de expresión a evaluar.</td></tr>
+    <tr><td class="paramname">xMin</td><td>Límite izquierdo del eje X visible.</td></tr>
+    <tr><td class="paramname">xMax</td><td>Límite derecho del eje X visible.</td></tr>
+    <tr><td class="paramname">yMin</td><td>Límite inferior del eje Y visible.</td></tr>
+    <tr><td class="paramname">yMax</td><td>Límite superior del eje Y visible.</td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>A tuple of parallel x and y arrays (500 points each), or <code>null</code> if the expression is empty, has invalid syntax, or throws during evaluation. </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>Una tupla <code>(xs, ys)</code> con 500 elementos cada array, o <code>null</code> si la expresión está vacía, es inválida o falla en tiempo de evaluación. </dd></dl>
 
 </div>
 </div>
