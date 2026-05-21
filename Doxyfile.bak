@@ -1,0 +1,192 @@
+# =============================================================================
+# Doxyfile — Calculadora WPF (PAC #4 · M0488 Desenvolupament d'Interfícies)
+# =============================================================================
+# Genera documentació HTML a partir dels comentaris XML /// dels fitxers C#.
+#
+# ÚS:
+#   1. Col·loca aquest fitxer a l'arrel del repositori (al costat de Calculadora.slnx).
+#   2. Compila el projecte per generar docs/xml/Calculadora.xml.
+#   3. Executa:  doxygen Doxyfile
+#   4. Obre:     docs/html/index.html
+# =============================================================================
+
+
+# -----------------------------------------------------------------------------
+# INFORMACIÓ DEL PROJECTE
+# -----------------------------------------------------------------------------
+
+## Nom del projecte que apareix a la capçalera de totes les pàgines HTML.
+PROJECT_NAME           = "Calculadora I"
+
+## Versió del projecte (visible a la pàgina principal i als peus de pàgina).
+PROJECT_NUMBER         = 1.0
+
+## Breu descripció mostrada a la pàgina principal.
+PROJECT_BRIEF          = "Calculadora WPF amb arquitectura MVVM — PAC \#4 M0488"
+
+## Logotip opcional (comenta la línia si no en tens cap).
+# PROJECT_LOGO         = docs/logo.png
+
+## Idioma dels textos generats per Doxygen (índexs, notes, etc.).
+OUTPUT_LANGUAGE        = English
+
+
+# -----------------------------------------------------------------------------
+# ENTRADA: on trobar el codi font
+# -----------------------------------------------------------------------------
+
+## Fitxers i carpetes d'entrada. Doxygen llegirà el XML precompilat i
+## els .cs originals per al resaltat de codi font.
+INPUT                  = docs/xml/Calculadora.xml \
+                         Common \
+                         Models \
+                         ViewModels \
+                         Views \
+                         App.xaml.cs \
+                         MainWindow.xaml.cs
+
+## Processa les subcarpetes recursivament.
+RECURSIVE              = YES
+
+## Extensions de fitxer que Doxygen ha d'analitzar.
+FILE_PATTERNS          = *.cs \
+                         *.xml
+
+## Carpetes i fitxers que cal ignorar completament.
+EXCLUDE                = bin \
+                         obj \
+                         .git \
+                         packages
+
+## Patrons de fitxers que cal ignorar (generats automàticament pel compilador).
+EXCLUDE_PATTERNS       = *.g.cs \
+                         *.g.i.cs \
+                         AssemblyInfo.cs
+
+
+# -----------------------------------------------------------------------------
+# SORTIDA: on escriure la documentació generada
+# -----------------------------------------------------------------------------
+
+## Carpeta base de sortida. Tota la documentació es genera aquí.
+OUTPUT_DIRECTORY       = docs
+
+## Genera la sortida en format HTML.
+GENERATE_HTML          = YES
+
+## Subcarpeta dins OUTPUT_DIRECTORY per a l'HTML.
+HTML_OUTPUT            = html
+
+## Genera la sortida en format LaTeX/PDF (desactivat per defecte).
+GENERATE_LATEX         = NO
+
+## Genera la sortida en format XML intern de Doxygen (diferent del XML de .NET).
+GENERATE_XML           = NO
+
+
+# -----------------------------------------------------------------------------
+# EXTRACCIÓ: quins símbols documenta Doxygen
+# -----------------------------------------------------------------------------
+
+## Documenta tots els membres, fins i tot els privats.
+## Posa-ho a NO per mostrar només els membres public/protected.
+EXTRACT_ALL            = NO
+
+## Documenta els membres privats (útil per veure la lògica interna).
+EXTRACT_PRIVATE        = YES
+
+## Documenta els membres estàtics.
+EXTRACT_STATIC         = YES
+
+## Documenta les classes i mètodes anònims.
+EXTRACT_ANON_NSPACES   = NO
+
+## Inclou els membres sense comentari (marcats amb avís).
+WARN_IF_UNDOCUMENTED   = YES
+
+## Nivell de detall dels avisos: 0 = silenciós, 1 = errors, 2 = warnings.
+WARN_LOGFILE           = docs/doxygen_warnings.log
+
+
+# -----------------------------------------------------------------------------
+# CODI FONT: mostra el codi destacat dins la documentació
+# -----------------------------------------------------------------------------
+
+## Inclou una còpia del codi font amb hipervincles a la documentació.
+SOURCE_BROWSER         = YES
+
+## Ressalta la sintaxi del codi (requereix l'extensió de Doxygen per a C#).
+INLINE_SOURCES         = NO
+
+## Referència creuada entre símbols i el codi font.
+REFERENCED_BY_RELATION = YES
+REFERENCES_RELATION    = YES
+
+
+# -----------------------------------------------------------------------------
+# DIAGRAMES: genera diagrames d'herència i col·laboració
+# -----------------------------------------------------------------------------
+
+## Activa la integració amb Graphviz per als diagrames UML.
+## Requereix tenir 'dot' instal·lat (Graphviz: https://graphviz.org).
+HAVE_DOT               = NO
+
+## Si HAVE_DOT = YES, genera diagrames d'herència automàtics.
+CLASS_DIAGRAMS         = YES
+
+## Genera el diagrama d'herència complet per a cada classe.
+COLLABORATION_GRAPH    = YES
+
+## Inclou el diagrama de dependències entre fitxers.
+INCLUDE_GRAPH          = YES
+INCLUDED_BY_GRAPH      = YES
+
+## Limita la profunditat dels diagrames per evitar gràfics massa grans.
+MAX_DOT_GRAPH_DEPTH    = 3
+
+
+# -----------------------------------------------------------------------------
+# APARENÇA HTML
+# -----------------------------------------------------------------------------
+
+## Tema visual de la documentació HTML.
+## Valors: 0 = clàssic, 1 = arbre, 2 = flat (recomanat).
+HTML_COLORSTYLE        = LIGHT
+
+## Genera un buscador JavaScript integrat a la documentació.
+SEARCHENGINE           = YES
+
+## Genera un índex de navegació lateral (tree view).
+GENERATE_TREEVIEW      = YES
+
+## Amplada de la barra de navegació lateral en píxels.
+TREEVIEW_WIDTH         = 250
+
+## Inclou la data de generació al peu de pàgina.
+HTML_TIMESTAMP         = YES
+
+
+# -----------------------------------------------------------------------------
+# CONFIGURACIÓ DE L'ANALITZADOR (C# / .NET XML)
+# -----------------------------------------------------------------------------
+
+## Indica a Doxygen que analitzi comentaris en estil Javadoc/XML.
+JAVADOC_AUTOBRIEF      = NO
+
+## Interpreta el primer punt com a final del resum breu.
+QT_AUTOBRIEF           = NO
+
+## Tracta els comentaris d'una sola línia (///) com a documentació.
+MULTILINE_CPP_IS_BRIEF = NO
+
+## Mapeja les extensions .cs a l'analitzador de C++, que és compatible amb C#.
+EXTENSION_MAPPING      = cs=C++
+
+## Macro útil per als atributs de C# (evita que Doxygen els confongui amb codi).
+ENABLE_PREPROCESSING   = YES
+MACRO_EXPANSION        = NO
+
+
+# -----------------------------------------------------------------------------
+# FI DEL DOXYFILE
+# =============================================================================
