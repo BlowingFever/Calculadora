@@ -1,4 +1,4 @@
-# Calculadora
+# 🧮 Calculadora
 
 > Aplicación de escritorio para Windows hecha con **WPF** y **C#**, siguiendo el patrón de arquitectura **MVVM**.
 Ofrece dos modos: una calculadora estándar y una calculadora gráfica para representar funciones matemáticas.
@@ -42,7 +42,7 @@ Consulta el archivo [`LICENSE`](./LICENSE) para ver la licencia al completo.
 
 ---
 
-## Requisitos del sistema
+## Requisitos del sistema ⚙️
 
 Asegúrate de cumplir los siguientes requisitos antes de instalar y ejecutar la aplicación:
 
@@ -57,7 +57,7 @@ Asegúrate de cumplir los siguientes requisitos antes de instalar y ejecutar la 
 
 ---
 
-## Características principales
+## Características principales ✨
 
 La aplicación ofrece dos calculadoras accesibles desde una barra de navegación inferior:
 
@@ -65,7 +65,7 @@ La aplicación ofrece dos calculadoras accesibles desde una barra de navegación
 - Operaciones aritméticas básicas: **suma, resta, multiplicación y división**
 - Soporte para expresiones matemáticas gracias a la librería **mXparser**
 
-### Calculadora gráfica
+### Calculadora gráfica 📈
 - Representación visual de **funciones matemáticas** en un gráfico interactivo
 - Renderizado de gráficas con **ScottPlot 5**
 - Cambio entre la calculadora estándar y la gráfica sin necesidad de reiniciar la app
@@ -79,7 +79,7 @@ La aplicación ofrece dos calculadoras accesibles desde una barra de navegación
 
 ---
 
-## Guía de instalación
+## Guía de instalación 🚀
 
 ### Paso 1 — Clonar el repositorio
 
@@ -178,7 +178,7 @@ cos(x) + 0.5*x
 
 ---
 
-### Dependencias
+### Dependencias 📦
 
 | Paquete NuGet | Versión | Propósito |
 |---------------|---------|---------|
@@ -195,42 +195,32 @@ cos(x) + 0.5*x
 | Expresión introducida | Resultado esperado |
 |--------------------|----------------|
 | `5 + 3 * 2` | `11` |
-| `(100 - 20) / 4` | `20`|
+| `-100 + 20 / 4` | `-95`|
 
 ### Ejemplos — Calculadora gráfica
 
 | Función | Descripción |
 |----------|-------------|
 | `sin(x)` | Onda sinusoidal estándar |
-| `x^2` | Parábola con apertura hacia arriba |
-| `1/x` | Hipérbola con asíntota en x=0 |
-| `abs(x)` | Valor absoluto (forma de V) |
 | `e^x` | Función de crecimiento exponencial |
 
 ### Interfaz de la aplicación
+<table border="0" cellpadding="0" cellspacing="0" width="100%" style="border-collapse: collapse; border: none;">
+  <tr>
+    <td width="50%" style="border: none; padding: 5px;">
+      <img src="Screenshots/NormalCalc1.png" alt="Calculadora Estándar 1" width="100%" />
+    </td>
+    <td width="50%" style="border: none; padding: 5px;">
+      <img src="Screenshots/NormalCalc2.png" alt="Calculadora Estándar 2" width="100%" />
+    </td>
+  </tr>
+</table>
 
-```
-┌─────────────────────────────────────────────┐
-│  🧮 Calculadora                             │
-├─────────────────────────────────────────────┤
-│                                             │
-│   [ Pantalla: 0                          ]  │
-│                                             │
-│   [ 7 ] [ 8 ] [ 9 ] [ ÷ ]                  │
-│   [ 4 ] [ 5 ] [ 6 ] [ × ]                  │
-│   [ 1 ] [ 2 ] [ 3 ] [ − ]                  │
-│   [ 0 ] [ . ] [ = ] [ + ]                  │
-│                                             │
-├─────────────────────────────────────────────┤
-│  [ Calculadora Normal ] | [ Calc. Gráfica ] │
-└─────────────────────────────────────────────┘
-```
-
-> 📸 *Para añadir capturas reales, coloca las imágenes en una carpeta `/screenshots/` y referencialas aquí con `![Captura](./screenshots/normal.png)`.*
+![Captura](Screenshots/GraphicCalc.png)
 
 ---
 
-## Conclusiones y reflexiones
+## Conclusiones y reflexiones 💭
 
 ### Aprendizajes técnicos
 
