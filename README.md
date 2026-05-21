@@ -148,7 +148,7 @@ Calculadora/
 **Step 2.** Type a mathematical expression in the input field. You can write expressions such as:
 ```
 3 + 5
-(10 - 2) * 4 / 2
+10 - 2 * 4 / 2
 ```
 
 **Step 3.** Press the **"="** button to see the result of the operation.
