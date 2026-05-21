@@ -1,5 +1,8 @@
 var searchData=
 [
-  ['viewmodelbase_0',['ViewModelBase',['../class_calculadora_1_1_common_1_1_view_model_base.html',1,'Calculadora::Common']]],
-  ['visible_1',['Visible',['../class_calculadora_1_1_models_1_1_expression_item.html#a0d39d94699248f4cf1ce92c8212cfb1d',1,'Calculadora::Models::ExpressionItem']]]
+  ['usage_20examples_20and_20screenshots_0',['Usage Examples and Screenshots',['../md__r_e_a_d_m_e.html#autotoc_md28',1,'']]],
+  ['user_20experience_1',['Design and User Experience',['../md__r_e_a_d_m_e.html#autotoc_md11',1,'']]],
+  ['user_20guide_2',['User Guide',['../md__r_e_a_d_m_e.html#autotoc_md19',1,'']]],
+  ['using_20the_20graphical_20calculator_3',['Using the Graphical Calculator',['../md__r_e_a_d_m_e.html#autotoc_md24',1,'']]],
+  ['using_20the_20standard_20calculator_4',['Using the Standard Calculator',['../md__r_e_a_d_m_e.html#autotoc_md22',1,'']]]
 ];

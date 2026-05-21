@@ -1,6 +1,7 @@
 var searchData=
 [
-  ['normalcalcview_0',['NormalCalcView',['../class_calculadora_1_1_views_1_1_normal_calc_view.html',1,'Calculadora.Views.NormalCalcView'],['../class_calculadora_1_1_views_1_1_normal_calc_view.html#aa1a0e63e1ee3a2d23392abd8ffe9a89b',1,'Calculadora.Views.NormalCalcView.NormalCalcView()']]],
-  ['normalcalcviewmodel_1',['NormalCalcViewModel',['../class_calculadora_1_1_view_models_1_1_normal_calc_view_model.html',1,'Calculadora.ViewModels.NormalCalcViewModel'],['../class_calculadora_1_1_view_models_1_1_normal_calc_view_model.html#aac067ceb89c4a4250e7016b09ccf2786',1,'Calculadora.ViewModels.NormalCalcViewModel.NormalCalcViewModel()']]],
-  ['nuget_2',['Paso 2 — Restaurar dependencias NuGet',['../md__r_e_a_d_m_e.html#autotoc_md15',1,'']]]
+  ['main_0',['Main',['../class_calculadora_1_1_app.html#ae21e807bb69782a95c14f47f303e9d64',1,'Calculadora.App.Main()'],['../class_calculadora_1_1_app.html#ae21e807bb69782a95c14f47f303e9d64',1,'Calculadora.App.Main()']]],
+  ['main_20features_20✨_1',['Main Features ✨',['../md__r_e_a_d_m_e.html#autotoc_md8',1,'']]],
+  ['mainviewmodel_2',['MainViewModel',['../class_calculadora_1_1_view_models_1_1_main_view_model.html',1,'Calculadora.ViewModels.MainViewModel'],['../class_calculadora_1_1_view_models_1_1_main_view_model.html#a236dbeb897f9abdfc048b6b26f98894c',1,'Calculadora.ViewModels.MainViewModel.MainViewModel()']]],
+  ['mainwindow_3',['MainWindow',['../class_calculadora_1_1_main_window.html',1,'Calculadora.MainWindow'],['../class_calculadora_grafica_1_1_main_window.html',1,'CalculadoraGrafica.MainWindow'],['../class_calculadora_1_1_main_window.html#ad3f2ffcd46975c760a313b2b789448c9',1,'Calculadora.MainWindow.MainWindow()']]]
 ];

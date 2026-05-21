@@ -1,7 +1,5 @@
 var searchData=
 [
-  ['y_20autoría_0',['Licencia y autoría',['../md__r_e_a_d_m_e.html#autotoc_md4',1,'']]],
-  ['y_20capturas_20de_20pantalla_1',['Ejemplos de uso y capturas de pantalla',['../md__r_e_a_d_m_e.html#autotoc_md28',1,'']]],
-  ['y_20experiencia_20de_20usuario_2',['Diseño y experiencia de usuario',['../md__r_e_a_d_m_e.html#autotoc_md11',1,'']]],
-  ['y_20reflexiones_20💭_3',['Conclusiones y reflexiones 💭',['../md__r_e_a_d_m_e.html#autotoc_md33',1,'']]]
+  ['xamlgeneratednamespace_0',['XamlGeneratedNamespace',['../namespace_xaml_generated_namespace.html',1,'']]],
+  ['xs_1',['xs',['../class_calculadora_1_1_view_models_1_1_graph_calc_view_model.html#a34f787e2bba459ecc18d663897acf611',1,'Calculadora::ViewModels::GraphCalcViewModel']]]
 ];

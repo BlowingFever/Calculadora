@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['nuget_0',['Paso 2 — Restaurar dependencias NuGet',['../md__r_e_a_d_m_e.html#autotoc_md15',1,'']]]
+  ['main_20features_20✨_0',['Main Features ✨',['../md__r_e_a_d_m_e.html#autotoc_md8',1,'']]]
 ];

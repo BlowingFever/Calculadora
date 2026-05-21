@@ -1,5 +1,5 @@
 var searchData=
 [
-  ['xamlgeneratednamespace_0',['XamlGeneratedNamespace',['../namespace_xaml_generated_namespace.html',1,'']]],
-  ['xs_1',['xs',['../class_calculadora_1_1_view_models_1_1_graph_calc_view_model.html#a34f787e2bba459ecc18d663897acf611',1,'Calculadora::ViewModels::GraphCalcViewModel']]]
+  ['viewmodelbase_0',['ViewModelBase',['../class_calculadora_1_1_common_1_1_view_model_base.html',1,'Calculadora::Common']]],
+  ['visible_1',['Visible',['../class_calculadora_1_1_models_1_1_expression_item.html#a0d39d94699248f4cf1ce92c8212cfb1d',1,'Calculadora::Models::ExpressionItem']]]
 ];

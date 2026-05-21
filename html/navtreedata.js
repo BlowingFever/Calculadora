@@ -25,36 +25,36 @@
 var NAVTREE =
 [
   [ "Calculadora", "index.html", [
-    [ "🧮 Calculadora", "md__r_e_a_d_m_e.html", [
-      [ "Tabla de contenidos", "md__r_e_a_d_m_e.html#autotoc_md2", null ],
-      [ "Licencia y autoría", "md__r_e_a_d_m_e.html#autotoc_md4", null ],
-      [ "Requisitos del sistema ⚙️", "md__r_e_a_d_m_e.html#autotoc_md6", null ],
-      [ "Características principales ✨", "md__r_e_a_d_m_e.html#autotoc_md8", [
-        [ "Calculadora estándar", "md__r_e_a_d_m_e.html#autotoc_md9", null ],
-        [ "Calculadora gráfica 📈", "md__r_e_a_d_m_e.html#autotoc_md10", null ],
-        [ "Diseño y experiencia de usuario", "md__r_e_a_d_m_e.html#autotoc_md11", null ]
+    [ "🧮 Calculator", "md__r_e_a_d_m_e.html", [
+      [ "Table of Contents", "md__r_e_a_d_m_e.html#autotoc_md2", null ],
+      [ "License and Authorship", "md__r_e_a_d_m_e.html#autotoc_md4", null ],
+      [ "System Requirements ⚙️", "md__r_e_a_d_m_e.html#autotoc_md6", null ],
+      [ "Main Features ✨", "md__r_e_a_d_m_e.html#autotoc_md8", [
+        [ "Standard Calculator", "md__r_e_a_d_m_e.html#autotoc_md9", null ],
+        [ "Graphical Calculator 📈", "md__r_e_a_d_m_e.html#autotoc_md10", null ],
+        [ "Design and User Experience", "md__r_e_a_d_m_e.html#autotoc_md11", null ]
       ] ],
-      [ "Guía de instalación 🚀", "md__r_e_a_d_m_e.html#autotoc_md13", [
-        [ "Paso 1 — Clonar el repositorio", "md__r_e_a_d_m_e.html#autotoc_md14", null ],
-        [ "Paso 2 — Restaurar dependencias NuGet", "md__r_e_a_d_m_e.html#autotoc_md15", null ],
-        [ "Paso 3 — Compilar el proyecto", "md__r_e_a_d_m_e.html#autotoc_md16", null ],
-        [ "Paso 4 — Ejecutar la aplicación", "md__r_e_a_d_m_e.html#autotoc_md17", null ]
+      [ "Installation Guide 🚀", "md__r_e_a_d_m_e.html#autotoc_md13", [
+        [ "Step 1 — Clone the repository", "md__r_e_a_d_m_e.html#autotoc_md14", null ],
+        [ "Step 2 — Restore NuGet dependencies", "md__r_e_a_d_m_e.html#autotoc_md15", null ],
+        [ "Step 3 — Build the project", "md__r_e_a_d_m_e.html#autotoc_md16", null ],
+        [ "Step 4 — Run the application", "md__r_e_a_d_m_e.html#autotoc_md17", null ]
       ] ],
-      [ "Guía de usuario", "md__r_e_a_d_m_e.html#autotoc_md19", [
-        [ "Estructura del proyecto", "md__r_e_a_d_m_e.html#autotoc_md20", null ],
-        [ "Usar la calculadora estándar", "md__r_e_a_d_m_e.html#autotoc_md22", null ],
-        [ "Usar la calculadora gráfica", "md__r_e_a_d_m_e.html#autotoc_md24", null ],
-        [ "Dependencias 📦", "md__r_e_a_d_m_e.html#autotoc_md26", null ]
+      [ "User Guide", "md__r_e_a_d_m_e.html#autotoc_md19", [
+        [ "Project Structure", "md__r_e_a_d_m_e.html#autotoc_md20", null ],
+        [ "Using the Standard Calculator", "md__r_e_a_d_m_e.html#autotoc_md22", null ],
+        [ "Using the Graphical Calculator", "md__r_e_a_d_m_e.html#autotoc_md24", null ],
+        [ "Dependencies 📦", "md__r_e_a_d_m_e.html#autotoc_md26", null ]
       ] ],
-      [ "Ejemplos de uso y capturas de pantalla", "md__r_e_a_d_m_e.html#autotoc_md28", [
-        [ "Ejemplos — Calculadora estándar", "md__r_e_a_d_m_e.html#autotoc_md29", null ],
-        [ "Ejemplos — Calculadora gráfica", "md__r_e_a_d_m_e.html#autotoc_md30", null ],
-        [ "Interfaz de la aplicación", "md__r_e_a_d_m_e.html#autotoc_md31", null ]
+      [ "Usage Examples and Screenshots", "md__r_e_a_d_m_e.html#autotoc_md28", [
+        [ "Examples — Standard Calculator", "md__r_e_a_d_m_e.html#autotoc_md29", null ],
+        [ "Examples — Graphical Calculator", "md__r_e_a_d_m_e.html#autotoc_md30", null ],
+        [ "Application Interface", "md__r_e_a_d_m_e.html#autotoc_md31", null ]
       ] ],
-      [ "Conclusiones y reflexiones 💭", "md__r_e_a_d_m_e.html#autotoc_md33", [
-        [ "Aprendizajes técnicos", "md__r_e_a_d_m_e.html#autotoc_md34", null ],
-        [ "Mejoras futuras", "md__r_e_a_d_m_e.html#autotoc_md35", null ],
-        [ "Reflexión final", "md__r_e_a_d_m_e.html#autotoc_md36", null ]
+      [ "Conclusions and Reflections 💭", "md__r_e_a_d_m_e.html#autotoc_md33", [
+        [ "Technical Learnings", "md__r_e_a_d_m_e.html#autotoc_md34", null ],
+        [ "Future Improvements", "md__r_e_a_d_m_e.html#autotoc_md35", null ],
+        [ "Final Reflection", "md__r_e_a_d_m_e.html#autotoc_md36", null ]
       ] ]
     ] ],
     [ "Namespaces", "namespaces.html", [

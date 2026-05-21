@@ -1,7 +1,11 @@
 var searchData=
 [
-  ['usar_20la_20calculadora_20estándar_0',['Usar la calculadora estándar',['../md__r_e_a_d_m_e.html#autotoc_md22',1,'']]],
-  ['usar_20la_20calculadora_20gráfica_1',['Usar la calculadora gráfica',['../md__r_e_a_d_m_e.html#autotoc_md24',1,'']]],
-  ['uso_20y_20capturas_20de_20pantalla_2',['Ejemplos de uso y capturas de pantalla',['../md__r_e_a_d_m_e.html#autotoc_md28',1,'']]],
-  ['usuario_3',['usuario',['../md__r_e_a_d_m_e.html#autotoc_md11',1,'Diseño y experiencia de usuario'],['../md__r_e_a_d_m_e.html#autotoc_md19',1,'Guía de usuario']]]
+  ['screenshots_0',['Usage Examples and Screenshots',['../md__r_e_a_d_m_e.html#autotoc_md28',1,'']]],
+  ['standard_20calculator_1',['Standard Calculator',['../md__r_e_a_d_m_e.html#autotoc_md29',1,'Examples — Standard Calculator'],['../md__r_e_a_d_m_e.html#autotoc_md9',1,'Standard Calculator'],['../md__r_e_a_d_m_e.html#autotoc_md22',1,'Using the Standard Calculator']]],
+  ['step_201_20—_20clone_20the_20repository_2',['Step 1 — Clone the repository',['../md__r_e_a_d_m_e.html#autotoc_md14',1,'']]],
+  ['step_202_20—_20restore_20nuget_20dependencies_3',['Step 2 — Restore NuGet dependencies',['../md__r_e_a_d_m_e.html#autotoc_md15',1,'']]],
+  ['step_203_20—_20build_20the_20project_4',['Step 3 — Build the project',['../md__r_e_a_d_m_e.html#autotoc_md16',1,'']]],
+  ['step_204_20—_20run_20the_20application_5',['Step 4 — Run the application',['../md__r_e_a_d_m_e.html#autotoc_md17',1,'']]],
+  ['structure_6',['Project Structure',['../md__r_e_a_d_m_e.html#autotoc_md20',1,'']]],
+  ['system_20requirements_20⚙️_7',['System Requirements ⚙️',['../md__r_e_a_d_m_e.html#autotoc_md6',1,'']]]
 ];

@@ -1,8 +1,12 @@
 var searchData=
 [
-  ['setproperty_3c_20t_20_3e_0',['SetProperty&lt; T &gt;',['../class_calculadora_1_1_common_1_1_view_model_base.html#ae22411ddb5b33eca773cb87579d0e4bc',1,'Calculadora::Common::ViewModelBase']]],
-  ['setpropertyvalue_1',['SetPropertyValue',['../class_xaml_generated_namespace_1_1_generated_internal_type_helper.html#ade0f04c0f7b18dd5b170e071d5534d38',1,'XamlGeneratedNamespace::GeneratedInternalTypeHelper']]],
-  ['showgraphcalculatorcommand_2',['ShowGraphCalculatorCommand',['../class_calculadora_1_1_view_models_1_1_main_view_model.html#a338a09f377749ce7dd2b4e5d04cebc20',1,'Calculadora::ViewModels::MainViewModel']]],
-  ['shownormalcalculatorcommand_3',['ShowNormalCalculatorCommand',['../class_calculadora_1_1_view_models_1_1_main_view_model.html#a28da7c7d309ac5ec77c0f34b5ece6edc',1,'Calculadora::ViewModels::MainViewModel']]],
-  ['sistema_20⚙️_4',['Requisitos del sistema ⚙️',['../md__r_e_a_d_m_e.html#autotoc_md6',1,'']]]
+  ['reflection_0',['Final Reflection',['../md__r_e_a_d_m_e.html#autotoc_md36',1,'']]],
+  ['reflections_20💭_1',['Conclusions and Reflections 💭',['../md__r_e_a_d_m_e.html#autotoc_md33',1,'']]],
+  ['relaycommand_2',['RelayCommand',['../class_calculadora_1_1_common_1_1_relay_command.html',1,'Calculadora.Common.RelayCommand'],['../class_calculadora_1_1_common_1_1_relay_command.html#a6696b7bc60351d4d0f4a3c585b6a2a97',1,'Calculadora.Common.RelayCommand.RelayCommand()'],['../class_calculadora_1_1_common_1_1_relay_command-1-g.html#af3cdb8a99eb3fe28594ac50185e5b002',1,'Calculadora.Common.RelayCommand-1-g.RelayCommand()']]],
+  ['relaycommand_2d1_2dg_3',['RelayCommand-1-g',['../class_calculadora_1_1_common_1_1_relay_command-1-g.html',1,'Calculadora::Common']]],
+  ['removeexpressioncommand_4',['RemoveExpressionCommand',['../class_calculadora_1_1_view_models_1_1_graph_calc_view_model.html#a13a44d31a0f0df89c5a8360aaa9039bf',1,'Calculadora::ViewModels::GraphCalcViewModel']]],
+  ['repository_5',['Step 1 — Clone the repository',['../md__r_e_a_d_m_e.html#autotoc_md14',1,'']]],
+  ['requirements_20⚙️_6',['System Requirements ⚙️',['../md__r_e_a_d_m_e.html#autotoc_md6',1,'']]],
+  ['restore_20nuget_20dependencies_7',['Step 2 — Restore NuGet dependencies',['../md__r_e_a_d_m_e.html#autotoc_md15',1,'']]],
+  ['run_20the_20application_8',['Step 4 — Run the application',['../md__r_e_a_d_m_e.html#autotoc_md17',1,'']]]
 ];

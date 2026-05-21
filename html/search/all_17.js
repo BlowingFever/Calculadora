@@ -1,9 +1,9 @@
 var searchData=
 [
-  ['—_20calculadora_20estándar_0',['Ejemplos — Calculadora estándar',['../md__r_e_a_d_m_e.html#autotoc_md29',1,'']]],
-  ['—_20calculadora_20gráfica_1',['Ejemplos — Calculadora gráfica',['../md__r_e_a_d_m_e.html#autotoc_md30',1,'']]],
-  ['—_20clonar_20el_20repositorio_2',['Paso 1 — Clonar el repositorio',['../md__r_e_a_d_m_e.html#autotoc_md14',1,'']]],
-  ['—_20compilar_20el_20proyecto_3',['Paso 3 — Compilar el proyecto',['../md__r_e_a_d_m_e.html#autotoc_md16',1,'']]],
-  ['—_20ejecutar_20la_20aplicación_4',['Paso 4 — Ejecutar la aplicación',['../md__r_e_a_d_m_e.html#autotoc_md17',1,'']]],
-  ['—_20restaurar_20dependencias_20nuget_5',['Paso 2 — Restaurar dependencias NuGet',['../md__r_e_a_d_m_e.html#autotoc_md15',1,'']]]
+  ['—_20build_20the_20project_0',['Step 3 — Build the project',['../md__r_e_a_d_m_e.html#autotoc_md16',1,'']]],
+  ['—_20clone_20the_20repository_1',['Step 1 — Clone the repository',['../md__r_e_a_d_m_e.html#autotoc_md14',1,'']]],
+  ['—_20graphical_20calculator_2',['Examples — Graphical Calculator',['../md__r_e_a_d_m_e.html#autotoc_md30',1,'']]],
+  ['—_20restore_20nuget_20dependencies_3',['Step 2 — Restore NuGet dependencies',['../md__r_e_a_d_m_e.html#autotoc_md15',1,'']]],
+  ['—_20run_20the_20application_4',['Step 4 — Run the application',['../md__r_e_a_d_m_e.html#autotoc_md17',1,'']]],
+  ['—_20standard_20calculator_5',['Examples — Standard Calculator',['../md__r_e_a_d_m_e.html#autotoc_md29',1,'']]]
 ];

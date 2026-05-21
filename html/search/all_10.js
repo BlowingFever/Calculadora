@@ -1,11 +1,8 @@
 var searchData=
 [
-  ['reflexión_20final_0',['Reflexión final',['../md__r_e_a_d_m_e.html#autotoc_md36',1,'']]],
-  ['reflexiones_20💭_1',['Conclusiones y reflexiones 💭',['../md__r_e_a_d_m_e.html#autotoc_md33',1,'']]],
-  ['relaycommand_2',['RelayCommand',['../class_calculadora_1_1_common_1_1_relay_command.html',1,'Calculadora.Common.RelayCommand'],['../class_calculadora_1_1_common_1_1_relay_command.html#a6696b7bc60351d4d0f4a3c585b6a2a97',1,'Calculadora.Common.RelayCommand.RelayCommand()'],['../class_calculadora_1_1_common_1_1_relay_command-1-g.html#af3cdb8a99eb3fe28594ac50185e5b002',1,'Calculadora.Common.RelayCommand-1-g.RelayCommand()']]],
-  ['relaycommand_2d1_2dg_3',['RelayCommand-1-g',['../class_calculadora_1_1_common_1_1_relay_command-1-g.html',1,'Calculadora::Common']]],
-  ['removeexpressioncommand_4',['RemoveExpressionCommand',['../class_calculadora_1_1_view_models_1_1_graph_calc_view_model.html#a13a44d31a0f0df89c5a8360aaa9039bf',1,'Calculadora::ViewModels::GraphCalcViewModel']]],
-  ['repositorio_5',['Paso 1 — Clonar el repositorio',['../md__r_e_a_d_m_e.html#autotoc_md14',1,'']]],
-  ['requisitos_20del_20sistema_20⚙️_6',['Requisitos del sistema ⚙️',['../md__r_e_a_d_m_e.html#autotoc_md6',1,'']]],
-  ['restaurar_20dependencias_20nuget_7',['Paso 2 — Restaurar dependencias NuGet',['../md__r_e_a_d_m_e.html#autotoc_md15',1,'']]]
+  ['percentcommand_0',['PercentCommand',['../class_calculadora_1_1_view_models_1_1_normal_calc_view_model.html#af4ecc70e90484163339e3d75008557d2',1,'Calculadora::ViewModels::NormalCalcViewModel']]],
+  ['plotrefreshrequested_1',['PlotRefreshRequested',['../class_calculadora_1_1_view_models_1_1_graph_calc_view_model.html#a4664b927209d78aca29ca31c8f05f875',1,'Calculadora::ViewModels::GraphCalcViewModel']]],
+  ['project_2',['Step 3 — Build the project',['../md__r_e_a_d_m_e.html#autotoc_md16',1,'']]],
+  ['project_20structure_3',['Project Structure',['../md__r_e_a_d_m_e.html#autotoc_md20',1,'']]],
+  ['propertychanged_4',['PropertyChanged',['../class_calculadora_1_1_common_1_1_view_model_base.html#ad60ce6592f008ae89b5c7e638e0b6cf4',1,'Calculadora.Common.ViewModelBase.PropertyChanged'],['../class_calculadora_1_1_models_1_1_expression_item.html#a69e4e16f6d68e63c6aeecacad4a0b912',1,'Calculadora.Models.ExpressionItem.PropertyChanged']]]
 ];
